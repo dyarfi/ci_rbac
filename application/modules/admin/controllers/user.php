@@ -94,7 +94,7 @@ class User extends CI_Controller {
 			}
 		}
 		if (@$temp_rows) $data['rows'] = $temp_rows;
-		
+				
 		$data['user_profiles'] = $this->UserProfiles->getUserProfile(Acl::instance()->user->id);
 				
 		$this->load->vars($data);
@@ -283,11 +283,21 @@ class User extends CI_Controller {
 			redirect('home/index','refresh');
 		}
 		
+		//Get the user's entered captcha value from the form
+		$userCaptcha			= set_value('captcha');
+    
+		//Get the actual captcha value that we stored in the session (see below)
+		$word					= $this->session->userdata('captchaWord');
+	
 		$data['upload_path']	= $this->config->item('upload_path');
 		
 		$data['upload_url']		= $this->config->item('upload_url');
 		
-		$data['user']			= $this->Users->getUser($id);
+		//print_r($this->config->load('captcha'));
+		//exit;
+		print_r(create_captcha($this->config->load('captcha')));
+		exit;
+		$data['user']			= $this->Users->getUser($id);		
 		
 		$data['user_profile']	= $this->UserProfiles->getUserProfile($id);
 				

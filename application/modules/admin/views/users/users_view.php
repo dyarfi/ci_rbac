@@ -966,6 +966,10 @@
 													<label class="control-label">Website</label>
 													<input name="website" type="text" class="form-control" placeholder="<?=$user_profile->website;?>" value="<?=$user_profile->website;?>">
 												</div>
+												<div class="form-group">
+													<label class="control-label">Captcha : <?php echo $captcha['image'];?></label>
+													<input name="captcha" type="text" class="form-control" placeholder="captcha" value="">
+												</div>																							
 												<div class="row margiv-top-10">
 													<div class="col-md-4 col-lg-4 col-xs-4 pull-left">
 														<button class="btn green">

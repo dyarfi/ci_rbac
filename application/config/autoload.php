@@ -64,7 +64,7 @@ $autoload['libraries'] = array('session','parser','user_agent','encrypt','pagina
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','file','form','html','text','email','my_general_helper','my_fbhelper_helper');
+$autoload['helper'] = array('url','file','form','html','text','email','captcha','my_general_helper','my_fbhelper_helper');
 
 
 /*
