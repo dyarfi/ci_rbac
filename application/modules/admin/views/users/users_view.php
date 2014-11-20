@@ -968,7 +968,7 @@
 												</div>
 												<div class="form-group">
 													<label class="control-label">Captcha : <?php echo $captcha['image'];?></label>
-													<input name="captcha" type="text" class="form-control" placeholder="captcha" value="">
+													<input name="captcha" type="text" class="form-control" placeholder="Captcha" value="">
 												</div>																							
 												<div class="row margiv-top-10">
 													<div class="col-md-4 col-lg-4 col-xs-4 pull-left">

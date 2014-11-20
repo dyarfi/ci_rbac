@@ -9,8 +9,6 @@ class Configurations Extends CI_Model {
 		// Call the Model constructor
 		parent::__construct();
 		
-		$this->load->dbforge();
-		
 		$this->db = $this->load->database('default', true);		
 				
 	}

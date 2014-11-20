@@ -12,6 +12,8 @@ class User extends CI_Controller {
 		$this->load->model('Users');
 		$this->load->model('UserProfiles');
 		$this->load->model('UserGroups');		
+		$this->load->model('Captcha');		
+		
 		
 		//Load user config
 		$this->config->load('admin');
@@ -295,7 +297,7 @@ class User extends CI_Controller {
 		
 		$data['upload_url']		= $this->config->item('upload_url');
 		
-		$data['captcha']		= create_captcha($this->config->load('captcha'));
+		$data['captcha']		= $this->Captcha->image();
 		
 		$data['user']			= $this->Users->getUser($id);		
 		

@@ -18,7 +18,8 @@ class Authenticate extends CI_Controller {
 		$this->load->model('ModulePermissions');
 		
 		$this->load->model('Configurations');		
-		$this->load->model('UserHistories');		
+		$this->load->model('UserHistories');	
+		$this->load->model('Captcha');
 		//Put session check in constructor
 		//$data['user'] = $this->session->userdata('user_session');
 		//Load user session in data
@@ -263,7 +264,10 @@ class Authenticate extends CI_Controller {
 				$this->Configurations->install();
 				$this->ModulePermissions->install();
 				$this->UserGroupPermissions->install();
-				$this->UserHistories->install();				//print_r($user);
+				$this->UserHistories->install();
+				$this->Captcha->install();
+				
+				//print_r($user);
 				
 				$module_list	= $this->UserGroupPermissions->getModuleList($user->group_id);
 				
