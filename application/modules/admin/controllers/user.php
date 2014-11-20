@@ -14,10 +14,17 @@ class User extends CI_Controller {
 		$this->load->model('UserGroups');		
 		$this->load->model('Captcha');		
 		
+		//$this->load->helper('directory');
+		
+		//$map = directory_map('./application/modules');
+		
+		//print_r($map);
+		
+		print_r(Modules::lists('./application/modules'));
 		
 		// Load user config
 		$this->config->load('admin');
-		
+				
 		//$this->load->class('acl');
 		//$asdf = Acl::instance();
 		//print_r(Acl::instance()->access_control());		
@@ -323,73 +330,61 @@ class User extends CI_Controller {
 						
 			// Set validation config
 			$config = array(
-               array(
-                     'field'   => 'first_name', 
-                     'label'   => 'First Name', 
-                     'rules'   => 'trim|required|xss_clean|max_length[25]'
-                  ),	
-               array(
-                     'field'   => 'last_name', 
-                     'label'   => 'Last Name', 
-                     'rules'   => 'trim|xss_clean|max_length[25]'
-                  ),
-               array(
-                     'field'   => 'captcha', 
-                     'label'   => 'Captcha', 
-                     'rules'   => 'trim|xss_clean|max_length[6]|callback_match_captcha'
-                  ),
-               array(
-                     'field'   => 'phone', 
-                     'label'   => 'Phone', 
-                     'rules'   => 'trim|is_natural|xss_clean|max_length[25]'
-                  ),
-				array(
-                     'field'   => 'mobile_phone', 
-                     'label'   => 'Mobile Phone', 
-                     'rules'   => 'trim|is_natural|xss_clean|max_length[25]'
-                  ),
-				array(
-                     'field'   => 'website', 
-                     'label'   => 'Website', 
-                     'rules'   => 'trim|prep_url|xss_clean|max_length[25]'
-                  ),
-				array(
-                     'field'   => 'about', 
-                     'label'   => 'About', 
-                     'rules'   => 'trim|xss_clean|max_length[1000]'
-                  ),
-				array(
-                     'field'   => 'division', 
-                     'label'   => 'Division', 
-                     'rules'   => 'trim|xss_clean|max_length[25]'
-				)
+               array('field' => 'first_name', 
+                     'label' => 'First Name', 
+                     'rules' => 'trim|required|xss_clean|max_length[25]'),	
+               array('field' => 'last_name', 
+                     'label' => 'Last Name', 
+                     'rules' => 'trim|xss_clean|max_length[25]'),
+               array('field' => 'captcha', 
+                     'label' => 'Captcha', 
+                     'rules' => 'trim|xss_clean|max_length[6]|callback_match_captcha'),
+               array('field' => 'phone', 
+                     'label' => 'Phone', 
+                     'rules' => 'trim|is_natural|xss_clean|max_length[25]'),
+			   array('field' => 'mobile_phone', 
+                     'label' => 'Mobile Phone', 
+                     'rules' => 'trim|is_natural|xss_clean|max_length[25]'),
+			   array('field' => 'website', 
+                     'label' => 'Website', 
+                     'rules' => 'trim|prep_url|xss_clean|max_length[25]'),
+			   array('field' => 'about', 
+                     'label' => 'About', 
+                     'rules' => 'trim|xss_clean|max_length[1000]'),
+			   array('field' => 'division', 
+                     'label' => 'Division', 
+                     'rules' => 'trim|xss_clean|max_length[25]')
             );
 			
+			// Set rules to form validation
 			$this->form_validation->set_rules($config);
 			
 			// Run validation for checking
 			if ($this->form_validation->run() === FALSE) {
 				
+				// Send errors to JSON text
+				$result['result']['code'] = 0;
+				$result['result']['text'] = validation_errors();
+				
 			} else {
 				
+				unset($_POST['captcha']); 
+				// Set User Data
+				$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
+
+				// Check data				
+				if (!empty($user_profile) && $user_profile->status === 'active') {
+					$result['result']['code'] = 1;
+					$result['result']['text'] = 'Changes saved !';
+				} else if (!empty($user_profile) && $user->status !== 'active') { 
+					$result['result']['code'] = 2;
+					$result['result']['text'] = 'Your account profile is not active';			
+				} else {
+					$result['result']['code'] = 0;
+					$result['result']['text'] = 'Profile not found';			
+				}
 			}
-			
-			//print_r(validation_errors());
-			//exit;
-			
-			// Set User Data
-			//$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
-			// Check data				
-			if (!empty($user_profile) && $user_profile->status === 'active') {
-				$result['result']['code'] = 1;
-				$result['result']['text'] = 'Changes saved !';
-			} else if (!empty($user_profile) && $user->status !== 'active') { 
-				$result['result']['code'] = 2;
-				$result['result']['text'] = 'Your account profile is not active';			
-			} else {
-				$result['result']['code'] = 0;
-				$result['result']['text'] = 'Profile not found';			
-			}				
+										
 		// Checking Action via Ajax
 		} else if($action === 'check') {			
 			// Check Username users via Ajax
@@ -520,14 +515,21 @@ class User extends CI_Controller {
 		$this->load->view('template/home_template',$data);
 	}
 	// CALLBACKS
-	private function match_captcha($captcha)
+	// Match Captcha post to Database
+	public function match_captcha($captcha)
 	{		
 		if ($captcha == '') {
-			$this->form_validation->set_message('match_captcha', 'The %s code can not be empty');
+			$this->form_validation->set_message('match_captcha', 'The %s code can not be empty.');
 			return false;
 		}
 		else if ($this->Captcha->match($captcha)) {
 			return true;
 		} 
+	}
+	// Reload Captcha to the view
+	public function reload_captcha() {
+		$captcha = $this->Captcha->image();
+		echo $captcha['image'];
+		exit();
 	}
 }

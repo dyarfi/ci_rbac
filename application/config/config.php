@@ -362,7 +362,7 @@ $config['developer_url']	= 'http://dentsudigitaldivision.com/';
 
 
 $config['modules_locations'] = array(
-        APPPATH.'modules/' => '../modules/',
+        APPPATH.'modules/' => '../modules/'
     );
 
 /* End of file config.php */

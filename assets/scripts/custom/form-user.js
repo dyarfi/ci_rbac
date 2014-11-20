@@ -8,6 +8,26 @@ var FormUser = function () {
 				ajaxUser();
 			}				
 		});
+						
+		$('.reload_captcha').click(function() {
+			var url	= $(this).attr('rel');		
+			$.ajax({
+				type: "POST",
+				url: url,
+				cache: false,
+				async: false,	
+				success: function(msg){
+					$('.reload_captcha').empty().html(msg);
+					// Need random for browser recache
+					img		= $('.reload_captcha').find('img');
+					src		= img.attr('src');
+					ran		= img.fadeOut(50).fadeIn(50).attr('src', src + '?=' + Math.random());
+				},
+				complete: function(msg) {},
+				error: function(msg) {}
+			});
+			return false;	
+		});
 		
 		$('#user-form-add').validate({
 			//errorElement: 'span', //default input error message container
@@ -61,7 +81,7 @@ var FormUser = function () {
 				form.submit();
 			}
 			
-		});
+		});		
 	}
 	
 	var ajaxUser = function () {
@@ -101,6 +121,8 @@ var FormUser = function () {
 						//window.location.href = base_URL + 'admin/authenticate/login';
 					}, 6000);
 				}
+				
+				$('.reload_captcha').click();
 				
 				//alert(msg.result);
 				//console.log(msg.result);
