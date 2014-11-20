@@ -5,7 +5,7 @@ class UserGroup extends CI_Controller {
 	// var $userdata = '';
 	var $auth_message = '';
 	//var $User = '';
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 				
 		//Load user related model
@@ -68,7 +68,7 @@ class UserGroup extends CI_Controller {
 		//$this->User = $this->load->model('User');
 		//print_r($this->session->all_userdata());
 	}
-	function index() {		
+	public function index() {		
 		//$user_id = $this->userdata['user_id'];
 		//$user_group_id = $this->userdata['group_id'];
 			
@@ -106,7 +106,7 @@ class UserGroup extends CI_Controller {
 				
 	}
 	/*
-	function login () {
+	public function login () {
 		// load helper if not auto loaded
 		//$this->load->helper(array('form','url'));
 		// load library if not auto loaded
@@ -198,12 +198,12 @@ class UserGroup extends CI_Controller {
 	}
 	 * 
 	 */
-	function logout() {
+	public function logout() {
         //Destroy only user session
         $this->session->unset_userdata('user_session');
 		redirect('/', 'refresh');
     }
-	function add(){
+	public function add(){
 		// load library if not auto loaded
 		$this->load->library('form_validation');
 		
@@ -237,7 +237,7 @@ class UserGroup extends CI_Controller {
 			$this->load->view('template/admin_template');
 		}
 	}
-	function edit($id=0){
+	public function edit($id=0){
 		if ($this->input->post('name')){
 			$this->Users->updateUser();
 			$this->session->set_flashdata('message','Page updated');
@@ -251,12 +251,12 @@ class UserGroup extends CI_Controller {
 			$this->load->view('template/admin_template');
 		}
 	}
-	function delete($id){
+	public function delete($id){
 		$this->Users->deleteUser($id);
 		$this->session->set_flashdata('message','Page deleted');
 		redirect('admin/users/index','refresh');
 	}	
-	function view($id=null){
+	public function view($id=null){
 		
 		//Load form validation library if not auto loaded
 		$this->load->library('form_validation');
@@ -286,7 +286,7 @@ class UserGroup extends CI_Controller {
 		$this->load->view('template/admin_template',$data);
 	}
 	
-	function ajax($action='') {
+	public function ajax($action='') {
 				
 		//Check if the request via AJAX
 		if (!$this->input->is_ajax_request()) {
@@ -330,7 +330,7 @@ class UserGroup extends CI_Controller {
 		$this->load->view('json', $data);	
 	}
 	
-	function forgot_password() {
+	public function forgot_password() {
 			
 		// Check if the request via AJAX
 		if (!$this->input->is_ajax_request()) {
@@ -374,7 +374,7 @@ class UserGroup extends CI_Controller {
 		$this->load->view('json', $data);				
 		
 	}
-	function search() {
+	public function search() {
         //use this for the search results
 		//$data = $this->input->xss_clean($this->input->post('term'));
 		//$data = $this->input->post('term', true);
@@ -395,4 +395,3 @@ class UserGroup extends CI_Controller {
 		$this->load->view('template/home_template',$data);
 	}
 }
-?>

@@ -967,7 +967,7 @@
 													<input name="website" type="text" class="form-control" placeholder="<?=$user_profile->website;?>" value="<?=$user_profile->website;?>">
 												</div>
 												<div class="form-group">
-													<label class="control-label">Captcha : <?php echo $captcha['image'];?></label>
+													<label class="control-label">Captcha <?php echo $captcha['image'];?></label>
 													<input name="captcha" type="text" class="form-control" placeholder="Captcha" value="">
 												</div>																							
 												<div class="row margiv-top-10">

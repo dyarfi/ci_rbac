@@ -3,7 +3,7 @@
 class Dashboard extends CI_Controller {
 	var $userdata = '';
 	var $auth_message = '';
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		
 		//Load user
@@ -56,7 +56,7 @@ class Dashboard extends CI_Controller {
 		// Load product configuration
 		//$this->config->load('products');
 	}
-	function index() {
+	public function index() {
 		$data['title']	= "Dashboard Home";
 		$data['main']	= 'admin/dashboard';
 		$data['tusers']	= $this->Users->getCount('active');
@@ -69,5 +69,3 @@ class Dashboard extends CI_Controller {
 		
 	}
 }
-
-?>

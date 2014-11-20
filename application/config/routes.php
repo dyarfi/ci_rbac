@@ -38,15 +38,12 @@
 |
 */
 
-//$route['__admin_login/relogin']="__admin_login";
-//$route['__admin_gallery/deleted_succes']="__admin_gallery";
 $route['default_controller'] = "home";
 $route['download/(:num)'] = 'download';
 $route['404_override'] = '';
 
 // Route for Admin
 $route['admin']	 = "admin/authenticate/login";
-//$route['admin/login']	= "admin/login";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

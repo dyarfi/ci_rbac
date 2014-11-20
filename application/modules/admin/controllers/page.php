@@ -124,4 +124,3 @@ class Pages extends CI_Controller {
 		redirect('admin/pages/index','refresh');
 	}
 } // end class
-?>

@@ -4,7 +4,7 @@
 class Authenticate extends CI_Controller {
 	var $userdata = '';
 	var $auth_message = '';
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		
 		//Load user profiles model
@@ -70,7 +70,7 @@ class Authenticate extends CI_Controller {
 		//$this->session->sess_create();		
 
 	}
-	function index() {
+	public function index() {
 		//Redirect to dashboard if user already logged
 		if (!empty($this->userdata)) {
 			redirect('admin/dashboard');
@@ -117,16 +117,13 @@ class Authenticate extends CI_Controller {
 			break;
 		}
 	}
-	function login () {
+	public function login () {
 		//Redirect to dashboard if user already logged
 		if (!empty($this->userdata)) {
 			redirect('admin/dashboard');
 		}
 		// load helper if not auto loaded
 		//$this->load->helper(array('form','url'));
-
-		// load library if not auto loaded
-		$this->load->library('form_validation');
 
 		if($_SERVER['REQUEST_METHOD'] === 'POST'){
 			$userObj = $_POST;
@@ -328,7 +325,7 @@ class Authenticate extends CI_Controller {
 		//$data['main']	= $this->load->view('users/default_user', $data, true);		
 		$this->load->view('template/login_template');
 	}
-	function logout() {
+	public function logout() {
 		//Set user's last login 
 		$this->Users->setLastLogin(Acl::instance()->user->id);		
         //Destroy user session		
@@ -340,10 +337,10 @@ class Authenticate extends CI_Controller {
 		//Redirect admin to refresh
 		redirect('admin', 'refresh');
     }
-	function edit($id = null) {
+	public function edit($id = null) {
 		echo "fubar";
 	}
-	function search() {
+	public function search() {
         //use this for the search results
 		//$data = $this->input->xss_clean($this->input->post('term'));
 		//$data = $this->input->post('term', true);
@@ -364,4 +361,3 @@ class Authenticate extends CI_Controller {
 		$this->load->view('template/home_template',$data);
 	}
 }
-?>

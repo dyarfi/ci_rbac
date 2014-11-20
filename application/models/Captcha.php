@@ -3,10 +3,11 @@
 // Model Class Object for Captcha
 class Captcha extends CI_Model {
 	var $table = 'tbl_captcha';
+	var $expiration = 60;
 	function __construct(){
 		// Call the Model constructor
 		parent::__construct();
-				
+		// Set database library		
 		$this->db = $this->load->database('default', true);		
 		
 	}
@@ -37,27 +38,48 @@ class Captcha extends CI_Model {
 			'font_path'	=> 'assets/captcha/fonts/DejaVuSerif.ttf',
 			'img_width'	=> '120',
 			'img_height' => '30',
-			'expiration' => 60,
+			'expiration' => $this->expiration,
 			'time'		 => time()
 		);
 				
-		//Set captcha expired data
+		// Set captcha expired data
 		$expire = $captcha['time'] - $captcha['expiration'];
 		
-		//Delete captcha from database
+		// Delete captcha from database
 		$this->db->where('time <', $expire);
 		$this->db->delete('captcha');
 		
-		//Set value to insert
+		// Set value to insert
 		$value = array(
 			'time'		=> $captcha['time'],
 			'ip_address'=> $this->input->ip_address(),
 			'word'		=> $captcha['word'],
 		);
 			
-		//Insert new Captcha data to database
+		// Insert new Captcha data to database
 		$this->db->insert('captcha',$value);
 					
 		return create_captcha($captcha);
 	}
+	
+	function match($word) {
+		// Set expired time
+		$expire = time() - $this->expiration;
+		// Find expired and delete
+		$this->db->where('time <',$expire);
+		$this->db->delete($this->table);
+		// Set query to find matches
+		$query = $this->db->limit(1)->get_where($this->table, array('word'=>$word));
+		
+		// Check result
+		if($query->num_rows() == 0) {
+			// Return false if not exists
+			return false;
+		} else {
+			// Return true if not exists
+			return true;
+		}
+		
+	}
+	
 }

@@ -4,18 +4,18 @@
 class User extends CI_Controller {
 	// var $userdata = '';
 	var $auth_message = '';
-	//var $User = '';
-	function __construct() {
+	// var $User = '';
+	public function __construct() {
 		parent::__construct();
 				
-		//Load user related model
+		// Load user related model
 		$this->load->model('Users');
 		$this->load->model('UserProfiles');
 		$this->load->model('UserGroups');		
 		$this->load->model('Captcha');		
 		
 		
-		//Load user config
+		// Load user config
 		$this->config->load('admin');
 		
 		//$this->load->class('acl');
@@ -70,7 +70,7 @@ class User extends CI_Controller {
 		//$this->User = $this->load->model('User');
 		//print_r($this->session->all_userdata());
 	}
-	function index() {		
+	public function index() {		
 		//$user_id = $this->userdata['user_id'];
 		//$user_group_id = $this->userdata['group_id'];
 			
@@ -120,7 +120,7 @@ class User extends CI_Controller {
 				
 	}
 	/*
-	function login () {
+	public function login () {
 		// load helper if not auto loaded
 		//$this->load->helper(array('form','url'));
 		// load library if not auto loaded
@@ -212,14 +212,12 @@ class User extends CI_Controller {
 	}
 	 * 
 	 */
-	function logout() {
-        //Destroy only user session
+	public function logout() {
+        // Destroy only user session
         $this->session->unset_userdata('user_session');
 		redirect('/', 'refresh');
     }
-	function add(){
-		// load library if not auto loaded
-		$this->load->library('form_validation');
+	public function add(){
 		
 		$this->form_validation->set_rules('name', 'Name', 'trim|required|valid_email|min_length[5]|max_length[24]|xss_clean');
 		$this->form_validation->set_rules('keywords', 'Keywords','trim|required|min_length[5]|max_length[24]|xss_clean');
@@ -251,7 +249,7 @@ class User extends CI_Controller {
 			$this->load->view('template/admin_template');
 		}
 	}
-	function edit($id=0){
+	public function edit($id=0){
 		if ($this->input->post('name')){
 			$this->Users->updateUser();
 			$this->session->set_flashdata('message','Page updated');
@@ -265,14 +263,14 @@ class User extends CI_Controller {
 			$this->load->view('template/admin_template');
 		}
 	}
-	function delete($id){
+	public function delete($id){
 		$this->Users->deleteUser($id);
 		$this->session->set_flashdata('message','Page deleted');
 		redirect('admin/users/index','refresh');
 	}	
-	function view($id=null){
+	public function view($id=null){
 		
-		//Load form validation library if not auto loaded
+		// Load form validation library if not auto loaded
 		$this->load->library('form_validation');
 
 		if (empty($id) && (int)$id > 0) {
@@ -287,10 +285,10 @@ class User extends CI_Controller {
 		
 		//print_r($this->session->userdata);
 		
-		//Get the user's entered captcha value from the form
+		// Get the user's entered captcha value from the form
 		//$userCaptcha			= set_value('captcha');
     
-		//Get the actual captcha value that we stored in the session (see below)
+		// Get the actual captcha value that we stored in the session (see below)
 		//$word					= $this->session->userdata('captcha');
 	
 		$data['upload_path']	= $this->config->item('upload_path');
@@ -302,9 +300,6 @@ class User extends CI_Controller {
 		$data['user']			= $this->Users->getUser($id);		
 		
 		$data['user_profile']	= $this->UserProfiles->getUserProfile($id);
-		
-		/* Store the captcha value (or 'word') in a session to retrieve later */
-		$this->session->set_userdata('captchaWord',$data['captcha']['word']);
 				
 		$this->load->vars($data);
 		
@@ -313,22 +308,78 @@ class User extends CI_Controller {
 		$this->load->view('template/admin_template',$data);
 	}
 	
-	function ajax($action='') {
+	public function ajax($action='') {
 				
-		//Check if the request via AJAX
+		// Check if the request via AJAX
 		if (!$this->input->is_ajax_request()) {
 			exit('No direct script access allowed');		
 		}	
 		
-		//Define initialize result
+		// Define initialize result
 		$result['result'] = '';
 		
-		//Update User Profile via Ajax
+		// Update User Profile via Ajax
 		if ($action === 'update') {			
 						
-			//Set User Data
-			$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
-			//Check data				
+			// Set validation config
+			$config = array(
+               array(
+                     'field'   => 'first_name', 
+                     'label'   => 'First Name', 
+                     'rules'   => 'trim|required|xss_clean|max_length[25]'
+                  ),	
+               array(
+                     'field'   => 'last_name', 
+                     'label'   => 'Last Name', 
+                     'rules'   => 'trim|xss_clean|max_length[25]'
+                  ),
+               array(
+                     'field'   => 'captcha', 
+                     'label'   => 'Captcha', 
+                     'rules'   => 'trim|xss_clean|max_length[6]|callback_match_captcha'
+                  ),
+               array(
+                     'field'   => 'phone', 
+                     'label'   => 'Phone', 
+                     'rules'   => 'trim|is_natural|xss_clean|max_length[25]'
+                  ),
+				array(
+                     'field'   => 'mobile_phone', 
+                     'label'   => 'Mobile Phone', 
+                     'rules'   => 'trim|is_natural|xss_clean|max_length[25]'
+                  ),
+				array(
+                     'field'   => 'website', 
+                     'label'   => 'Website', 
+                     'rules'   => 'trim|prep_url|xss_clean|max_length[25]'
+                  ),
+				array(
+                     'field'   => 'about', 
+                     'label'   => 'About', 
+                     'rules'   => 'trim|xss_clean|max_length[1000]'
+                  ),
+				array(
+                     'field'   => 'division', 
+                     'label'   => 'Division', 
+                     'rules'   => 'trim|xss_clean|max_length[25]'
+				)
+            );
+			
+			$this->form_validation->set_rules($config);
+			
+			// Run validation for checking
+			if ($this->form_validation->run() === FALSE) {
+				
+			} else {
+				
+			}
+			
+			//print_r(validation_errors());
+			//exit;
+			
+			// Set User Data
+			//$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
+			// Check data				
 			if (!empty($user_profile) && $user_profile->status === 'active') {
 				$result['result']['code'] = 1;
 				$result['result']['text'] = 'Changes saved !';
@@ -339,13 +390,13 @@ class User extends CI_Controller {
 				$result['result']['code'] = 0;
 				$result['result']['text'] = 'Profile not found';			
 			}				
-		//Checking Action via Ajax
+		// Checking Action via Ajax
 		} else if($action === 'check') {			
-			//Check Username users via Ajax
+			// Check Username users via Ajax
 			if ($this->uri->segments[5] === 'username' && $this->input->post('username') !== '') {			
-				//Set User Data
+				// Set User Data
 				$user = $this->Users->getUserByUsername($this->input->post('username'));			
-				//Check data
+				// Check data
 				if (!empty($user) && $user->status === 'active') {
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Username already exist!';
@@ -357,11 +408,11 @@ class User extends CI_Controller {
 					$result['result']['text'] = 'Profile not found';			
 				}				
 			}
-			//Check Email users via Ajax
+			// Check Email users via Ajax
 			if ($this->uri->segments[5] === 'email' && $this->input->post('email') !== '') {			
-				//Set User Data
+				// Set User Data
 				$user = $this->Users->getUserByEmail($this->input->post('email'));			
-				//Check data
+				// Check data
 				if (!empty($user) && $user->status === 'active') {
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Email already exist!';
@@ -373,13 +424,13 @@ class User extends CI_Controller {
 					$result['result']['text'] = 'Email not found';			
 				}				
 			}
-			//Check Password users via Ajax
+			// Check Password users via Ajax
 			if ($this->uri->segments[5] === 'password' 
 					&& $this->input->post('password') !== '' 
 						&& $this->input->post('user_id') !== '') {			
-				//Set User Data
+				// Set User Data
 				$user = $this->Users->getUserPassword($this->input->post());				
-				//Check data
+				// Check data
 				if (!empty($user) && $user->status === 'active') {
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Email already exist!';
@@ -391,20 +442,20 @@ class User extends CI_Controller {
 					$result['result']['text'] = 'Email not found';			
 				}				
 			}
-		//Check user data and Add via Ajax
+		// Check user data and Add via Ajax
 		} else if($action === 'add') {
 			
 			$result['result'] = '';
 			
 		}
 				
-		//Return data esult
+		// Return data esult
 		$data['json'] = $result;
-		//Load data into view		
+		// Load data into view		
 		$this->load->view('json', $data);	
 	}
 	
-	function forgot_password() {
+	public function forgot_password() {
 			
 		// Check if the request via AJAX
 		if (!$this->input->is_ajax_request()) {
@@ -448,7 +499,7 @@ class User extends CI_Controller {
 		$this->load->view('json', $data);				
 		
 	}
-	function search() {
+	public function search() {
         //use this for the search results
 		//$data = $this->input->xss_clean($this->input->post('term'));
 		//$data = $this->input->post('term', true);
@@ -468,5 +519,15 @@ class User extends CI_Controller {
 		$this->load->vars($data);
 		$this->load->view('template/home_template',$data);
 	}
+	// CALLBACKS
+	private function match_captcha($captcha)
+	{		
+		if ($captcha == '') {
+			$this->form_validation->set_message('match_captcha', 'The %s code can not be empty');
+			return false;
+		}
+		else if ($this->Captcha->match($captcha)) {
+			return true;
+		} 
+	}
 }
-?>
