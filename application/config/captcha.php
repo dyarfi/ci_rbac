@@ -26,7 +26,7 @@ $config['captcha'] = array(
     'img_url'	=> base_url().'assets/captcha/image/',
     'font_path'	=> 'assets/captcha/fonts/DejaVuSerif.ttf',
     'img_width'	=> '120',
-    'img_height' => '32',
+    'img_height' => '30',
     'expiration' => 3600
     );
 

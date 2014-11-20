@@ -283,23 +283,26 @@ class User extends CI_Controller {
 			redirect('home/index','refresh');
 		}
 		
+		//print_r($this->session->userdata);
+		
 		//Get the user's entered captcha value from the form
-		$userCaptcha			= set_value('captcha');
+		//$userCaptcha			= set_value('captcha');
     
 		//Get the actual captcha value that we stored in the session (see below)
-		$word					= $this->session->userdata('captchaWord');
+		//$word					= $this->session->userdata('captcha');
 	
 		$data['upload_path']	= $this->config->item('upload_path');
 		
 		$data['upload_url']		= $this->config->item('upload_url');
 		
-		//print_r($this->config->load('captcha'));
-		//exit;
-		print_r(create_captcha($this->config->load('captcha')));
-		exit;
+		$data['captcha']		= create_captcha($this->config->load('captcha'));
+		
 		$data['user']			= $this->Users->getUser($id);		
 		
 		$data['user_profile']	= $this->UserProfiles->getUserProfile($id);
+		
+		/* Store the captcha value (or 'word') in a session to retrieve later */
+		$this->session->set_userdata('captchaWord',$data['captcha']['word']);
 				
 		$this->load->vars($data);
 		
@@ -320,6 +323,7 @@ class User extends CI_Controller {
 		
 		//Update User Profile via Ajax
 		if ($action === 'update') {			
+						
 			//Set User Data
 			$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
 			//Check data				
