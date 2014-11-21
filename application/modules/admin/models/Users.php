@@ -112,30 +112,34 @@ class Users Extends CI_Model {
 		$Q->free_result();
 		return $data;
 	}
-	function getUserPassword($object=null){
-			if(!empty($object)){
+	// Get user's Password from hashed password 
+	function getUserPassword($password=null){
+		if(!empty($password)){
 			$data = array();
-			$options = array(
-							'id' => $object['username'], 
-							'password' => sha1($object['username'].$object['password']),
-							'status' => 'active');
+			
+			$options = array('password' => $password);
 			
 			$Q = $this->db->get_where('users',$options,1);
-			if ($Q->num_rows() > 0){				
-				foreach ($Q->result_object() as $row) {
-					// Update login state to true
-					$this->setLoggedIn($row->id);
-					$data = $row;
-				}
-			} 			 
-		
-			//print_r($data);
-			//exit;
-			//print_r(); exit();
-			//print_r($this->db->last_query()); exit();
 			
-			$Q->free_result();
-			return $data;
+			/*
+			foreach ($Q->result_object() as $row)
+				$data = $row;
+			
+			print_r($data);
+			
+			echo "Old Password : ".$password."<br>";
+			echo "From DB : ".$data->password."<br>";
+			die;
+			*/
+			
+			// Check result
+			if($Q->num_rows() > 0) {
+				// Return true if not exists
+				return true;
+			} else {
+				// Return false if exists
+				return false;
+			}		 
 		}
 	}
 	function login($object=null){		
@@ -191,4 +195,3 @@ class Users Extends CI_Model {
 
 	}
 }
-?>

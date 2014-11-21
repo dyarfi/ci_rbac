@@ -9,9 +9,7 @@
 						<button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
 						<h4 class="modal-title">Modal title</h4>
 					</div>
-					<div class="modal-body">
-						 Widget settings form goes here
-					</div>
+					<div class="modal-body">Widget settings form goes here</div>
 					<div class="modal-footer">
 						<button class="btn blue" type="button">Save changes</button>
 						<button data-dismiss="modal" class="btn default" type="button">Close</button>
@@ -25,10 +23,8 @@
 		<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<!-- BEGIN STYLE CUSTOMIZER -->
 		<div class="theme-panel hidden-xs hidden-sm">
-			<div class="toggler">
-			</div>
-			<div class="toggler-close">
-			</div>
+			<div class="toggler"></div>
+			<div class="toggler-close"></div>
 			<div class="theme-options">
 				<div class="theme-option theme-colors clearfix">
 					<span>
@@ -167,14 +163,10 @@
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a data-toggle="tab" href="#tab_1_1">
-								 Overview
-							</a>
+							<a data-toggle="tab" href="#tab_1_1">Overview</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#tab_1_3">
-								 Account
-							</a>
+							<a data-toggle="tab" href="#tab_1_3">Account</a>
 						</li>
 						<!--li>
 							<a data-toggle="tab" href="#tab_1_4">
@@ -1035,40 +1027,34 @@
 											</form>
 										</div>
 										<div class="tab-pane" id="tab_3-3">
-											<form action="#" id="user-form-password" class="user-form-password">
-												<input type="hidden" class="form-control" id="username" name="username" value="<?=$user->username;?>">
-												<div class="form-group">
-													<label class="control-label">Current Password</label>
-													<input type="password" class="form-control" id="password_curr" name="password_curr">
+										<form action="#" id="user-form-password" class="user-form-password">											<input type="hidden" class="form-control" id="user_id" name="user_id" value="<?=$user->id;?>">	
+											<input type="hidden" class="form-control" id="username" name="username" value="<?=$user->username;?>">
+											<div class="form-group">
+												<label class="control-label">Current Password</label>
+												<input type="password" class="form-control" name="password" id="password" value="">
+											</div>
+											<div class="form-group">
+												<label class="control-label">New Password</label>
+												<input type="password" class="form-control" name="password1" id="password1" value="">
+											</div>
+											<div class="form-group">
+												<label class="control-label">Re-type New Password</label>
+												<input type="password" class="form-control" name="password2" id="password2" value="">
+											</div>
+											<div class="margin-top-10">
+												<button type="submit" class="btn green"> Change Password </button>
+												<!--a class="btn default" href="#">Cancel</a-->
+												<div class="col-md-8 col-lg-8 col-xs-7 pull-right">
+													<div class="msg"></div>
 												</div>
-												<div class="form-group">
-													<label class="control-label">New Password</label>
-													<input type="password" class="form-control" id="password_new" name="password_new">
-												</div>
-												<div class="form-group">
-													<label class="control-label">Re-type New Password</label>
-													<input type="password" class="form-control">
-												</div>
-												<div class="margin-top-10">
-													<button type="submit" class="btn green">
-														 Change Password
-													</button>
-													<!--a class="btn default" href="#">
-														 Cancel
-													</a-->
-													<div class="col-md-8 col-lg-8 col-xs-7 pull-right">
-														<div class="msg"></div>
-													</div>
-												</div>
-											</form>
+											</div>
+										</form>
 										</div>
 										<div class="tab-pane hidden" id="tab_4-4">
 											<form action="#">
 												<table class="table table-bordered table-striped">
 												<tbody><tr>
-													<td>
-														 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus..
-													</td>
+													<td>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus..</td>
 													<td>
 														<label class="uniform-inline">
 														<div class="radio"><span><input type="radio" value="option1" name="optionsRadios1"></span></div>
@@ -1079,27 +1065,21 @@
 													</td>
 												</tr>
 												<tr>
-													<td>
-														 Enim eiusmod high life accusamus terry richardson ad squid wolf moon
-													</td>
+													<td>Enim eiusmod high life accusamus terry richardson ad squid wolf moon</td>
 													<td>
 														<label class="uniform-inline">
 														<div class="checker"><span><input type="checkbox" value=""></span></div> Yes </label>
 													</td>
 												</tr>
 												<tr>
-													<td>
-														 Enim eiusmod high life accusamus terry richardson ad squid wolf moon
-													</td>
+													<td>Enim eiusmod high life accusamus terry richardson ad squid wolf moon</td>
 													<td>
 														<label class="uniform-inline">
 														<div class="checker"><span><input type="checkbox" value=""></span></div> Yes </label>
 													</td>
 												</tr>
 												<tr>
-													<td>
-														 Enim eiusmod high life accusamus terry richardson ad squid wolf moon
-													</td>
+													<td>Enim eiusmod high life accusamus terry richardson ad squid wolf moon</td>
 													<td>
 														<label class="uniform-inline">
 														<div class="checker"><span><input type="checkbox" value=""></span></div> Yes </label>
@@ -1108,12 +1088,8 @@
 												</tbody></table>
 												<!--end profile-settings-->
 												<div class="margin-top-10">
-													<a class="btn green" href="#">
-														 Save Changes
-													</a>
-													<a class="btn default" href="#">
-														 Cancel
-													</a>
+													<a class="btn green" href="#"> Save Changes</a>
+													<a class="btn default" href="#"> Cancel</a>
 												</div>
 											</form>
 										</div>
@@ -1127,9 +1103,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="add-portfolio">
-										<span>
-											 502 Items sold this week
-										</span>
+										<span>502 Items sold this week</span>
 										<a class="btn icn-only green" href="#">
 											 Add a new Project <i class="m-icon-swapright m-icon-white"></i>
 										</a>
@@ -1143,9 +1117,7 @@
 										<img alt="" src="<?=base_url();?>assets/img/profile/portfolio/logo_metronic.jpg">
 										<div class="portfolio-text-info">
 											<h4>Metronic - Responsive Template</h4>
-											<p>
-												 Lorem ipsum dolor sit consectetuer adipiscing elit.
-											</p>
+											<p> Lorem ipsum dolor sit consectetuer adipiscing elit.</p>
 										</div>
 									</div>
 								</div>

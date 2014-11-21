@@ -30,7 +30,7 @@
 			</div>
 		</div>	
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal" action="#" id="user-form-add" class="user-form-add">
+		<form class="form-horizontal" action="<?=base_url();?>admin/user/add" id="user-form-add" class="user-form-add">
 			<div class="form-body">
 				<h3 class="form-section">User Info</h3>
 				<!--/row-->

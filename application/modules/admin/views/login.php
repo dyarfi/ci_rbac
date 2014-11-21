@@ -3,23 +3,8 @@
 	<h3 class="form-title">Login to your account</h3>
 	<div class="alert alert-danger display-hide">
 		<button class="close" data-close="alert"></button>
-		<span>
-			 Enter any username and password.
-		</span>
+		<span>Enter any username and password.</span>
 	</div>
-	<?
-	if($this->uri->segment(2)=='relogin')
-	{
-	?>
-	<div class="alert alert-danger">
-		<button class="close" data-close="alert"></button>
-		<span>
-			 Sorry your username or password wrong.
-		</span>
-	</div>
-	<?
-	}
-	?>
 	<div class="form-group">
 		<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->		
 		<?php echo form_error('email','<div class="error">', '</div>'); ?>
@@ -46,22 +31,14 @@
 	</div>	
 	<div class="forget-password">
 		<h4>Forgot your password ?</h4>
-		<p>
-			 Click
-			<a href="javascript:;" id="forget-password">
-				 here
-			</a>
-			 to reset your password.
-		</p>
+		<p>Click <a href="javascript:;" id="forget-password">here</a> to reset your password.</p>
 	</div>
 </form>
 <!-- END LOGIN FORM -->
 <!-- BEGIN FORGOT PASSWORD FORM -->
 <form class="forget-form" action="" method="post">
 	<h3>Forget Password ?</h3>
-	<p>
-		 Enter your e-mail address below to reset your password.
-	</p>
+	<p>Enter your e-mail address below to reset your password.</p>
 	<div class="form-group">
 		<div class="input-icon">
 			<i class="fa fa-envelope"></i>

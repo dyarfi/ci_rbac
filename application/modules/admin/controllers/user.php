@@ -316,6 +316,7 @@ class User extends CI_Controller {
 		$this->load->view('template/admin_template',$data);
 	}
 	
+	// Ajax Methods for this controller and module
 	public function ajax($action='') {
 				
 		// Check if the request via AJAX
@@ -456,18 +457,34 @@ class User extends CI_Controller {
 			// Check Password users via Ajax	
 			} else if ($this->uri->segments[5] === 'password') {		
 				
+				// Change to Password hash from POST
+				if ($_POST['password'] !== '') {
+					$hash_password = sha1($_POST['username'].$_POST['password']);
+					$_POST['password'] = $hash_password;								
+				}
+				
+				//print_r($this->Users->getUserPassword($this->input->post('password')));
+				
 				// Set validation config
 				$config = array(
-					array('field'   => 'password', 
-						  'label'   => 'Password', 
-						  'rules'   => 'required|trim'),
-					array('field'   => 'password_new', 
-						  'label'   => 'Password Confirmation', 
-						  'rules'   => 'required|trim|matches[password]')
+						array(
+							'field'   => 'password1', 
+							'label'   => 'New Password' ,
+							'rules'   => 'trim|required'),						
+						array(
+							'field'   => 'password2', 
+							'label'   => 'Re-type New Password', 
+							'rules'   => 'trim|required|matches[password1]'),
+						array(
+							'field'   => 'password', 
+							'label'   => 'Password', 
+							'rules'   => 'trim|required|max_length[255]|callback_match_password')						
 				);
 
 				// Set rules to form validation
 				$this->form_validation->set_rules($config);
+								
+				//print_r($this->form_validation);
 				
 				// Run validation for checking
 				if ($this->form_validation->run() === FALSE) {
@@ -478,13 +495,18 @@ class User extends CI_Controller {
 
 				} else {
 					
+					// Send errors to JSON text
+					$result['result']['code'] = 1;
+					$result['result']['text'] = 'Text paragraph';
+				
 					/*
 					// Set User Data
-					$user = $this->Users->getUserPassword($this->input->post());				
+					$user = $this->Users->getUserPassword($this->input->post());	
+					
 					// Check data
 					if (!empty($user) && $user->status === 'active') {
 						$result['result']['code'] = 1;
-						$result['result']['text'] = '';
+						$result['result']['text'] = $user;
 					} else if (!empty($user) && $user->status !== 'active') { 
 						$result['result']['code'] = 2;
 						$result['result']['text'] = 'Your account profile is not active';			
@@ -493,7 +515,7 @@ class User extends CI_Controller {
 						$result['result']['text'] = 'Account not found';			
 					}	
 					 * 
-					 */
+					 */					
 					
 				}
 			}		
@@ -525,6 +547,7 @@ class User extends CI_Controller {
 		$user = $this->Users->getUserByEmail($this->input->post('email'));
 						
 		if (!empty($user) && $user->status === 'active') {
+			
 			$password = $this->Users->setPassword($user);
 			
 			$result['result']['code'] = 1;
@@ -540,21 +563,24 @@ class User extends CI_Controller {
 			$this->email->send();
 			
 		} else if (!empty($user) && $user->status !== 'active') { 
-		
+			
+			// Account is not Active
 			$result['result']['code'] = 2;
 			$result['result']['text'] = 'Your account is not active';			
 			
 		} else {
 			
+			// Account is not existed
 			$result['result']['code'] = 0;
 			$result['result']['text'] = 'Email or User not found';			
+			
 		}
 				
-		$data['json'] = $result;
-				
+		$data['json'] = $result;				
 		$this->load->view('json', $data);				
 		
 	}
+	
 	public function search() {
         //use this for the search results
 		//$data = $this->input->xss_clean($this->input->post('term'));
@@ -575,24 +601,51 @@ class User extends CI_Controller {
 		$this->load->vars($data);
 		$this->load->view('template/home_template',$data);
 	}
-	// ----------- CALLBACKS -------------- //
+	
+	// -------------- CALLBACKS -------------- //
+	
 	// Match Captcha post to Database
-	public function match_captcha($captcha)
-	{		
+	public function match_captcha($captcha) {		
+		
+		// Check captcha if empty
 		if ($captcha == '') {
 			$this->form_validation->set_message('match_captcha', 'The %s code can not be empty.');
 			return false;
 		}
+		// Check captcha if match
 		else if ($this->Captcha->match($captcha)) {
 			return true;
 		} 
+		
 	}
+	
+	// Match Password post to Database
+	public function match_password($password) {
+		
+		// Check password if empty
+		if ($password == '') {
+			$this->form_validation->set_message('match_password', 'The %s can not be empty.');
+			return false;
+		}
+		// Check password if match
+		else if ($this->Users->getUserPassword($password) != 1) {
+			$this->form_validation->set_message('match_password', 'The %s not match with your current password.');			
+			return false;
+		// Match current password
+		} else {
+			return true;
+		}
+		 
+	}
+	
 	// Reload Captcha to the view
 	public function reload_captcha() {
+		
 		// Send image to display Captcha
 		$captcha = $this->Captcha->image();
 		// Echo captcha Image
 		echo $captcha['image'];
-		exit();
+		exit;
+		
 	}
 }
