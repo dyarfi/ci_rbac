@@ -18,9 +18,10 @@ class User extends CI_Controller {
 		
 		//$map = directory_map('./application/modules');
 		
+		print_r($this->session->userdata);
 		//print_r($map);
 		
-		print_r(Modules::lists('./application/modules'));
+		//print_r(Modules::lists('./application/modules'));
 		
 		// Load user config
 		$this->config->load('admin');

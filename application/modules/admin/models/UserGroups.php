@@ -42,9 +42,9 @@ class UserGroups Extends CI_Model {
 			$sql	= 'INSERT INTO `'. $this->table .'` '
 					. '(`id`, `name`, `backend_access`, `full_backend_access`, `status`, `is_system`, `added`, `modified`) '
 					. 'VALUES '
-					. '(1 , \'super administrator\', \'1\', \'1\', \'enable\', \'1\', '.time().' , 0), '
-					. '(2 , \'administrator\', \'1\', \'0\', \'enable\', \'1\', '.time().' , 0), '
-					. '(99 , \'user\', \'0\', \'0\', \'enable\', \'1\', '.time().' , 0)';
+					. '(1 , \'Super Administrator\', \'1\', \'1\', \'enable\', \'1\', '.time().' , 0), '
+					. '(2 , \'Administrator\', \'1\', \'0\', \'enable\', \'1\', '.time().' , 0), '
+					. '(99 , \'User\', \'0\', \'0\', \'enable\', \'1\', '.time().' , 0)';
 
 			$this->db->query($sql);
 		}

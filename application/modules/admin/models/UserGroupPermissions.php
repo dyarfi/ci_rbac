@@ -59,7 +59,7 @@ class UserGroupPermissions Extends CI_Model {
 	function getModuleList($id=null){
 		$data = array('id'=>$id);
 		$result = '';
-		$Q = $this->db->get_where('tbl_module_lists',$data);
+		$Q = $this->db->get_where('module_lists',$data);
 			if ($Q->num_rows() > 0){
 				//print_r($Q->result_object());
 				//exit;
@@ -73,7 +73,7 @@ class UserGroupPermissions Extends CI_Model {
 	function getModulePermissions($id=null){
 		$data = array('id'=>$id);
 		$result = '';
-		$Q = $this->db->get_where('tbl_module_permissions',$data);
+		$Q = $this->db->get_where('module_permissions',$data);
 			if ($Q->num_rows() > 0){
 				//print_r($Q->result_object());
 				//exit;
@@ -87,7 +87,7 @@ class UserGroupPermissions Extends CI_Model {
 	function getUserGroupPermissions($user_group=null){
 		$data = array('group_id'=>$user_group,'value'=>1);
 		$result = '';		
-		$Q = $this->db->get_where('tbl_group_permissions',$data);
+		$Q = $this->db->get_where('group_permissions',$data);
 			if ($Q->num_rows() > 0){				
 				foreach ($Q->result_object() as $row){
 					$result[] = $row;
@@ -99,7 +99,7 @@ class UserGroupPermissions Extends CI_Model {
 	function getAllUserGroupPermissions($user_group=null){
 		$data = array('group_id'=>$user_group);
 		$result = '';
-		$Q = $this->db->get_where('tbl_group_permissions',$data);
+		$Q = $this->db->get_where('group_permissions',$data);
 			if ($Q->num_rows() > 0){
 				foreach ($Q->result_object() as $row){
 					$data[] = $row;
@@ -152,8 +152,9 @@ class UserGroupPermissions Extends CI_Model {
 	
 		// Check admin group
 		$user_permission	= $this->UserGroups->getUserGroup($user_group);
+		
 		// Check admin access permission
-		if(!$user_permission['admin_access']) {
+		if(!$user_permission->full_backend_access) {
 			// Redirect Users to login
 			redirect('admin/authenticate');
 		} else {
@@ -167,6 +168,7 @@ class UserGroupPermissions Extends CI_Model {
 		$modules_cols		= array_keys($modules_perm);
 				
 		$where_cond			= array();
+		
 		if(is_array($modules_cols)) {
 			$buffers = array();
 			foreach ($modules_cols as $cols) {				
@@ -181,7 +183,7 @@ class UserGroupPermissions Extends CI_Model {
 		
 		$this->db->order_by('order','ASC');
 		
-		$module_lists = $this->db->get('tbl_module_lists');
+		$module_lists = $this->db->get('module_lists');
 		
 		if(count($module_lists->num_rows()) != 0) {
 			foreach($module_lists->result_object() as $module) {
@@ -226,7 +228,7 @@ class UserGroupPermissions Extends CI_Model {
 		$user_permission	= $this->UserGroups->getUserGroup($user_group);
 		
 		// Check backend permission
-		if(!$user_permission->admin_access) {
+		if(!$user_permission->full_backend_access) {
 			// Set flash alert to session
 			$this->session->set('auth_error', 'You have no access');
 			// Redirect if have no access to backend / admin-panel
@@ -237,7 +239,7 @@ class UserGroupPermissions Extends CI_Model {
 		$modules['Users']		= $this->config->item('module_menu');
 		
 		// Check full backend permission
-		if ($user_permission->admin_access) {
+		if ($user_permission->full_backend_access) {
 			// Set admin neccesary module functions
 			$modules['Module']	=  $this->config->item('module_function');
 		}

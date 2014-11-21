@@ -126,11 +126,9 @@ class Authenticate extends CI_Controller {
 		//$this->load->helper(array('form','url'));
 
 		if($_SERVER['REQUEST_METHOD'] === 'POST'){
+			
 			$userObj = $_POST;
 			
-			// load model if not auto loaded
-			// $user = new User();
-
 			$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[24]|xss_clean');
 			$this->form_validation->set_rules('password', 'Password','trim|required|min_length[5]|max_length[24]|xss_clean');
 
@@ -233,10 +231,8 @@ class Authenticate extends CI_Controller {
 				*/
 				
 			}
-			else
-			{
-				//$this->load->view('formsuccess');
-				//return true;
+			else {
+				
 			}
 			//print_r($userObj);
 			//Make sure login object was true
@@ -249,27 +245,33 @@ class Authenticate extends CI_Controller {
 				//return false;
 			}
 			
+			// Initialize install
+			$this->Users->install();
+			$this->UserGroups->install();
+			$this->UserProfiles->install();
+			$this->ModuleLists->install();
+			$this->ModelLists->install();
+			$this->Configurations->install();
+			$this->ModulePermissions->install();
+			$this->UserGroupPermissions->install();
+			$this->UserHistories->install();
+			$this->Captcha->install();				
+				
 			//Check User login info
-			$user				= $this->Users->login($userObj);
+			$user			= $this->Users->login($userObj);					
+			
 			if(!empty($user)) {
-				
-				$this->Users->install();
-				$this->UserGroups->install();
-				$this->UserProfiles->install();
-				$this->ModuleLists->install();
-				$this->ModelLists->install();
-				$this->Configurations->install();
-				$this->ModulePermissions->install();
-				$this->UserGroupPermissions->install();
-				$this->UserHistories->install();
-				$this->Captcha->install();
-				
-				//print_r($user);
+								
+				// Check User Level from User ID given
+				$user_group		= $this->UserGroups->getUserGroup($user->group_id);																												
+				if (intval($user_group->full_backend_access) === 1) {
+					$this->ModuleLists->module_check();
+				}
 				
 				$module_list	= $this->UserGroupPermissions->getModuleList($user->group_id);
 				
 				$function_list	= $this->UserGroupPermissions->getModuleFunction($user->group_id);
-
+				
 				// Set Module List for All Access
 				$this->session->set_userdata('module_list', json_encode($module_list));
 				//ACL::instance()->_module_list($module_list);
