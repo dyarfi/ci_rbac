@@ -18,7 +18,7 @@ class User extends CI_Controller {
 		
 		//$map = directory_map('./application/modules');
 		
-		print_r($this->session->userdata);
+		//print_r($this->session->userdata);
 		//print_r($map);
 		
 		//print_r(Modules::lists('./application/modules'));
@@ -369,77 +369,137 @@ class User extends CI_Controller {
 				
 			} else {
 				
+				// Unset captcha post
 				unset($_POST['captcha']); 
+				
 				// Set User Data
 				$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
 
-				// Check data				
+				// Check data if user is exists and status is active
 				if (!empty($user_profile) && $user_profile->status === 'active') {
+					
+					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Changes saved !';
+					
 				} else if (!empty($user_profile) && $user->status !== 'active') { 
+					
+					// Send message if account is not active
 					$result['result']['code'] = 2;
 					$result['result']['text'] = 'Your account profile is not active';			
+					
 				} else {
+					
+					// Send message if account not found					
 					$result['result']['code'] = 0;
 					$result['result']['text'] = 'Profile not found';			
 				}
 			}
 										
 		// Checking Action via Ajax
-		} else if($action === 'check') {			
+		} else if ($action === 'check') {			
+			
 			// Check Username users via Ajax
-			if ($this->uri->segments[5] === 'username' && $this->input->post('username') !== '') {			
+			if ($this->uri->segments[5] === 'username') {
+				
 				// Set User Data
 				$user = $this->Users->getUserByUsername($this->input->post('username'));			
+				
 				// Check data
 				if (!empty($user) && $user->status === 'active') {
+					
+					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Username already exist!';
-				} else if (!empty($user) && $user->status !== 'active') { 
+					
+				} else if (!empty($user) && $user->status !== 'active') {
+					
+					// Send message if account is not active
 					$result['result']['code'] = 2;
 					$result['result']['text'] = 'Your account profile is not active';			
+					
 				} else {
+					
+					// Send message if account not found
 					$result['result']['code'] = 0;
 					$result['result']['text'] = 'Profile not found';			
-				}				
-			}
-			// Check Email users via Ajax
-			if ($this->uri->segments[5] === 'email' && $this->input->post('email') !== '') {			
+					
+				}	
+			
+			// Check Email users via Ajax	
+			} else if ($this->uri->segments[5] === 'email') {			
+				
 				// Set User Data
 				$user = $this->Users->getUserByEmail($this->input->post('email'));			
+				
 				// Check data
 				if (!empty($user) && $user->status === 'active') {
+					
+					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Email already exist!';
+					
 				} else if (!empty($user) && $user->status !== 'active') { 
+					
+					// Send message if account is not active
 					$result['result']['code'] = 2;
-					$result['result']['text'] = 'Your account profile is not active';			
+					$result['result']['text'] = 'Your account profile is not active';		
+					
 				} else {
+					
+					// Send message if account not found
 					$result['result']['code'] = 0;
 					$result['result']['text'] = 'Email not found';			
-				}				
-			}
-			// Check Password users via Ajax
-			if ($this->uri->segments[5] === 'password' 
-					&& $this->input->post('password') !== '' 
-						&& $this->input->post('user_id') !== '') {			
-				// Set User Data
-				$user = $this->Users->getUserPassword($this->input->post());				
-				// Check data
-				if (!empty($user) && $user->status === 'active') {
-					$result['result']['code'] = 1;
-					$result['result']['text'] = 'Email already exist!';
-				} else if (!empty($user) && $user->status !== 'active') { 
-					$result['result']['code'] = 2;
-					$result['result']['text'] = 'Your account profile is not active';			
-				} else {
+					
+				}	
+			
+			// Check Password users via Ajax	
+			} else if ($this->uri->segments[5] === 'password') {		
+				
+				// Set validation config
+				$config = array(
+					array('field'   => 'password', 
+						  'label'   => 'Password', 
+						  'rules'   => 'required|trim'),
+					array('field'   => 'password_new', 
+						  'label'   => 'Password Confirmation', 
+						  'rules'   => 'required|trim|matches[password]')
+				);
+
+				// Set rules to form validation
+				$this->form_validation->set_rules($config);
+				
+				// Run validation for checking
+				if ($this->form_validation->run() === FALSE) {
+
+					// Send errors to JSON text
 					$result['result']['code'] = 0;
-					$result['result']['text'] = 'Email not found';			
-				}				
-			}
-		// Check user data and Add via Ajax
-		} else if($action === 'add') {
+					$result['result']['text'] = validation_errors();
+
+				} else {
+					
+					/*
+					// Set User Data
+					$user = $this->Users->getUserPassword($this->input->post());				
+					// Check data
+					if (!empty($user) && $user->status === 'active') {
+						$result['result']['code'] = 1;
+						$result['result']['text'] = '';
+					} else if (!empty($user) && $user->status !== 'active') { 
+						$result['result']['code'] = 2;
+						$result['result']['text'] = 'Your account profile is not active';			
+					} else {
+						$result['result']['code'] = 0;
+						$result['result']['text'] = 'Account not found';			
+					}	
+					 * 
+					 */
+					
+				}
+			}		
+		} 		
+		// Check user data and Add via Ajax	
+		else if($action === 'add') {
 			
 			$result['result'] = '';
 			
@@ -515,7 +575,7 @@ class User extends CI_Controller {
 		$this->load->vars($data);
 		$this->load->view('template/home_template',$data);
 	}
-	// CALLBACKS
+	// ----------- CALLBACKS -------------- //
 	// Match Captcha post to Database
 	public function match_captcha($captcha)
 	{		
@@ -529,7 +589,9 @@ class User extends CI_Controller {
 	}
 	// Reload Captcha to the view
 	public function reload_captcha() {
+		// Send image to display Captcha
 		$captcha = $this->Captcha->image();
+		// Echo captcha Image
 		echo $captcha['image'];
 		exit();
 	}
