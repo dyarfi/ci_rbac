@@ -117,20 +117,9 @@ class Users Extends CI_Model {
 		if(!empty($password)){
 			$data = array();
 			
-			$options = array('password' => $password);
-			
+			// Option and query result
+			$options = array('password' => $password);			
 			$Q = $this->db->get_where('users',$options,1);
-			
-			/*
-			foreach ($Q->result_object() as $row)
-				$data = $row;
-			
-			print_r($data);
-			
-			echo "Old Password : ".$password."<br>";
-			echo "From DB : ".$data->password."<br>";
-			die;
-			*/
 			
 			// Check result
 			if($Q->num_rows() > 0) {
@@ -180,9 +169,9 @@ class Users Extends CI_Model {
 		//Return result
 		return $this->db->update('users', array('logged_in'=>1));
 	}
-	function setPassword($user=null){
+	function setPassword($user=null,$changed=''){
 		
-		$password = random_string('alnum', 8);
+		$password = ($changed) ? $changed : random_string('alnum', 8);
 				
 		$data = array('password' => sha1($user->username.$password));
 
@@ -191,7 +180,7 @@ class Users Extends CI_Model {
 		
 		return $password;
 	}
-	function set(){
+	function set() {
 
 	}
 }

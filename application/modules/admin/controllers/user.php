@@ -108,6 +108,7 @@ class User extends CI_Controller {
 		$data['user_profiles'] = $this->UserProfiles->getUserProfile(Acl::instance()->user->id);
 				
 		$this->load->vars($data);
+		
 		/*
 		switch(Acl::instance()->user->group_id){
 			case 1: // Administrator Access
@@ -327,7 +328,7 @@ class User extends CI_Controller {
 		// Define initialize result
 		$result['result'] = '';
 		
-		// Update User Profile via Ajax
+		// Action Update User Profile via Ajax
 		if ($action === 'update') {			
 						
 			// Set validation config
@@ -457,6 +458,9 @@ class User extends CI_Controller {
 			// Check Password users via Ajax	
 			} else if ($this->uri->segments[5] === 'password') {		
 				
+				// Default hash
+				$hash_password = '';
+						
 				// Change to Password hash from POST
 				if ($_POST['password'] !== '') {
 					$hash_password = sha1($_POST['username'].$_POST['password']);
@@ -484,8 +488,6 @@ class User extends CI_Controller {
 				// Set rules to form validation
 				$this->form_validation->set_rules($config);
 								
-				//print_r($this->form_validation);
-				
 				// Run validation for checking
 				if ($this->form_validation->run() === FALSE) {
 
@@ -495,28 +497,26 @@ class User extends CI_Controller {
 
 				} else {
 					
-					// Send errors to JSON text
-					$result['result']['code'] = 1;
-					$result['result']['text'] = 'Text paragraph';
-				
-					/*
-					// Set User Data
-					$user = $this->Users->getUserPassword($this->input->post());	
+					// Get user with the user id post
+					$user	= $this->Users->getUser($this->input->post('user_id'));
 					
-					// Check data
-					if (!empty($user) && $user->status === 'active') {
+					$result = $this->Users->setPassword($user,$this->input->post('password1')); 
+					
+					// Check if the password is changed
+					if (!empty($result)) {
+						
+						// Send success update password result
 						$result['result']['code'] = 1;
-						$result['result']['text'] = $user;
-					} else if (!empty($user) && $user->status !== 'active') { 
-						$result['result']['code'] = 2;
-						$result['result']['text'] = 'Your account profile is not active';			
+						$result['result']['text'] = 'Your new Password is <b>\"'.$result.'\"</b>';
+						
 					} else {
-						$result['result']['code'] = 0;
-						$result['result']['text'] = 'Account not found';			
-					}	
-					 * 
-					 */					
-					
+						
+						// Send success update password result
+						$result['result']['code'] = 2;
+						$result['result']['text'] = 'Can not change password, please come back later';
+
+					}
+									
 				}
 			}		
 		} 		

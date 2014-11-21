@@ -22,7 +22,7 @@
 		<!-- /.modal -->
 		<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<!-- BEGIN STYLE CUSTOMIZER -->
-		<div class="theme-panel hidden-xs hidden-sm">
+		<!--div class="theme-panel hidden-xs hidden-sm">
 			<div class="toggler"></div>
 			<div class="toggler-close"></div>
 			<div class="theme-options">
@@ -91,7 +91,7 @@
 					</select>
 				</div>
 			</div>
-		</div>
+		</div-->
 		<!-- END STYLE CUSTOMIZER -->
 		<!-- BEGIN PAGE HEADER-->
 		<div class="row">
