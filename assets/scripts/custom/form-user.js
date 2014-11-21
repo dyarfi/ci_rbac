@@ -266,7 +266,7 @@ var FormUser = function () {
 		//Submit data via ajax
 		$('#user-form-password').submit(function() {
 			
-			var uinputed = userform.find('input[name="password_curr"]');
+			var uinputed = userform.find('input[name="password"]');
 			var uivalued = $(this).val();
 			var igrouped = uinputed.parents('.form-group');		
 			var isbutton = userform.find('button[type="submit"]');	
@@ -278,7 +278,7 @@ var FormUser = function () {
 			$.ajax({
 				url: base_URL + 'admin/user/ajax/check/password',
 				type: 'POST',
-				data: 'password='+uivalued,
+				data: userform.serialize(),
 				timeout: 5000,
 				dataType: "JSON",
 				cache: true,
@@ -298,11 +298,12 @@ var FormUser = function () {
 					.html('<div class="alert alert-danger msg">'
 					+'<button class="close" data-close="alert"></button>'
 					+msg.result.text+'</div>');				
-
+					
 					if (msg.result.code === 1) {					
 						setTimeout(function() {
 							// Do something after 5 seconds
-							//window.location.href = base_URL + 'admin/authenticate/login';
+							alert('Logging you out, you can login again with the new password');					
+							window.location.href = base_URL + 'admin/authenticate/logout';
 						}, 6000);
 					}
 

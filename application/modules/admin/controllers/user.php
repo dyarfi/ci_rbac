@@ -463,8 +463,8 @@ class User extends CI_Controller {
 						
 				// Change to Password hash from POST
 				if ($_POST['password'] !== '') {
-					$hash_password = sha1($_POST['username'].$_POST['password']);
-					$_POST['password'] = $hash_password;								
+					$hash_password		= sha1($_POST['username'].$_POST['password']);
+					$_POST['password']	= $hash_password;								
 				}
 				
 				//print_r($this->Users->getUserPassword($this->input->post('password')));
@@ -498,16 +498,15 @@ class User extends CI_Controller {
 				} else {
 					
 					// Get user with the user id post
-					$user	= $this->Users->getUser($this->input->post('user_id'));
-					
-					$result = $this->Users->setPassword($user,$this->input->post('password1')); 
-					
+					$user	= $this->Users->getUser($this->input->post('user_id'));					
+					$newp	= $this->Users->setPassword($user, $this->input->post('password1')); 
+										
 					// Check if the password is changed
-					if (!empty($result)) {
+					if (!empty($newp)) {
 						
 						// Send success update password result
 						$result['result']['code'] = 1;
-						$result['result']['text'] = 'Your new Password is <b>\"'.$result.'\"</b>';
+						$result['result']['text'] = 'Password changed, new password is <b>'.$newp.'</b>';
 						
 					} else {
 						
