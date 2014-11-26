@@ -924,7 +924,7 @@
 								<div class="col-md-9">
 									<div class="tab-content">
 										<div class="tab-pane active" id="tab_1-1">
-											<form action="" method="post" id="user-form" class="user-form">
+											<form action="" method="POST" id="user-form" class="user-form">
 												<input type="hidden" value="<?=$user_profile->user_id;?>" name="user_id"/>
 												<div class="form-group">
 													<label class="control-label">First Name</label>

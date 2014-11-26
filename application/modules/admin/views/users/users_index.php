@@ -164,7 +164,7 @@
 				<div class="portlet box light-grey">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="fa fa-globe"></i>Managed Table
+							<i class="fa fa-globe"></i>Managed Users
 						</div>
 						<div class="tools">
 							<a class="collapse" href="javascript:;">
@@ -209,34 +209,13 @@
 								</ul>
 							</div-->
 						</div>
-						<div role="grid" class="dataTables_wrapper" id="sample_1_wrapper">
-						<!--div class="row">
-							<div class="col-md-6 col-sm-12">
-								<div id="sample_1_length" class="dataTables_length">
-									<label>
-										<select name="sample_1_length" size="1" aria-controls="sample_1" class="form-control input-xsmall">
-											<option value="5" selected="selected">5</option>
-											<option value="15">15</option>
-											<option value="20">20</option>
-											<option value="-1">All</option>
-										</select> records</label>
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-12">
-								<div class="dataTables_filter" id="sample_1_filter">
-									<label>Search: 
-										<input type="text" aria-controls="sample_1" class="form-control input-medium input-inline">
-									</label>
-								</div>
-							</div>
-						</div-->
-						
+						<div role="grid" class="dataTables_wrapper" id="sample_1_wrapper">						
 				<!--div class="table-scrollable"-->
 				<div class="table">
 					<table id="sample_2" class="table table-striped table-bordered table-hover dataTable" aria-describedby="sample_2_info">
 						<thead>
 						<tr role="row">
-						<th class="table-checkbox sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 20px;" aria-label=" "><div class="checker"><span><input type="checkbox" data-set="#sample_2 .checkboxes" class="group-checkable"></span></div>
+						<th class="table-checkbox sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 20px;" aria-label=" "><input type="checkbox" data-set="#sample_2 .checkboxes" class="group-checkable">
 						</th>
 							<th class="sorting" role="columnheader" tabindex="0" aria-controls="sample_2" rowspan="1" colspan="1" style="width: 120px;" aria-label="Username : activate to sort column ascending">Username
 							</th><th class="sorting" role="columnheader" tabindex="1" aria-controls="sample_2" rowspan="1" colspan="1" style="width: 150px;" aria-label="Email : activate to sort column ascending">Email
@@ -244,6 +223,8 @@
 							<th class="sorting_disabled" role="columnheader" tabindex="2" aria-controls="sample_2" rowspan="1" colspan="1" style="width: 90px;">Password
 							</th><th class="sorting" role="columnheader" tabindex="3" aria-controls="sample_2" rowspan="1" colspan="1" style="width: 142px;" aria-label="Groups : activate to sort column ascending">Groups
 							</th><th class="sorting_disabled" role="columnheader" aria-controls="sample_2" tabindex="4" rowspan="1" colspan="1" style="width: 120px;" aria-label="Status : activate to sort column ascending">Status
+							</th>
+							</th><th class="sorting_disabled" role="columnheader" aria-controls="sample_2" tabindex="4" rowspan="1" colspan="1" style="width: 120px;" aria-label="Status : activate to sort column ascending">Manage
 							</th>
 						</tr>
 						</thead>							
@@ -253,13 +234,14 @@
 							foreach ($rows as $row) { ?>
 							<tr class="odd gradeX <?php echo ($i % 2) ? 'even' : 'odd'; ?>">
 								<td class=" sorting_1">
-									<div class="checker"><span><input type="checkbox" value="1" class="checkboxes"></span></div>
+									<input type="checkbox" value="1" class="checkboxes">
 								</td>
 								<td class=" "><?php echo $row->username;?></td>
 								<td class=" "><a href="mailto:<?php echo $row->email;?>"><?php echo $row->email;?></a>
 								</td>
 								<td class=" "><?php echo $row->password;?></td>
 								<td class="center "><?php echo $row->group_id;?></td>
+								<td class="center "><?php echo $statuses[$row->status]	;?></td>
 								<td class=" ">
 									<!--span class="label label-sm label-<?php if($row->status == 'active') { echo 'success'; } else { echo 'warning'; }?>"><?php echo $row->status;?>
 									</span-->
@@ -283,7 +265,6 @@
 							$i++;
 							} ?>
 							</tbody></table></div>
-							<!--div class="row"><div class="col-md-5 col-sm-12"><div class="dataTables_info" id="sample_2_info">Showing 1 to 5 of 25 entries</div></div><div class="col-md-7 col-sm-12"><div class="dataTables_paginate paging_bootstrap"><ul class="pagination" style="visibility: visible;"><li class="prev disabled"><a title="Prev" href="#"><i class="fa fa-angle-left"></i></a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">5</a></li><li class="next"><a title="Next" href="#"><i class="fa fa-angle-right"></i></a></li></ul></div></div></div-->
 						</div>
 					</div>
 				</div>

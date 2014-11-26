@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Class for Users
-class Authenticate extends CI_Controller {
+class Authenticate extends Admin_Controller {
 	var $userdata = '';
 	var $auth_message = '';
 	public function __construct() {
@@ -72,50 +72,7 @@ class Authenticate extends CI_Controller {
 	}
 	public function index() {
 		//Redirect to dashboard if user already logged
-		if (!empty($this->userdata)) {
-			redirect('admin/dashboard');
-		} else {
-			redirect('admin/authenticate/login', 'refresh');
-		}
-				
-		$user_id = $this->userdata['user_id'];
-		$user_group_id = $this->userdata['group_id'];
-		//print_r($user_group_id); exit();
-		//print_r($this->auth_message); exit();
-
-		$data['title'] = "Welcome to your profile page in my first CI page";
-		$data_users = $this->Users->getAllUser();
-		$users_rows = array();
-		
-		if($data_users) {
-			$i = 0;
-			foreach($data_users as $data_user ){
-				$users_rows[$i]['id']		= $data_user['id'];
-				$users_rows[$i]['username'] = $data_user['username'];
-				$users_rows[$i]['email'] = $data_user['email'];
-				$users_rows[$i]['password'] = substr_replace($data_user['password'], "********", 0, strlen($data_user['password']));
-				$users_rows[$i]['status'] = $data_user['status'];
-				$users_rows[$i]['group_id'] = $this->UserGroups->getGroupName_ById($data_user['group_id']);
-				$i++;
-			}
-		}
-		if (@$users_rows) $data['users'] = $users_rows;
-		
-		$data['user_profiles'] = $this->UserProfiles->getUserProfile($user_id);
-		
-		
-		$this->load->vars($data);
-		
-		switch($user_group_id){
-			case 1: // Administrator Access
-				$data['main'] = 'users/default_admin';
-				$this->load->view('template/admin_template', $data);
-			break;
-			default: // Public Access
-				$data['main'] = 'users/default_user';
-				$this->load->view('template/static_template', $data);
-			break;
-		}
+		//$this->user_check();
 	}
 	public function login () {
 		//Redirect to dashboard if user already logged

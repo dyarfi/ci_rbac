@@ -24,14 +24,15 @@ class Users Extends CI_Model {
                                     . '`email` VARCHAR(255) NOT NULL, '
                                     . '`password` VARCHAR(100) NOT NULL, '
                                     . '`name` VARCHAR(160) NOT NULL, '
-                                    . '`level_id` INT(11) UNSIGNED NOT NULL, '
+                                    . '`group_id` INT(11) UNSIGNED NOT NULL, '
                                     . '`is_system` TINYINT(3) NOT NULL DEFAULT 0, '
 						            . '`last_login` INT(11) UNSIGNED NOT NULL, '
 									. '`logged_in` INT(1) UNSIGNED NOT NULL,'
-                                    . '`status` ENUM(\'verified\', \'active\', \'inactive\', \'blocked\') NOT NULL, '
+                                    . '`status` INT(1) UNSIGNED NOT NULL,'
+									. '`session` VARCHAR(160) NOT NULL, '
                                     . '`added` INT(11) UNSIGNED NOT NULL, '
                                     . '`modified` INT(11) UNSIGNED NOT NULL, '
-                                    . 'INDEX (`email`, `level_id`) '
+                                    . 'INDEX (`email`, `group_id`) '
                                     . ') ENGINE=MYISAM';
 
 		$this->db->query($sql);
@@ -41,11 +42,11 @@ class Users Extends CI_Model {
 		
 		if ($insert_data) {
 			$sql	= 'INSERT INTO `'.$this->table.'` '
-					. '(`id`, `email`, `password`, `name`, `level_id`, `is_system`, `last_login`, `status`, `added`, `modified`) '
+					. '(`id`, `email`, `password`, `name`, `group_id`, `is_system`, `last_login`, `status`, `added`, `modified`) '
 					. 'VALUES '
-					. '(NULL, \'superadmin\', \'356a192b7913b04c54574d18c28d46e6395428ab\', \'Super Administrator\', 1, 1, '.time().', \'active\', '.time().', 0), '
-					. '(NULL, \'administrator\', \'12506e739378348ec662bb015bfd2288362dcc1c\', \'Administrator\', 2, 1, '.time().', \'active\', '.time().', 0), '
-					. '(NULL, \'user@testing.com\', \'12506e739378348ec662bb015bfd2288362dcc1c\', \'User\', 99, 0, '.time().', \'active\', '.time().', 0)';
+					. '(NULL, \'superadmin\', \'356a192b7913b04c54574d18c28d46e6395428ab\', \'Super Administrator\', 1, 1, 1, '.time().', \'1\', '.time().', 0), '
+					. '(NULL, \'administrator\', \'12506e739378348ec662bb015bfd2288362dcc1c\', \'Administrator\', 2, 1, 1, '.time().', \'1\', '.time().', 0), '
+					. '(NULL, \'user@testing.com\', \'12506e739378348ec662bb015bfd2288362dcc1c\', \'User\', 99, 0, 1, '.time().', \'1\', '.time().', 0)';
 
 			$this->db->query($sql);
 		}
@@ -102,6 +103,7 @@ class Users Extends CI_Model {
 	}
 	function getAllUser($admin=null){
 		$data = array();
+		$this->db->order_by('added');
 		$Q = $this->db->get('users');
 			if ($Q->num_rows() > 0){
 				//foreach ($Q->result_object() as $row){
@@ -137,7 +139,7 @@ class Users Extends CI_Model {
 			$options = array(
 							'username' => $object['username'], 
 							'password' => sha1($object['username'].$object['password']),
-							'status' => 'active');
+							'status' => 1);
 			
 			$Q = $this->db->get_where('users',$options,1);
 			if ($Q->num_rows() > 0){				
@@ -179,8 +181,16 @@ class Users Extends CI_Model {
 		$this->db->update('users', $data); 
 		
 		return $password;
-	}
-	function set() {
-
-	}
+	}	
+	function deleteUser($id){
+		// Check user id
+		$this->db->where('id', $id);
+		// Delete user form database
+		if ($this->db->delete('users')) {
+			// Check user profile id
+			$this->db->where('user_id', $id);
+			// Delete user profile form database		
+			return $this->db->delete('user_profiles');
+		}		
+	}	
 }

@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Class for Users
-class User extends CI_Controller {
+class User extends Admin_Controller {
 	// var $userdata = '';
 	var $auth_message = '';
 	// var $User = '';
@@ -122,6 +122,8 @@ class User extends CI_Controller {
 		}
 		 * 
 		 */
+		
+		$data['statuses'] = array(1=>'Active',0=>'Inactive');
 		
 		$data['main'] = 'users/users_index';
 		
@@ -249,7 +251,7 @@ class User extends CI_Controller {
 		if ($this->input->post('name')){
 			$this->Users->addUser();
 			$this->session->set_flashdata('message','Page created');
-			redirect('admin/users/index','refresh');
+			redirect('admin/users/index');
 		}else{
 			$data['main']		 = 'users/users_form';
 			$data['user_groups'] = $this->UserGroups->getAllUserGroup();
@@ -262,10 +264,10 @@ class User extends CI_Controller {
 		if ($this->input->post('name')){
 			$this->Users->updateUser();
 			$this->session->set_flashdata('message','Page updated');
-			redirect('admin/users/index','refresh');
+			redirect('admin/user');
 		}else{
 			$data['title'] = "Edit Page";
-			$data['main'] = 'users/users_form';
+			$data['main'] = 'user/users_form';
 			$data['page'] = $this->Users->getUser($id);
 			$this->load->vars($data);
 			//$this->load->view('dashboard');
@@ -275,7 +277,7 @@ class User extends CI_Controller {
 	public function delete($id){
 		$this->Users->deleteUser($id);
 		$this->session->set_flashdata('message','Page deleted');
-		redirect('admin/users/index','refresh');
+		redirect('admin/user');
 	}	
 	public function view($id=null){
 		
@@ -289,7 +291,7 @@ class User extends CI_Controller {
 
 		$user = $this->Users->getUser($id);
 		if (!count($user)){
-			redirect('home/index','refresh');
+			redirect('home/index');
 		}
 		
 		//print_r($this->session->userdata);
@@ -378,13 +380,13 @@ class User extends CI_Controller {
 				$user_profile = $this->UserProfiles->setUserProfiles($this->input->post());			
 
 				// Check data if user is exists and status is active
-				if (!empty($user_profile) && $user_profile->status === 'active') {
+				if (!empty($user_profile) && $user_profile->status == 1) {
 					
 					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Changes saved !';
 					
-				} else if (!empty($user_profile) && $user->status !== 'active') { 
+				} else if (!empty($user_profile) && $user->status != 1) { 
 					
 					// Send message if account is not active
 					$result['result']['code'] = 2;
@@ -408,13 +410,13 @@ class User extends CI_Controller {
 				$user = $this->Users->getUserByUsername($this->input->post('username'));			
 				
 				// Check data
-				if (!empty($user) && $user->status === 'active') {
+				if (!empty($user) && $user->status == 1) {
 					
 					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Username already exist!';
 					
-				} else if (!empty($user) && $user->status !== 'active') {
+				} else if (!empty($user) && $user->status != 1) {
 					
 					// Send message if account is not active
 					$result['result']['code'] = 2;
@@ -435,13 +437,13 @@ class User extends CI_Controller {
 				$user = $this->Users->getUserByEmail($this->input->post('email'));			
 				
 				// Check data
-				if (!empty($user) && $user->status === 'active') {
+				if (!empty($user) && $user->status == 1) {
 					
 					// Send message if true 
 					$result['result']['code'] = 1;
 					$result['result']['text'] = 'Email already exist!';
 					
-				} else if (!empty($user) && $user->status !== 'active') { 
+				} else if (!empty($user) && $user->status != 1) { 
 					
 					// Send message if account is not active
 					$result['result']['code'] = 2;
@@ -545,7 +547,7 @@ class User extends CI_Controller {
 		// Get User Data
 		$user = $this->Users->getUserByEmail($this->input->post('email'));
 						
-		if (!empty($user) && $user->status === 'active') {
+		if (!empty($user) && $user->status === 1) {
 			
 			$password = $this->Users->setPassword($user);
 			
@@ -561,7 +563,7 @@ class User extends CI_Controller {
 
 			$this->email->send();
 			
-		} else if (!empty($user) && $user->status !== 'active') { 
+		} else if (!empty($user) && $user->status !== 1) { 
 			
 			// Account is not Active
 			$result['result']['code'] = 2;
@@ -590,7 +592,7 @@ class User extends CI_Controller {
 		if ($this->input->post('term')){
 			$search['results'] = $this->MProducts->search($this->input->post('term'));
 		} else {
-			redirect('/','refresh');
+			redirect('/');
 		}
 		$data['results'] = $search['results'];
 		$data['main'] = 'search_view';

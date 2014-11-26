@@ -182,13 +182,10 @@
 					<div class="portlet-body">
 						<div class="table-toolbar">
 							<div class="btn-group">
-								<!--button class="btn green" id="sample_editable_1_new">
-								Add New <i class="fa fa-plus"></i>
-								</button-->
-								<a class="btn green" id="sample_editable_1_new" href="<?=base_url();?>admin/users/add">
+								<a class="btn green" id="sample_editable_1_new" href="<?=base_url();?>admin/usergroup/add">
 								Add New <i class="fa fa-plus"></i>
 								</a>
-							</div>
+							</div>	
 							<!--div class="btn-group pull-right">
 								<button data-toggle="dropdown" class="btn dropdown-toggle">Tools <i class="fa fa-angle-down"></i>
 								</button>
@@ -210,60 +207,76 @@
 									</li>
 								</ul>
 							</div-->
+						</div>								
+						<div role="grid" class="dataTables_wrapper" id="sample_1_wrapper">								
+						<!--div class="table-scrollable"-->
+							<div class="table">					
+								<table id="sample_2" class="table table-striped table-bordered table-hover dataTable" aria-describedby="sample_1_info">
+									<thead>
+									<tr role="row"><th class="table-checkbox sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 24px;" aria-label=" ">
+									<input type="checkbox" data-set="#sample_2 .checkboxes" class="group-checkable">
+									</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="sample_1" rowspan="1" colspan="1" style="width: 161px;" aria-label="Name : activate to sort column ascending">
+											 Name
+										</th>							
+										<th class="sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 149px;" aria-label="Admin Access">Admin Access
+										</th>
+																	
+										<th class="sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 149px;" aria-label="Admin Access">Manage
+										</th>
+									</tr>
+									</thead>							
+									<tbody role="alert" aria-live="polite" aria-relevant="all">								
+									<?php 
+									$i = 1;
+									foreach ($rows as $row) { ?>
+									<tr class="odd gradeX <?php echo ($i % 2) ? 'even' : 'odd'; ?>">
+										<td class=" sorting_1">
+											<input type="checkbox" value="1" class="checkboxes">
+										</td>
+										<td class="col-md-4"><?php echo $row->name;?></td>
+										<td class="col-md-4">
+											<span class="label label-sm label-<?php if($row->backend_access) { echo 'success'; } else { echo 'warning'; } ?>">											
+												<?php if($row->backend_access) { echo 'Yes'; } else { echo 'No'; } ?>
+											</span>
+										</td>
+										<td class="col-md-4">
+											<ul class="list-inline">
+												<li>
+													<a title="View" href="<?=base_url();?>admin/usergroup/view/<?=$row->id;?>" class="btn default btn-xs blue"><i class="fa fa-check"></i>View
+													</a>
+												</li>
+												<li>
+													<a title="Edit" href="<?=base_url();?>admin/usergroup/edit/<?=$row->id;?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i>Edit
+													</a>
+												</li>
+												<li>
+													<a title="Delete" href="<?=base_url();?>admin/usergroup/delete/<?=$row->id;?>" class="btn default btn-xs red"><i class="fa fa-trash-o"></i>Delete
+													</a>
+												</li>
+											</ul>
+										</td>
+									</tr>
+									<?php 
+									$i++;
+									} ?>
+									</tbody>									
+								</table>	
+								<!--div class="row">
+									<div id="selection">
+										<div class="col-lg-12 col-md-12">
+											<label>Status : 
+												<select name="select_action" id="select_action" class="form-control-inline">
+													<option value="">&nbsp;</option>
+													<?php foreach ($statuses as $row) : ?>
+														<option value="<?php echo $row; ?>"><?php echo ucfirst($row); ?></option>
+													<?php endforeach; ?>
+												</select>
+											</label>	
+										</div>
+									</div>
+								</div-->
+							</div>
 						</div>
-						<div role="grid" class="dataTables_wrapper" id="sample_1_wrapper">
-							<!--div class="row">
-								<div class="col-md-6 col-sm-12">
-									<div id="sample_1_length" class="dataTables_length">
-										<label>
-											<select name="sample_1_length" size="1" aria-controls="sample_1" class="form-control input-xsmall">
-												<option value="5" selected="selected">5</option>
-												<option value="15">15</option>
-												<option value="20">20</option>
-												<option value="-1">All</option>
-											</select> records</label>
-									</div>
-								</div>
-								<div class="col-md-6 col-sm-12">
-									<div class="dataTables_filter" id="sample_1_filter">
-										<label>Search: 
-											<input type="text" aria-controls="sample_1" class="form-control input-medium input-inline">
-										</label>
-									</div>
-								</div>
-							</div-->
-				<!--div class="table-scrollable"-->
-				<div class="table">					
-					<table id="sample_2" class="table table-striped table-bordered table-hover dataTable" aria-describedby="sample_1_info">
-						<thead>
-						<tr role="row"><th class="table-checkbox sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 24px;" aria-label=" ">
-						<div class="checker"><span><input type="checkbox" data-set="#sample_2 .checkboxes" class="group-checkable"></span></div>
-						</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="sample_1" rowspan="1" colspan="1" style="width: 161px;" aria-label="Name : activate to sort column ascending">
-								 Name
-							</th>							
-							<th class="sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 149px;" aria-label="Admin Access">Admin Access
-							</th>
-						</tr>
-						</thead>							
-						<tbody role="alert" aria-live="polite" aria-relevant="all">								
-							<?php 
-							$i = 1;
-							foreach ($rows as $row) { ?>
-							<tr class="odd gradeX <?php echo ($i % 2) ? 'even' : 'odd'; ?>">
-								<td class=" sorting_1">
-									<div class="checker"><span><input type="checkbox" value="1" class="checkboxes"></span></div>
-								</td>
-								<td class=" "><?php echo $row->name;?></td>
-								<td class=" ">
-									<span class="label label-sm label-<?php if(!empty($row->admin_access)) { echo 'success'; } else { echo 'warning'; } ?>">											
-										<?php if(!empty($row->admin_access)) { echo 'Yes'; } else { echo 'No'; } ?>
-									</span>
-								</td>
-							</tr>
-							<?php 
-							$i++;
-							} ?>
-							</tbody></table></div><!--div class="row"><div class="col-md-5 col-sm-12"><div class="dataTables_info" id="sample_1_info">Showing 1 to 5 of 25 entries</div></div><div class="col-md-7 col-sm-12"><div class="dataTables_paginate paging_bootstrap"><ul class="pagination" style="visibility: visible;"><li class="prev disabled"><a title="Prev" href="#"><i class="fa fa-angle-left"></i></a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">5</a></li><li class="next"><a title="Next" href="#"><i class="fa fa-angle-right"></i></a></li></ul></div></div></div--></div>
 					</div>
 				</div>
 				<!-- END EXAMPLE TABLE PORTLET-->

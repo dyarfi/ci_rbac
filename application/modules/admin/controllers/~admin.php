@@ -1,13 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller {
+// Class for Admins
+class Admin extends Admin_Controller {
 	var $userdata = '';
 	var $auth_message = '';
-	public function __construct() {
+	function __construct() {
 		parent::__construct();
 		
-		//Load user
+		//Acl::instance();
+		
+		//Load user profiles model
 		$this->load->model('Users');
+		$this->load->model('UserProfiles');
+		$this->load->model('UserGroups');
 		
 		//Load user permission
 		$this->load->model('UserGroupPermissions');
@@ -16,18 +21,18 @@ class Dashboard extends CI_Controller {
 		$data['user'] = $this->session->userdata('user_session');
 		//Load user session in data
 		$this->load->vars($data);
-		//Load into class object
+		//Load into class object 
 		$this->userdata = $data['user'];
 		//Set which controller pages that have the permission
 		//Always set as an array
 		$pages = array(
 						'index',
-						'products',
-						'create',
-						//'edit',
+						'users',
+						'edit',
 						'login',
 						'logout',
-						'search'
+						'search',
+						'23',
 					  );
 		//Set which groups that have the access permission
 		//Always set as an array
@@ -37,10 +42,9 @@ class Dashboard extends CI_Controller {
 									"Publisher"=>"4"
 								);
 		//Get user's group permission
-		//$permission = new UserGroupPermission();
-		//$permission->getUserGroupPermissions($this->userdata['group_id']);
-		//$permission->setUserGroupPages($pages,$allowed_groups);
-
+		//$this->UserGroupPermissions->getUserGroupPermissions($this->userdata['group_id']);
+		//$this->UserGroupPermissions->setUserGroupPages($pages,$allowed_groups);
+		
 		//Debugging user session variable
 		//print_r($this->session->userdata('user_session')); exit();
 		//$this->session->sess_destroy('user_session');
@@ -52,20 +56,9 @@ class Dashboard extends CI_Controller {
 		//Set authentication message if exists
 		$this->auth_message = ($this->session->flashdata('auth_message')) ? $this->session->flashdata('auth_message') : '';
 		$data['auth_message'] = $this->auth_message;
-
-		// Load product configuration
-		//$this->config->load('products');
+		exit;
 	}
-	public function index() {
-		$data['title']	= "Dashboard Home";
-		$data['main']	= 'admin/dashboard';
-		$data['tusers']	= $this->Users->getCount(1);
-		
-		//$data['users']	= $this->MUsers->getCount;
-		
-		$this->load->vars($data);
-		//$this->load->view('template/dashboard');
-		$this->load->view('template/admin_template');
-		
-	}
+	function index() {				
+		exit;
+	}	
 }

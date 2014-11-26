@@ -21,9 +21,9 @@ class UserGroups Extends CI_Model {
 			$sql	= 'CREATE TABLE IF NOT EXISTS `'. $this->table .'` ('
 					. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, '
 					. '`name` VARCHAR(32) NOT NULL, '
-					. '`backend_access` TINYINT(1) NOT NULL, '
-					. '`full_backend_access` TINYINT(1) NOT NULL, '
-					. '`status` ENUM(\'enable\', \'disable\', \'deleted\') NOT NULL, '
+					. '`backend_access` TINYINT(1) NULL, '
+					. '`full_backend_access` TINYINT(1) NULL, '
+					. '`status` TINYINT(1) NOT NULL, '
 					. '`is_system` TINYINT(1) NOT NULL DEFAULT 0, '
 					. '`added` INT(11) UNSIGNED NOT NULL, '
 					. '`modified` INT(11) UNSIGNED NOT NULL, '
@@ -42,9 +42,9 @@ class UserGroups Extends CI_Model {
 			$sql	= 'INSERT INTO `'. $this->table .'` '
 					. '(`id`, `name`, `backend_access`, `full_backend_access`, `status`, `is_system`, `added`, `modified`) '
 					. 'VALUES '
-					. '(1 , \'Super Administrator\', \'1\', \'1\', \'enable\', \'1\', '.time().' , 0), '
-					. '(2 , \'Administrator\', \'1\', \'0\', \'enable\', \'1\', '.time().' , 0), '
-					. '(99 , \'User\', \'0\', \'0\', \'enable\', \'1\', '.time().' , 0)';
+					. '(1 , \'Super Administrator\', \'1\', \'1\', \'1\', \'1\', '.time().' , 0), '
+					. '(2 , \'Administrator\', \'1\', \'0\', \'1\', \'1\', '.time().' , 0), '
+					. '(99 , \'User\', \'0\', \'0\', \'1\', \'1\', '.time().' , 0)';
 
 			$this->db->query($sql);
 		}
@@ -66,6 +66,7 @@ class UserGroups Extends CI_Model {
 	}
 	function getAllUserGroup(){
 		$data = array();
+		$this->db->order_by('added');
 		$Q = $this->db->get('user_groups');
 			if ($Q->num_rows() > 0){
 				//foreach ($Q->result_array() as $row){
@@ -77,7 +78,7 @@ class UserGroups Extends CI_Model {
 		return $data;
 	}
 	function getGroupName_ById($id = null){
-		$data = array();
+		$data = '';
 		$options = array('id' => $id);
 		$Q = $this->db->get_where('user_groups',$options,1);
 		
@@ -86,8 +87,34 @@ class UserGroups Extends CI_Model {
 				$data = $row->name;
 		}
 		$Q->free_result();
-	return $data;
+		return $data;
 	}
-	function setUserGroup($object=null){}
+	function setUserGroup($object=null){
+				
+		$data = array(
+		'name' => $object['name'],
+		'backend_access' => @$object['backend_access'],	
+		'full_backend_access' => @$object['full_backend_access'],			
+		'status' => $object['status']
+		);
+		
+		$this->db->insert('user_groups', $data);
+		
+	}	
+	function updateUserGroup($object=null){
+		$data = array(
+		'name' => $object['name'],
+		'backend_access' => @$object['backend_access'],	
+		'full_backend_access' => @$object['full_backend_access'],			
+		'status' => $object['status'],
+		'id' => $object['id']
+		);
+		$this->db->where('id', $object['id']);
+		return $this->db->update('user_groups', $data);
+	}
+	function deleteUserGroup($id){
+		$this->db->where('id', $id);
+		return $this->db->delete('user_groups');
+	}
 }
 ?>

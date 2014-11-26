@@ -41,7 +41,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css"/>
 
 <link href="<?=admin_theme()?>assets/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>
+<!--<link href="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>-->
 <link href="<?=admin_theme()?>assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css"/>
 
 
@@ -287,13 +287,13 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+<!--script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script-->
 <script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
 <script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
@@ -318,7 +318,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
-
+<script src="<?=admin_theme()?>assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL PLUGINS -->
 
@@ -340,11 +340,11 @@ jQuery(document).ready(function() {
    App.init(); // initlayout and core plugins
    
    TableManaged.init();
-   ComponentsPickers.init();
    
+   ComponentsPickers.init();   
    
    Index.init();
-   Index.initJQVMAP(); // init index page's custom scripts
+   //Index.initJQVMAP(); // init index page's custom scripts
    Index.initCalendar(); // init index page's custom scripts
    Index.initCharts(); // init index page's custom scripts
    Index.initChat();
@@ -356,6 +356,10 @@ jQuery(document).ready(function() {
    
    FormUser.init();
    
+<?php if ($this->session->flashdata('message')) { ?>
+		bootbox.alert('<h3><?php echo $this->session->flashdata('message');?></h3>');
+<?php } ?>
+	
 });
 </script>
 <!-- END JAVASCRIPTS -->

@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Class for Admins
-class Admin extends CI_Controller {
+class Admin extends Admin_Controller {
 	var $userdata = '';
 	var $auth_message = '';
 	function __construct() {

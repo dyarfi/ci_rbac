@@ -36,7 +36,7 @@ class UserProfiles Extends CI_Model {
 				. '`website` VARCHAR(255) NULL, '
 				. '`file_type` VARCHAR(64) NULL, '
 				. '`file_name` VARCHAR(48) NULL, '
-				. '`status` ENUM(\'active\', \'inactive\', \'blocked\') NOT NULL DEFAULT \'inactive\', '
+				. '`status` INT(1) UNSIGNED NOT NULL,'
 				. '`added` INT(11) UNSIGNED NOT NULL, '
 				. '`modified` INT(11) UNSIGNED NOT NULL, '
 				. 'INDEX (`user_id`, `phone`) '
@@ -50,14 +50,14 @@ class UserProfiles Extends CI_Model {
         
 		if ($insert_data) {			
 			$sql = 'INSERT INTO `'. $this->table .'` VALUES '
-					.'(\'1\', \'male\', \'Superadmin of this Website\', \'\',\'\', \'Web Programmer\', \'DKI Jakarta\', \'Jakarta\', \'Jl. Gading Putih 1 F2 No. 4\', \'14240\', \'\', \'2010/09/06\', \'1234\', \'\', \'0\', \'-\', \'image/jpeg\', \'78d57b4b5a0c6048b75bb0c9d91a8392.jpg\', \'active\', \'1283760138\', \'1283831030\'), '
+					.'(\'1\', \'male\', \'Superadmin of this Website\', \'\',\'\', \'Web Programmer\', \'DKI Jakarta\', \'Jakarta\', \'Jl. Gading Putih 1 F2 No. 4\', \'14240\', \'\', \'2010/09/06\', \'1234\', \'\', \'0\', \'-\', \'image/jpeg\', \'78d57b4b5a0c6048b75bb0c9d91a8392.jpg\', \'1\', \'1283760138\', \'1283831030\'), '
 
-					.'(\'2\', \'male\', \'Administrator of this Website\', \'\',\'\', \'Web Designer\', \'DKI Jakarta\', \'Jakarta\', \'Jl. Gading Putih 1 F2 No. 4\', \'14240\', \'\', \'2010/09/06\', \'1234\', \'\', \'0\', \'-\', \'image/jpeg\', \'78d57b4b5a0c6048b75bb0c9d91a8392.jpg\', \'active\', \'1283760138\', \'1283831030\'), '
-					.'(\'3\', \'male\', \'User of this Website\', \'\',\'\', \'Jakarta\', \'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'1234\', \'\', \'\', \'\', \'image/jpeg\', \'a8a484572c007e1e17648ae2c7ad629c.jpg\', \'active\', \'1285152397\', \'0\'), '
-					.'(\'4\', \'male\', \'\', \'\', \'Jakarta\', \'\',\'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'081807244697\', \'\', \'\', \'\', \'image/jpeg\', \'eb068fc7204f01f8cd25375b42fc6953.jpg\', \'active\', \'1285152397\', \'1326110970\'), '
-					.'(\'5\', \'male\', \'\', \'\', \'mimipopo\', \'\',\'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'081807244697\', \'\', \'\', \'\', \'image/jpeg\', \'eb068fc7204f01f8cd25375b42fc6953.jpg\', \'active\', \'1285152397\', \'1326110970\'), '
-					.'(\'111\', \'male\', \'\', \'Web Developer\', \'\', \'\',\'\', \'\', \'\', \'\', \'\', \'0000/00/00\', \'\', \'\', \'\', \'\', \'\', \'\', \'active\', \'1333442128\', \'1333442192\'), '
-					.'(\'110\', \'male\', \'\', \'Web Developer\', \'\',\'\', \'\', \'\', \'\', \'\', \'\', \'0000/00/00\', \'\', \'\', \'\', \'\', \'\', \'\', \'active\', \'1333441986\', \'1333442058\');';
+					.'(\'2\', \'male\', \'Administrator of this Website\', \'\',\'\', \'Web Designer\', \'DKI Jakarta\', \'Jakarta\', \'Jl. Gading Putih 1 F2 No. 4\', \'14240\', \'\', \'2010/09/06\', \'1234\', \'\', \'0\', \'-\', \'image/jpeg\', \'78d57b4b5a0c6048b75bb0c9d91a8392.jpg\', \'1\', \'1283760138\', \'1283831030\'), '
+					.'(\'3\', \'male\', \'User of this Website\', \'\',\'\', \'Jakarta\', \'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'1234\', \'\', \'\', \'\', \'image/jpeg\', \'a8a484572c007e1e17648ae2c7ad629c.jpg\', \'1\', \'1285152397\', \'0\'), '
+					.'(\'4\', \'male\', \'\', \'\', \'Jakarta\', \'\',\'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'081807244697\', \'\', \'\', \'\', \'image/jpeg\', \'eb068fc7204f01f8cd25375b42fc6953.jpg\', \'1\', \'1285152397\', \'1326110970\'), '
+					.'(\'5\', \'male\', \'\', \'\', \'mimipopo\', \'\',\'\', \'\', \'Jl. Pulomas Barat 1 No. 31\', \'\', \'\', \'0000/00/00\', \'081807244697\', \'\', \'\', \'\', \'image/jpeg\', \'eb068fc7204f01f8cd25375b42fc6953.jpg\', \'1\', \'1285152397\', \'1326110970\'), '
+					.'(\'111\', \'male\', \'\', \'Web Developer\', \'\', \'\',\'\', \'\', \'\', \'\', \'\', \'0000/00/00\', \'\', \'\', \'\', \'\', \'\', \'\', \'1\', \'1333442128\', \'1333442192\'), '
+					.'(\'110\', \'male\', \'\', \'Web Developer\', \'\',\'\', \'\', \'\', \'\', \'\', \'\', \'0000/00/00\', \'\', \'\', \'\', \'\', \'\', \'\', \'1\', \'1333441986\', \'1333442058\');';
 			
 			
 			$this->db->query($sql);

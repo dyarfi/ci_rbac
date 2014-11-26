@@ -30,7 +30,7 @@
 			</div>
 		</div>	
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal" action="<?=base_url();?>admin/user/add" id="user-form-add" class="user-form-add">
+		<form class="form-horizontal" method="POST" action="<?=base_url();?>admin/user/add" id="user-form-add" class="user-form-add">
 			<div class="form-body">
 				<h3 class="form-section">User Info</h3>
 				<!--/row-->
@@ -104,8 +104,8 @@
 							<label class="control-label col-md-3">Status</label>
 							<div class="col-md-9">
 								<select class="form-control">
-									<option>Active</option>
-									<option>Inactive</option>
+									<option value="1" name="status">Active</option>
+									<option value="0" name="status">Inactive</option>
 								</select>
 							</div>
 						</div>

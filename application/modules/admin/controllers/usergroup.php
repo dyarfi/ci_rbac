@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Class for User Groups
-class UserGroup extends CI_Controller {
+class UserGroup extends Admin_Controller {
 	// var $userdata = '';
 	var $auth_message = '';
 	//var $User = '';
@@ -75,12 +75,9 @@ class UserGroup extends CI_Controller {
 		//print_r($user_group_id); exit();
 		//print_r($this->auth_message); exit();
 
-		//print_r($this);
-		//exit;
 		
-		$data['title'] = "Welcome to your profile page in my first CI page";
 		$rows = $this->UserGroups->getAllUserGroup();
-		//print_r($rows);
+		
 		if (@$rows) $data['rows'] = $rows;
 		
 		$data['user_profiles'] = $this->UserProfiles->getUserProfile(Acl::instance()->user->id);
@@ -99,7 +96,7 @@ class UserGroup extends CI_Controller {
 		}
 		 * 
 		 */
-		
+		$data['statuses']	= array('Active'=>'active','Inactive'=>'inactive');
 		$data['main'] = 'users/usergroups_index';
 		
 		$this->load->view('template/admin_template', $data);
@@ -204,57 +201,155 @@ class UserGroup extends CI_Controller {
 		redirect('/', 'refresh');
     }
 	public function add(){
-		// load library if not auto loaded
-		$this->load->library('form_validation');
+		//Default data setup
+		$fields = array(
+					'name'=>'',
+					'backend_access'=>'',
+					'full_backend_access'=>'',
+					'status'=>'');
 		
-		$this->form_validation->set_rules('name', 'Name', 'trim|required|valid_email|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('keywords', 'Keywords','trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('description', 'Description','trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('path', 'Path', 'trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('content', 'Content','trim|required|min_length[5]|max_length[24]|xss_clean');
+		$errors = $fields;
 		
-		if ($this->form_validation->run() == FALSE)
-		{
-			//$this->load->view('login');
-			//return false;
-		}
-		else
-		{
-			//$this->load->view('formsuccess');
-			//return true;
-		}
+		// Set form validation rules
+		$this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('status', 'Status','trim|required|xss_clean');
+		
+		// Check if post is requested
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			
+			// Validation form checks
+			if ($this->form_validation->run() == FALSE) {
 
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
+
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());
+
+			} else {
+
+				// Set data to add to database
+				$this->UserGroups->setUserGroup($this->input->post());
+
+				// Set message
+				$this->session->set_flashdata('message','User Group created!');
+
+				// Redirect after add
+				//redirect('admin/usergroup','refresh');
+
+			}
+		}	
+					
+		// Set Action
+		$data['action'] = 'add';
+				
+		// Set Param
+		$data['param']	= '';
+				
+		// Set error data to view
+		$data['errors'] = $errors;
+
+		// Set field data to view
+		$data['fields'] = $fields;
 		
-		if ($this->input->post('name')){
-			$this->Users->addUser();
-			$this->session->set_flashdata('message','Page created');
-			redirect('admin/users/index','refresh');
-		}else{
-			$data['title'] = "Create Page";
-			$data['main'] = 'users/users_form';
-			$this->load->vars($data);
-			//$this->load->view('dashboard');
-			$this->load->view('template/admin_template');
-		}
+		$data['statuses']	= array('Active'=>1,'Inactive'=>0);	
+		
+		$data['fields']		= (object) $fields;
+
+		$data['main']		= 'users/usergroups_form';		
+		
+		$this->load->view('template/admin_template', $this->load->vars($data));
+		
 	}
 	public function edit($id=0){
-		if ($this->input->post('name')){
-			$this->Users->updateUser();
-			$this->session->set_flashdata('message','Page updated');
-			redirect('admin/users/index','refresh');
-		}else{
-			$data['title'] = "Edit Page";
-			$data['main'] = 'users/users_form';
-			$data['page'] = $this->Users->getUser($id);
-			$this->load->vars($data);
-			//$this->load->view('dashboard');
-			$this->load->view('template/admin_template');
+		// Check if param is given or not and check from database
+		if (empty($id) || !$this->UserGroups->getUserGroup($id)) {
+			$this->session->set_flashdata('message','Item not found!');
+			// Redirect to index
+			redirect(base_url().'admin/usergroup');
+		}				
+		
+		// Default data setup
+		$fields = array(
+					'name' => '',
+					'backend_access' => '',
+					'full_backend_access' => '',
+					'status' => '');
+		
+		$errors = $fields;
+		
+		// Set form validation rules
+		$this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('status', 'Status','trim|required|xss_clean');
+		
+		// Check if post is requested		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			
+			// Validation form checks
+			if ($this->form_validation->run() == FALSE) {
+
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
+
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());						
+
+			} else {
+
+				$posts = array(
+					'id'=>$id,
+					'name' => $this->input->post('name'),
+					'backend_access' => $this->input->post('backend_access'),
+					'full_backend_access' => $this->input->post('full_backend_access'),
+					'status' => $this->input->post('status')
+				);
+				
+				// Set data to add to database
+				$this->UserGroups->updateUserGroup($posts);
+
+				// Set message
+				$this->session->set_flashdata('message','User Group updated');
+
+				// Redirect after add
+				redirect('admin/usergroup','refresh');
+
+			}
+		
+		} else {	
+			
+			// Set fields from database
+			$fields = $this->UserGroups->getUserGroup($id);		
 		}
+
+		// Set Action
+		$data['action'] = 'edit';
+				
+		// Set Param
+		$data['param']	= $id;
+		
+		// Set error data to view
+		$data['errors'] = $errors;
+
+		// Set field data to view
+		$data['fields'] = $fields;		
+			
+		$data['statuses'] = array('Active'=>1,'Inactive'=>0);							
+		
+		$data['main'] = 'users/usergroups_form';			
+		
+		$this->load->view('template/admin_template', $this->load->vars($data));
+
 	}
 	public function delete($id){
-		$this->Users->deleteUser($id);
-		$this->session->set_flashdata('message','Page deleted');
-		redirect('admin/users/index','refresh');
+		$this->UserGroups->deleteUserGroup($id);
+		$this->session->set_flashdata('message','User Group deleted');
+		redirect('admin/usergroup','refresh');
 	}	
 	public function view($id=null){
 		
