@@ -30,7 +30,7 @@
 			</div>
 		</div>	
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal" action="<?=base_url();?>admin/usergroup/<?=($action) ? $action .'/'. $param :'';?>" method="POST" id="user-form-add" class="user-form-add">
+		<form class="form-horizontal usergroup-form-add" action="<?=base_url();?>admin/usergroup/<?=($action) ? $action .'/'. $param :'';?>" method="POST" id="usergroup-form-add">
 			<div class="form-body">
 				<h3 class="form-section">Group Info</h3>
 				<!--/row-->
@@ -77,7 +77,6 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Status</label>
 							<div class="col-md-6">
-								<?php //echo $fields->status;?>
 								<select class="form-control" name="status">
 									<?php foreach ($statuses as $status => $val) {?>
 										<option value="<?php echo $val;?>" <?php echo ($val == $fields->status) ? 'selected' : '';?>><?php echo $status;?></option>

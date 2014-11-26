@@ -186,10 +186,12 @@
 									<ul class="list-unstyled profile-nav">
 										<li>
 											<!--img alt="" class="img-responsive" src="<?=base_url();?>assets/img/profile/profile-img.png"-->
-											<img alt="" class="img-responsive" src="<?=base_url($upload_url.$user_profile->file_name);?>">
-											<a class="profile-edit" href="#">
-												 Edit
-											</a>
+											<?php if (empty($user_profile->file_name)) { ?>
+												<img alt="" class="img-responsive" src="<?=base_url();?>assets/img/profile/profile-img.png">
+											<?php } else {?>
+												<img alt="" class="img-responsive" src="<?=base_url($upload_url.$user_profile->file_name);?>">
+											<?php } ?>											
+											<a class="profile-edit" href="#">Edit</a>
 										</li>
 										<!--li>
 											<a href="#">

@@ -30,7 +30,7 @@
 			</div>
 		</div>	
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal" method="POST" action="<?=base_url();?>admin/user/add" id="user-form-add" class="user-form-add">
+		<form class="form-horizontal user-form-add" method="POST" action="<?=base_url();?>admin/user/<?=($action) ? $action .'/'. $param :'';?>" id="user-form-add">
 			<div class="form-body">
 				<h3 class="form-section">User Info</h3>
 				<!--/row-->
@@ -43,9 +43,9 @@
 									<span class="input-group-addon">
 										<i class="fa fa-user"></i>
 									</span>
-									<input type="text" class="form-control" name="username" placeholder="Username" value="" id="username">
+									<input type="text" class="form-control" name="username" placeholder="Username" value="<?=$fields->username;?>" id="username">
 								</div>
-								<span class="help-block hidden"></span>
+								<span class="help-block"><?php echo $errors['username'];?></span>
 							</div>
 						</div>
 					</div>
@@ -57,9 +57,9 @@
 									<span class="input-group-addon">
 									<i class="fa fa-envelope"></i>
 									</span>
-									<input type="email" class="form-control" name="email" placeholder="Email" value="" id="email">
+									<input type="email" class="form-control" name="email" placeholder="Email" value="<?=$fields->email;?>" id="email">
 								</div>
-								<span class="help-block hidden"></span>
+								<span class="help-block"><?php echo $errors['email'];?></span>
 							</div>
 						</div>
 					</div>
@@ -69,8 +69,9 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Password</label>
 							<div class="col-md-9">
-								<input type="password" class="form-control" name="password" value="" id="password">
+								<input type="password" class="form-control" name="password" value="<?=$fields->password;?>" id="password">
 							</div>
+							<span class="help-block"><?php echo $errors['password'];?></span>
 						</div>
 					</div>
 					<!--/span-->
@@ -83,6 +84,7 @@
 										<option value="<?php echo $group->id;?>"><?php echo $group->name;?></option>
 									<?php } ?>
 								</select>
+								<span class="help-block"><?php echo $errors['group_id'];?></span>
 							</div>
 						</div>
 					</div>
@@ -94,8 +96,9 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Retype Password</label>
 							<div class="col-md-9">
-								<input type="password" class="form-control" name="password_retype" value="" id="password_retype">
+								<input type="password" class="form-control" name="password1" value="<?=$fields->password1;?>" id="password1">
 							</div>
+							<span class="help-block"><?php echo $errors['password1'];?></span>
 						</div>
 					</div>
 					<!--/span-->
@@ -103,10 +106,12 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Status</label>
 							<div class="col-md-9">
-								<select class="form-control">
-									<option value="1" name="status">Active</option>
-									<option value="0" name="status">Inactive</option>
-								</select>
+								<select class="form-control" name="status">
+									<?php foreach ($statuses as $status => $val) {?>
+										<option value="<?php echo $val;?>" <?php echo ($val == $fields->status) ? 'selected' : '';?>><?php echo $status;?></option>
+									<?php } ?>
+								</select>								
+								<span class="help-block"><?php echo $errors['status'];?></span>
 							</div>
 						</div>
 					</div>
@@ -119,32 +124,18 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">First Name</label>
 							<div class="col-md-9">
-								<input type="text" placeholder="First Name" name="first_name" class="form-control">
-								<span class="help-block hidden"></span>
+								<input type="text" placeholder="First Name" name="first_name" value="<?=$fields->first_name;?>" class="form-control">
+								<span class="help-block"><?php echo $errors['first_name'];?></span>
 							</div>
 						</div>
 					</div>
 					<!--/span-->
-					<div class="col-md-6">
-						<!--div class="form-group has-error">
-							<label class="control-label col-md-3">Last Name</label>
-							<div class="col-md-9">
-								<div class="select2-container select2me form-control" id="s2id_autogen1"><a tabindex="-1" class="select2-choice" onclick="return false;" href="javascript:void(0)">   <span class="select2-chosen">Abc</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow"><b></b></span></a><input type="text" class="select2-focusser select2-offscreen" id="s2id_autogen2"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <input type="text" class="select2-input" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off">   </div>   <ul class="select2-results">   </ul></div></div><select class="select2me form-control select2-offscreen" name="foo" tabindex="-1">
-									<option value="1">Abc</option>
-									<option value="1">Abc</option>
-									<option value="1">This is a really long value that breaks the fluid design for a select2</option>
-								</select>
-								<span class="help-block">
-									 This field has error.
-								</span>
-							</div>
-						</div-->
+					<div class="col-md-6">						
 						<div class="form-group">
 							<label class="control-label col-md-3">Last Name</label>
 							<div class="col-md-9">
-								<input type="text" placeholder="Last Name" name="last_name" class="form-control">
-								<span class="help-block hidden"></span>
-								
+								<input type="text" placeholder="Last Name" name="last_name" value="<?=$fields->last_name;?>" class="form-control">
+								<span class="help-block"><?php echo $errors['first_name'];?></span>								
 							</div>
 						</div>
 					</div>
@@ -156,13 +147,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Gender</label>
 							<div class="col-md-9">
-								<select class="form-control">
-									<option value="">Male</option>
-									<option value="">Female</option>
+								<select class="form-control" name="gender">
+									<option value="male">Male</option>
+									<option value="female">Female</option>
 								</select>
-								<span class="help-block">
-									 Select your gender.
-								</span>
+								<span class="help-block"><?php echo $errors['gender'];?></span>
 							</div>
 						</div>
 					</div>
@@ -172,15 +161,12 @@
 							<label class="control-label col-md-3">Date of Birth</label>
 							<div class="col-md-9">
 								<div class="input-group input-medium date date-picker" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-2012">
-									<input class="form-control" type="text" readonly="">
+									<input class="form-control" type="text" readonly="" name="birthday" value="<?=$fields->birthday;?>">
 									<span class="input-group-btn">
-									<button class="btn default" type="button">
-									<i class="fa fa-calendar"></i>
-									</button>
+										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 									</span>
-									</div>
-									<span class="help-block"> Select date </span>
-
+								</div>
+								<span class="help-block"><?php echo $errors['birthday'];?></span>
 							</div>
 						</div>
 					</div>
@@ -194,10 +180,12 @@
 							<div class="col-md-9">
 								<div class="input-group">
 									<span class="input-group-addon">
-									<i class="fa fa-phone"></i>
+										<i class="fa fa-phone"></i>
 									</span>
-									<input class="form-control" type="text" value="" placeholder="Phone" name="phone">
+									<input class="form-control" type="text" placeholder="Phone" value="<?=$fields->phone;?>" name="phone">
 								</div>
+								
+								<span class="help-block"><?php echo $errors['phone'];?></span>
 							</div>
 						</div>
 					</div>
@@ -210,8 +198,9 @@
 									<span class="input-group-addon">
 									<i class="fa fa-mobile"></i>
 									</span>
-									<input class="form-control" type="text" value="" placeholder="Mobile" name="mobile_phone">
+									<input class="form-control" type="text" placeholder="Mobile" value="<?=$fields->mobile_phone;?>" name="mobile_phone">
 								</div>
+								<span class="help-block"><?php echo $errors['mobile_phone'];?></span>
 							</div>
 						</div>
 					</div>
@@ -227,8 +216,9 @@
 									<span class="input-group-addon">
 									<i class="fa fa-book"></i>
 									</span>
-									<input class="form-control" type="text" value="" placeholder="Division" name="division">
+									<input class="form-control" type="text" placeholder="Division" value="<?=$fields->division;?>" name="division">
 								</div>
+								<span class="help-block"><?php echo $errors['division'];?></span>
 							</div>
 						</div>
 					</div>
@@ -241,8 +231,9 @@
 									<span class="input-group-addon">
 									<i class="fa fa-road"></i>
 									</span>
-									<input class="form-control" type="text" value="" placeholder="About" name="about">
+									<input class="form-control" type="text" placeholder="About" value="<?=$fields->about;?>" name="about">
 								</div>
+								<span class="help-block"><?php echo $errors['about'];?></span>
 							</div>
 						</div>
 					</div>
@@ -254,7 +245,7 @@
 					<div class="col-md-6">
 						<div class="col-md-offset-3 col-md-9">
 							<button class="btn green" type="submit">Submit</button>
-							<button class="btn default" type="button">Cancel</button>
+							<button class="btn default" type="reset">Cancel</button>
 						</div>
 					</div>
 					<div class="col-md-6">

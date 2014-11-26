@@ -223,60 +223,217 @@ class User extends Admin_Controller {
 	}
 	 * 
 	 */
+	
 	public function logout() {
         // Destroy only user session
         $this->session->unset_userdata('user_session');
 		redirect('/', 'refresh');
     }
-	public function add(){
+	
+	public function add() {
 		
-		$this->form_validation->set_rules('name', 'Name', 'trim|required|valid_email|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('keywords', 'Keywords','trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('description', 'Description','trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('path', 'Path', 'trim|required|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('content', 'Content','trim|required|min_length[5]|max_length[24]|xss_clean');
+		//Default data setup
+		$fields	= array(
+				'username'		=> '',
+				'email'			=> '',
+				'password'		=> '',
+				'password1'		=> '',
+				'gender'		=> '',				
+				'group_id'		=> '',
+				'first_name'	=> '',
+				'last_name'		=> '',				
+				'birthday'		=> '',
+				'phone'			=> '',	
+				'mobile_phone'	=> '',				
+				'fax'			=> '',
+				'website'		=> '',
+				'about'			=> '',
+				'division'		=> '',
+				'status'		=> '');
 		
-		if ($this->form_validation->run() == FALSE)
-		{
-			//$this->load->view('login');
-			//return false;
-		}
-		else
-		{
-			//$this->load->view('formsuccess');
-			//return true;
-		}
+		$errors	= $fields;
+		
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[24]|xss_clean');
+		$this->form_validation->set_rules('email', 'Email','trim|valid_email|required|min_length[5]|max_length[24]|callback_match_email|xss_clean');
+		$this->form_validation->set_rules('password', 'Password','trim|required');
+		$this->form_validation->set_rules('password1', 'Retype Password','trim|required|matches[password]');
+		$this->form_validation->set_rules('gender', 'Gender','required');		
+		$this->form_validation->set_rules('group_id', 'Group','required');
+		$this->form_validation->set_rules('first_name', 'First Name','trim');
+		$this->form_validation->set_rules('last_name', 'Last Name','required');
+		$this->form_validation->set_rules('birthday', 'Birthday','required');
+		$this->form_validation->set_rules('phone', 'Phone','trim|is_natural|xss_clean|max_length[25]');
+		$this->form_validation->set_rules('mobile_phone', 'Mobile Phone','trim');		
+		$this->form_validation->set_rules('fax', 'Fax','trim|is_natural|xss_clean|max_length[25]');
+		$this->form_validation->set_rules('website', 'Website','trim|prep_url|xss_clean|max_length[35]');
+		$this->form_validation->set_rules('about', 'About','trim|xss_clean|max_length[1000]');
+		$this->form_validation->set_rules('division', 'Division','trim|xss_clean|max_length[55]');				
+		$this->form_validation->set_rules('status', 'Status','required');
+		
+		
+		// Check if post is requested
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			
+			// Validation form checks
+			if ($this->form_validation->run() == FALSE)
+			{
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
 
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());
+			}
+			else
+			{
+
+				// Set data to add to database
+				$this->Users->setUser($this->input->post());
+				
+				// Set message
+				$this->session->set_flashdata('message','User created!');
+				
+				// Redirect after add
+				redirect('admin/user');
+			}
+			
+		}	
+			
+		// Set Action
+		$data['action'] = 'add';
+				
+		// Set Param
+		$data['param']	= '';
+				
+		// Set error data to view
+		$data['errors'] = $errors;
 		
-		if ($this->input->post('name')){
-			$this->Users->addUser();
-			$this->session->set_flashdata('message','Page created');
-			redirect('admin/users/index');
-		}else{
-			$data['main']		 = 'users/users_form';
-			$data['user_groups'] = $this->UserGroups->getAllUserGroup();
-			$this->load->vars($data);
-			//$this->load->view('dashboard');
-			$this->load->view('template/admin_template');
-		}
+		// User Groups Data
+		$data['user_groups'] = $this->UserGroups->getAllUserGroup();
+		
+		// User Status Data
+		$data['statuses']	= array('Active'=>1,'Inactive'=>0);	
+		
+		// Post Fields
+		$data['fields']		= (object) $fields;
+
+		// Main template
+		$data['main']		= 'users/users_form';		
+		
+		// Admin view template
+		$this->load->view('template/admin_template', $this->load->vars($data));
+				
 	}
 	public function edit($id=0){
-		if ($this->input->post('name')){
-			$this->Users->updateUser();
-			$this->session->set_flashdata('message','Page updated');
-			redirect('admin/user');
-		}else{
-			$data['title'] = "Edit Page";
-			$data['main'] = 'user/users_form';
-			$data['page'] = $this->Users->getUser($id);
-			$this->load->vars($data);
-			//$this->load->view('dashboard');
-			$this->load->view('template/admin_template');
+				
+		// Check if param is given or not and check from database
+		if (empty($id) || !$this->Users->getUser($id)) {
+			$this->session->set_flashdata('message','Item not found!');
+			// Redirect to index
+			redirect(base_url().'admin/user');
+		}	
+		
+		//Default data setup
+		$fields	= array(
+				'username'		=> '',
+				'email'			=> '',
+				'password'		=> '',
+				'password1'		=> '',
+				'gender'		=> '',				
+				'group_id'		=> '',
+				'first_name'	=> '',
+				'last_name'		=> '',				
+				'birthday'		=> '',
+				'phone'			=> '',	
+				'mobile_phone'	=> '',				
+				'fax'			=> '',
+				'website'		=> '',
+				'about'			=> '',
+				'division'		=> '',
+				'status'		=> '');
+		
+		$errors	= $fields;
+			
+		
+		// Check if post is requested		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			
+			// Validation form checks
+			if ($this->form_validation->run() == FALSE) {
+
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
+
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());						
+
+			} else {
+
+				$posts = array(
+					'id'=>$id,
+					'name' => $this->input->post('name'),
+					'backend_access' => $this->input->post('backend_access'),
+					'full_backend_access' => $this->input->post('full_backend_access'),
+					'status' => $this->input->post('status')
+				);
+				
+				// Set data to add to database
+				$this->Users->updateUser($posts);
+
+				// Set message
+				$this->session->set_flashdata('message','User updated');
+
+				// Redirect after add
+				redirect('admin/user');
+
+			}
+		
+		} else {	
+			
+			// Set fields from database
+			$fields					= (array) $this->Users->getUser($id);
+			
+			$fields['password1']	= '';
+			
+			$profile	= (array) $this->UserProfiles->getUserProfile($id);
+						
+			$fields		= (object) array_merge($fields,$profile);
+
 		}
+	
+		// Set Action
+		$data['action'] = 'edit';
+				
+		// Set Param
+		$data['param']	= $id;
+		
+		// Set error data to view
+		$data['errors'] = $errors;
+
+		// Set field data to view
+		$data['fields'] = $fields;		
+			
+		// Set user group status
+		$data['statuses'] = array('Active'=>1,'Inactive'=>0);		
+		
+		// User Groups Data
+		$data['user_groups'] = $this->UserGroups->getAllUserGroup();
+		
+		// Set form to view
+		$data['main'] = 'users/users_form';			
+		
+		// Set admin template
+		$this->load->view('template/admin_template', $this->load->vars($data));
+		
 	}
 	public function delete($id){
 		$this->Users->deleteUser($id);
-		$this->session->set_flashdata('message','Page deleted');
+		$this->session->set_flashdata('message','User deleted');
 		redirect('admin/user');
 	}	
 	public function view($id=null){
@@ -293,15 +450,7 @@ class User extends Admin_Controller {
 		if (!count($user)){
 			redirect('home/index');
 		}
-		
-		//print_r($this->session->userdata);
-		
-		// Get the user's entered captcha value from the form
-		//$userCaptcha			= set_value('captcha');
-    
-		// Get the actual captcha value that we stored in the session (see below)
-		//$word					= $this->session->userdata('captcha');
-	
+				
 		$data['upload_path']	= $this->config->item('upload_path');
 		
 		$data['upload_url']		= $this->config->item('upload_url');
@@ -352,13 +501,13 @@ class User extends Admin_Controller {
                      'rules' => 'trim|is_natural|xss_clean|max_length[25]'),
 			   array('field' => 'website', 
                      'label' => 'Website', 
-                     'rules' => 'trim|prep_url|xss_clean|max_length[25]'),
+                     'rules' => 'trim|prep_url|xss_clean|max_length[35]'),
 			   array('field' => 'about', 
                      'label' => 'About', 
                      'rules' => 'trim|xss_clean|max_length[1000]'),
 			   array('field' => 'division', 
                      'label' => 'Division', 
-                     'rules' => 'trim|xss_clean|max_length[25]')
+                     'rules' => 'trim|xss_clean|max_length[55]')
             );
 			
 			// Set rules to form validation
@@ -604,6 +753,25 @@ class User extends Admin_Controller {
 	}
 	
 	// -------------- CALLBACKS -------------- //
+
+	// Match Email post to Database
+	public function match_email($email) {		
+		
+		// Check email if empty
+		if ($email == '') {
+			$this->form_validation->set_message('match_email', 'The %s can not be empty.');
+			return false;
+		}
+		// Check password if match
+		else if ($this->Users->getUserEmail($email) == 1) {
+			$this->form_validation->set_message('match_email', 'The %s is already taken.');			
+			return false;
+		// Match current password
+		} else {
+			return true;
+		} 
+		
+	}
 	
 	// Match Captcha post to Database
 	public function match_captcha($captcha) {		

@@ -201,6 +201,7 @@ class UserGroup extends Admin_Controller {
 		redirect('/', 'refresh');
     }
 	public function add(){
+		
 		//Default data setup
 		$fields = array(
 					'name'=>'',
@@ -238,11 +239,11 @@ class UserGroup extends Admin_Controller {
 				$this->session->set_flashdata('message','User Group created!');
 
 				// Redirect after add
-				//redirect('admin/usergroup','refresh');
+				redirect('admin/usergroup');
 
 			}
 		}	
-					
+							
 		// Set Action
 		$data['action'] = 'add';
 				
@@ -255,16 +256,21 @@ class UserGroup extends Admin_Controller {
 		// Set field data to view
 		$data['fields'] = $fields;
 		
+		// Group Status Data
 		$data['statuses']	= array('Active'=>1,'Inactive'=>0);	
 		
+		// Post Fields
 		$data['fields']		= (object) $fields;
-
+		
+		// Main template
 		$data['main']		= 'users/usergroups_form';		
 		
+		// Admin view template
 		$this->load->view('template/admin_template', $this->load->vars($data));
 		
 	}
 	public function edit($id=0){
+		
 		// Check if param is given or not and check from database
 		if (empty($id) || !$this->UserGroups->getUserGroup($id)) {
 			$this->session->set_flashdata('message','Item not found!');
@@ -317,7 +323,7 @@ class UserGroup extends Admin_Controller {
 				$this->session->set_flashdata('message','User Group updated');
 
 				// Redirect after add
-				redirect('admin/usergroup','refresh');
+				redirect('admin/usergroup');
 
 			}
 		
@@ -339,17 +345,20 @@ class UserGroup extends Admin_Controller {
 		// Set field data to view
 		$data['fields'] = $fields;		
 			
+		// Set user group status
 		$data['statuses'] = array('Active'=>1,'Inactive'=>0);							
 		
+		// Set form to view
 		$data['main'] = 'users/usergroups_form';			
 		
+		// Set admin template
 		$this->load->view('template/admin_template', $this->load->vars($data));
 
 	}
 	public function delete($id){
 		$this->UserGroups->deleteUserGroup($id);
 		$this->session->set_flashdata('message','User Group deleted');
-		redirect('admin/usergroup','refresh');
+		redirect('admin/usergroup');
 	}	
 	public function view($id=null){
 		
@@ -363,7 +372,7 @@ class UserGroup extends Admin_Controller {
 
 		$user = $this->Users->getUser($id);
 		if (!count($user)){
-			redirect('home/index','refresh');
+			redirect('home/index');
 		}
 		
 		$data['upload_path']	= $this->config->item('upload_path');
@@ -479,7 +488,7 @@ class UserGroup extends Admin_Controller {
 		if ($this->input->post('term')){
 			$search['results'] = $this->MProducts->search($this->input->post('term'));
 		} else {
-			redirect('/','refresh');
+			redirect('/');
 		}
 		$data['results'] = $search['results'];
 		$data['main'] = 'search_view';

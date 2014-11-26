@@ -114,6 +114,25 @@ class Users Extends CI_Model {
 		$Q->free_result();
 		return $data;
 	}
+	// Get user's Email from posts 
+	function getUserEmail($email=null){
+		if(!empty($email)){
+			$data = array();
+			
+			// Option and query result
+			$options = array('email' => $email);			
+			$Q = $this->db->get_where('users',$options,1);
+			
+			// Check result
+			if($Q->num_rows() > 0) {
+				// Return true if not exists
+				return true;
+			} else {
+				// Return false if exists
+				return false;
+			}		 
+		}
+	}
 	// Get user's Password from hashed password 
 	function getUserPassword($password=null){
 		if(!empty($password)){
@@ -181,16 +200,71 @@ class Users Extends CI_Model {
 		$this->db->update('users', $data); 
 		
 		return $password;
+		
 	}	
-	function deleteUser($id){
+	function setUser($object=null){
+		
+		// Set User data
+		$data = array(
+			'username'	=> $object['username'],
+			'email'		=> $object['email'],			
+			'password'	=> sha1($object['username'].$object['password']),	
+			'group_id'	=> @$object['group_id'],			
+			'added'		=> time(),	
+			'status'	=> $object['status']
+		);
+		
+		// Insert User data
+		$this->db->insert('users', $data);
+		
+		// Return last insert id primary
+		$insert_id = $this->db->insert_id();
+			
+		// Check if last is existed
+		if ($insert_id) {
+				
+			// Unset previous data
+			unset($data);
+			
+			// Set User Profile data
+			$data = array(
+					'user_id'		=> $insert_id,
+					'gender'		=> @$object['gender'],				
+					'first_name'	=> @$object['first_name'],
+					'last_name'		=> @$object['last_name'],				
+					'birthday'		=> @$object['birthday'],
+					'phone'			=> @$object['phone'],	
+					'mobile_phone'	=> @$object['mobile_phone'],				
+					'fax'			=> @$object['fax'],
+					'website'		=> @$object['website'],
+					'about'			=> @$object['about'],
+					'division'		=> @$object['division'],
+					'added'		=> time(),	
+					'status'	=> 1);
+			
+			// Insert User Profile 
+			$this->db->insert('user_profiles', $data);
+					
+		}
+			
+		// Return last insert id primary
+		return $insert_id;
+		
+	}	
+	function deleteUser($id) {
+		
 		// Check user id
 		$this->db->where('id', $id);
+		
 		// Delete user form database
 		if ($this->db->delete('users')) {
+			
 			// Check user profile id
 			$this->db->where('user_id', $id);
+			
 			// Delete user profile form database		
 			return $this->db->delete('user_profiles');
+			
 		}		
 	}	
 }
