@@ -38,30 +38,7 @@
 |
 */
 
-$route['default_controller'] = "home";
-$route['download/(:num)'] = 'download';
 $route['404_override'] = '';
 
-// Route for Admin
-//$route['admin/authenticate/logout'] = "admin/authenticate/logout";
-
-$route['admin']	= "admin/authenticate/login";
-$route['admin/authenticate/(:any)']	= "admin/authenticate/$1";
-
-$route['admin/dashboard/(:any)']	= 'admin/dashboard/$1';
-$route['admin/user/(:any)']			= 'admin/user/$1';
-$route['admin/usergroup/(:any)']	= 'admin/usergroup/$1';
-$route['admin/modulelist/(:any)']	= 'admin/modulelist/$1';
-
-$route['admin/(:any)'] = '$1';
-
-
-//$route['admin/authenticate']	 = "admin/authenticate";
-//$route['admin/(:any)'] = 'admin/$1';
-//$route['admin/login'] = 'admin/login';
-//$route['admin/logout'] = 'admin/logout';
-//$route['admin/([a-zA-Z_-]+)'] = '$1/admin/index';
-//$route['admin'] = 'modules';
-
 /* End of file routes.php */
-/* Location: ./application/config/routes.php */
+/* Location: ./application/modules/setting/config/routes.php */

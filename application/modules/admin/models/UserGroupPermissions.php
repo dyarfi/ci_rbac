@@ -3,10 +3,10 @@
 // Class for User Permission
 class UserGroupPermissions Extends CI_Model {
 	
-	protected $table = 'tbl_group_permissions';
+	public $table = 'tbl_group_permissions';
 	public $permission;
 	
-	function __construct(){
+	public function __construct(){
 		// Call the Model constructor
 		parent::__construct();
 		
@@ -16,7 +16,7 @@ class UserGroupPermissions Extends CI_Model {
 		$this->db = $this->load->database('default', true);		
 
 	}
-	function install () {
+	public function install () {
 		$insert_data	= FALSE;
 
 		if (!$this->db->table_exists($this->table)) {
@@ -56,7 +56,96 @@ class UserGroupPermissions Extends CI_Model {
 		*/
         return $this->db->table_exists($this->table);
 	}
-	function getModuleList($id=null){
+	public function find ($where_cond = '', $order_by = '', $limit = '', $offset = '') {
+		/** Build where query **/
+
+		if ($where_cond != '') {
+			if (is_array($where_cond) && count($where_cond) != 0) {
+				$buffers	= array();
+
+				$operators	= array('LIKE',
+									'IN',
+									'!=',
+									'>=',
+									'<=',
+									'>',
+									'<',
+									'=');
+                                
+				foreach ($where_cond as $field => $value) {
+					$operator	= '=';
+
+					if (strpos($field, ' ') != 0)
+						list($field, $operator)	= explode(' ', $field);
+
+					if (in_array($operator, $operators)) {
+						$field		= '`'.$field.'`';
+
+						if ($operator == 'IN' && is_array($value))
+							$buffers[]	= $field.' '.$operator.' (\''.implode('\', \'', $value).'\')';
+						else
+							$buffers[]	= $field.' '.$operator.' \''.$value.'\'';
+					} else if (is_numeric($field)) {
+						$buffers[]	= $value;
+					} else {
+						$buffers[]	= $field.' '.$operator.' \''.$value.'\'';
+					}
+				}                
+				$where_cond	= implode(' AND ', $buffers);                   
+			}
+		}
+
+		$sql_order = ''; 
+		if ($order_by != '') {
+			$sql_order = ' ORDER BY '; 
+			$i 	   = 1;
+			foreach ($order_by as $order => $val) {
+				$split = ($i > 1) ? ', ' : ''; 
+				$sql_order .= ' '. $split .' `'. $order.'` '.$val.' ';
+				$i++;
+			}
+			$order_by  = $sql_order;
+		}
+		
+		$sql_limit = ''; 
+		if ($limit != '' && $offset != '') {
+			$offset    = $offset . ','; 
+			$sql_limit = 'LIMIT '. $offset . $limit; 
+		}
+		else if ($limit != '') {
+			$sql_limit = 'LIMIT '. $limit; 
+		}
+		$limit = $sql_limit;
+		
+		if ($where_cond != '') {
+			$rows = $this->db->query('SELECT * FROM `'.$this->table.'` WHERE '. $where_cond . $order_by . $limit, TRUE)->result();
+		}
+		else {
+			$rows = $this->db->query('SELECT * FROM `'.$this->table.'`' . $order_by . $limit, TRUE)->result();
+		}
+
+		$returns	= array();
+                
+		foreach ($rows as $row) {
+			$object			= new UserGroupPermissions;
+
+			$object_vars	= get_object_vars($row);
+			
+			foreach ($object_vars as $var => $val) {
+				$object->$var	= $val;
+			}
+
+			unset($object->table,$object->_model_vars,$object->db);
+
+			$returns[]		= $object;
+
+			unset($object, $vars);
+		}
+				
+		return $returns;
+	}
+	
+	public function getModuleList($id=null){
 		$data = array('id'=>$id);
 		$result = '';
 		$Q = $this->db->get_where('module_lists',$data);
@@ -70,7 +159,8 @@ class UserGroupPermissions Extends CI_Model {
 		$Q->free_result();
 		return $result;
 	}
-	function getModulePermissions($id=null){
+	
+	public function getModulePermissions($id=null){
 		$data = array('id'=>$id);
 		$result = '';
 		$Q = $this->db->get_where('module_permissions',$data);
@@ -84,7 +174,8 @@ class UserGroupPermissions Extends CI_Model {
 		$Q->free_result();
 		return $result;
 	}
-	function getUserGroupPermissions($user_group=null){
+	
+	public function getUserGroupPermissions($user_group=null){
 		$data = array('group_id'=>$user_group,'value'=>1);
 		$result = '';		
 		$Q = $this->db->get_where('group_permissions',$data);
@@ -96,7 +187,8 @@ class UserGroupPermissions Extends CI_Model {
 		$Q->free_result();
 		return $result;
 	}
-	function getAllUserGroupPermissions($user_group=null){
+	
+	public function getAllUserGroupPermissions($user_group=null){
 		$data = array('group_id'=>$user_group);
 		$result = '';
 		$Q = $this->db->get_where('group_permissions',$data);
@@ -108,11 +200,13 @@ class UserGroupPermissions Extends CI_Model {
 		$Q->free_result();
 		return $result;
 	}
-	function setUserGroupPermissions($object=null) {
+	
+	public function setUserGroupPermissions($object=null) {
 	
 		
 	}
-	function setUserGroupPages($pages=null,$allowed_groups=null) {
+	
+	public function setUserGroupPages($pages=null,$allowed_groups=null) {
 		if (is_array($allowed_groups) && is_array($pages)) {
 			$user_group = $allowed_groups;
 			$uri = array();
@@ -137,149 +231,91 @@ class UserGroupPermissions Extends CI_Model {
 		}
 		return true;
 	}
-	function isAuthorized($user_group=null) {
+	
+	public function isAuthorized($user_group=null) {
 		if ($this->permission && in_array($this->permission, $user_group)) {
 			//Set true if exists
 			return true;
 		} 
 	}
 	
-	function getModule ($user_group=null) {
-		if($user_group == '')
-			return array();
-	
-		$modules			= array();
-	
-		// Check admin group
-		$user_permission	= $this->UserGroups->getUserGroup($user_group);
-		
-		// Check admin access permission
-		if(!$user_permission->full_backend_access) {
-			// Redirect Users to login
-			redirect('admin/authenticate');
-		} else {
-			$modules['Module']	= $this->config->item('module_link');
-		}
-
-		$modules['Users']	= $this->config->item('module_menu');
-		//Controller permissions
-		$modules_perm		= $this->getModuleFunction($user_group);		
-		//Controller collections		
-		$modules_cols		= array_keys($modules_perm);
-				
-		$where_cond			= array();
-		
-		if(is_array($modules_cols)) {
-			$buffers = array();
-			foreach ($modules_cols as $cols) {				
-				$buffers[]	= strtolower($cols);
-			}
-			$this->db->where_in('module_name', $buffers);
-		}
-		
-		$where_cond	  = (is_array($where_cond)) ? array_merge($where_cond, array('parent_id' => 0)) : array('parent_id' => 0);
-				
-		$this->db->where($where_cond);
-		
-		$this->db->order_by('order','ASC');
-		
-		$module_lists = $this->db->get('module_lists');
-		
-		if(count($module_lists->num_rows()) != 0) {
-			foreach($module_lists->result_object() as $module) {
-				
-				$class_name	= $module->module_name;
-				
-				$this->db->where('parent_id', $module->id);
-				
-				$this->db->order_by('order','ASC');
-				
-				$menu_modules	= $this->db->get('module_lists');
-				
-				$buffers	= array();
-				
-				if(count($menu_modules->num_rows()) != 0) {
-					foreach ($menu_modules->result_object() as $menu) {
-						$where_cond		= array('');
-						$buffers[$menu->module_link]	= $menu->module_name;
-					}
-				}
-				
-				$modules[ucwords(str_replace('_', ' ', $class_name))]	= $buffers;
-				unset($buffers);
-			}
-		}
-	
-		return $modules;
-	}
-	
-	public function getModuleFunction($user_group = '') {
+	public function getModuleFunction($group_id = '') {
 		
 		// Check initialize level id
-		if($user_group == '') {
+		if($group_id == '') {
 			// Return blank array
 			return array();
 		}	
 		
-		// Set default loaded controllers
+		// Set default loaded modules
 		$modules			= array();
 		
-		// Set user permissions
-		$user_permission	= $this->UserGroups->getUserGroup($user_group);
+		// Check admin url
+		$where_cond			= array('id'	=> $group_id);
 		
+		// Set user permissions
+		$user_permission	= $this->db->get_where('user_groups', $where_cond, 1)->result();
+
 		// Check backend permission
-		if(!$user_permission->full_backend_access) {
+		if(!$user_permission[0]->backend_access) {
 			// Set flash alert to session
-			$this->session->set('auth_error', 'You have no access');
+			$this->session->set_flashdata('message', 'You have no access');
 			// Redirect if have no access to backend / admin-panel
-			redirect(ADMIN . 'authentication/noaccess');
+			redirect(ADMIN . 'authenticate/noaccess');
 		}
 		
-		// Load user admin menu controllers
-		$modules['Users']		= $this->config->item('module_menu');
+		// Load user admin menu modules
+		$item = $this->load->config('modules', TRUE);		
+		$modules['Admin']		= $item['admin_list.module_function'];
 		
 		// Check full backend permission
-		if ($user_permission->full_backend_access) {
+		if ($user_permission[0]->full_backend_access) {
 			// Set admin neccesary module functions
-			$modules['Module']	=  $this->config->item('module_function');
+			$modules['Module']	= $item['module_list.module_function'];
 		}
 		
 		// Set default return
 		$return_object	= TRUE;
 
 		// Check for level id
-		if ($user_group == '') {
+		if ($group_id == '') {
 			// Set FALSE if level id not found
 			$return_object	= FALSE;
 		}
 		
 		// List all user level permissions
-		$user_permissions = $this->getUserGroupPermissions($user_group);
-
+		$user_permissions = $this->db->get_where($this->table, array('group_id'=>$group_id,'value'=>1))->result();
 		// Temp of array
 		$buffers = array();
 		
 		// Loops for user_permission data 
 		foreach ($user_permissions as $key) {
-			// List all controller_permissions based on permission id at user_level_permission
-			$module_functions = $this->getModulePermissions($key->permission_id);
-			// Loops for controller_functions data 
+			
+			// List all module_permissions based on permission id at user_level_permission
+			//$module_functions = Model_ModulePermission::instance()->find(array('id'=>$key->permission_id));
+			$module_functions = $this->db->get_where('module_permissions', array('id'=>$key->permission_id))->result();
+			
+			// Loops for module_functions data 
 			foreach ($module_functions as $val) {
-				// List all controller_list based on controller id at controller_permission
-				$class_names		= $this->getModuleList($val->module_id);
+				// List all module_list based on module id at module_permission
+				//$class_names		= Model_ModuleList::instance()->find(array('id'=>$val->module_id));
+				$class_names		= $this->db->get_where('module_lists', array('id'=>$val->module_id))->result();
+	
 				// Loops for module_names data 
-				foreach($class_names as $module) {				
+				foreach($class_names as $module) {
 					// Set temporary data in place
-					$buffers[ucwords(str_replace('_', ' ', $module->module_name))][$val->module_link] = $val->module_name;
+					$buffers[ucfirst($module->module_name)][$val->module_link] = $val->module_name;
 				}
-				// Return all computed data of array permissions and controller lists available 
+								
+				// Return all computed data of array permissions and module lists available 
 				$modules	= array_merge($modules,$buffers);
-			}	
+								
+			}
+			
 		}	
-		
+				
 		unset($buffers);
 		
 		return $modules;
 	}
 }
-?>

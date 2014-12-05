@@ -1,3 +1,4 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.1.1
@@ -93,20 +94,20 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 			<!-- BEGIN USER LOGIN DROPDOWN -->
 			<li class="dropdown user">
-				<a href="<?=base_url();?>admin/user/view/<?=ACL::instance()->user->id;?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+				<a href="<?=base_url();?>admin/user/view/<?=ACL::user()->id;?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<img alt="" src="<?=base_url()?>assets/img/avatar1_small.jpg"/>&nbsp;
 					<span class="username">
-						<?=ACL::instance()->user->name;?>
+						<?=ACL::user()->name;?>
 					</span>
 					<i class="fa fa-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">				
 					<li>
-						<a href="<?=base_url();?>admin/user/view/<?=Acl::instance()->user->id;?>"><i class="fa fa-user"></i> Profile</a>
+						<a href="<?=base_url();?>admin/user/view/<?=ACL::user()->id;?>"><i class="fa fa-user"></i> Profile</a>
 					</li>
 					<li>
 						<a href="javascript:;">
-							<i class="fa fa-lock"></i> Last Login <?php echo date('Y-m-d, H:i:s',Acl::instance()->user->last_login);?>
+							<i class="fa fa-lock"></i> Last Login <?php echo date('Y-m-d, H:i:s',ACL::user()->last_login);?>
 						</a>
 					</li>
 					<li>
@@ -137,8 +138,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
 				<li class="sidebar-toggler-wrapper">
 					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-					<div class="sidebar-toggler hidden-phone">
-					</div>
+					<div class="sidebar-toggler hidden-phone"></div>
 					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 				</li>
 				<li class="sidebar-search-wrapper">
@@ -147,8 +147,9 @@ License: You must have a valid license purchased only from themeforest(the above
 					<!-- END RESPONSIVE QUICK SEARCH FORM -->
 				</li>
 				<?php /*echo preg_match('/\b'.Request::$current->controller().'\b/i', substr($row_function, 0, strpos($row_function, '/'))) ? 'current' : ''; */ ?>
-				<li class="start <?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', 'dashboard')){?>active<?}?> ">
-					<a href="<?=base_url()?>admin/dashboard">
+				
+				<!--li class="start <?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', 'dashboard')){?>active<?}?> ">
+					<a href="<?=base_url(ADMIN.'dashboard/index')?>">
 						<i class="fa fa-home"></i>
 						<span class="title">
 							Dashboard
@@ -176,83 +177,40 @@ License: You must have a valid license purchased only from themeforest(the above
 					</a>
 					<ul class="sub-menu">
 						<li class="<?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', 'user')){?>active<?}?>">
-							<a href="<?=base_url()?>admin/user">
+							<a href="<?=base_url(ADMIN.'user/index')?>">
 								 List User
 							</a>
 						</li>
 						<li class="<?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', 'usergroup')){?>active<?}?>">
-							<a href="<?=base_url()?>admin/usergroup">
+							<a href="<?=base_url(ADMIN.'usergroup/index')?>">
 								 List Groups
 							</a>
 						</li>
 					</ul>
-				</li>
-				
-				
-				<!--li class="<?
-                        if($this->uri->segment(1)=='__admin_gallery')
-						{
-							?>
-							active
-							<?
-						}
-						?>">
-					<a href="javascript:;">
-						<i class="fa fa-table"></i>
-						<span class="title">
-							Gallery Control
-						</span>
-						<span class="arrow ">
-						</span>
-					</a>
-					<ul class="sub-menu">
-						<li class="<?
-                        if($this->uri->segment(2)=='gallery_list')
-						{
-							?>
-							active
-							<?
-						}
-						?>">
-							<a href="<?=base_url()?>__admin_gallery/">
-								 Gallery List
-							</a>
-						</li>						
-					</ul>
 				</li-->
-				<!--li class="<?
-                        if($this->uri->segment(1)=='__admin_media')
-						{
-							?>
-							active
-							<?
-						}
-						?>" >
-					<a href="javascript:;">
-						<i class="fa fa-th"></i>
-						<span class="title">
-							Assets Control
-						</span>
-						<span class="arrow ">
-						</span>
-					</a>
-					<ul class="sub-menu">
-						<li  class="<?
-                        if($this->uri->segment(1)=='__admin_media')
-						{
-							?>
-							active
-							<?
-						}
-						?>">
-							<a  href="<?=base_url()?>__admin_media">
-								 Add Media
-							</a>
-						</li>
 						
-					</ul>
-				</li-->
-				
+			<?php				
+				$k = 0;
+				foreach (Acl::admin_system_modules() as $name => $functions) { 
+					if (is_array($functions) && count($functions) != 0) { ?>
+					<li class="<?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', strtolower($name))){ ?>active<?}?>">
+						<a class="" href="#collapse<?php echo $k;?>">
+							<span class="title"><?php echo $name; ?></span><span class="arrow "></span>
+						</a>					
+						<ul class="sub-menu"> 
+							<?php foreach ($functions as $row_function => $row_label) { ?>
+								<?php if(Acl::user()->group_id != 1 && $row_label == 'Groups') continue; ?>
+								<li class="<?php echo preg_match('/\b'.$this->uri->segment(2).'\b/i', substr($row_function, 0, strpos($row_function, '/'))) ? 'active' : ''; ?>">
+									<a href="<?php echo base_url(ADMIN . $row_function); ?>"><?php echo $row_label; ?></a>
+								</li>
+							<?php } ?>
+						</ul>				
+					</li>
+				<?php } 
+				$k++;
+				} 
+			?>
+
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
@@ -333,6 +291,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- BEGIN USER AJAX JAVASCRIPTS -->
 <script src="<?=admin_theme()?>assets/scripts/custom/form-user.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/scripts/custom/form-module.js" type="text/javascript"></script>
 <!-- END USER AJAX JAVASCRIPTS -->
 
 <script>
@@ -355,6 +314,7 @@ jQuery(document).ready(function() {
    
    
    FormUser.init();
+   FormModule.init();
    
 <?php if ($this->session->flashdata('message')) { ?>
 		bootbox.alert('<h3><?php echo $this->session->flashdata('message');?></h3>');

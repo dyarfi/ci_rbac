@@ -1,8 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller {
-	var $userdata = '';
-	var $auth_message = '';
+class Dashboard extends Admin_Controller {
+
 	public function __construct() {
 		parent::__construct();
 		
@@ -36,36 +35,20 @@ class Dashboard extends CI_Controller {
 									"Vendor"=>"2",
 									"Publisher"=>"4"
 								);
-		//Get user's group permission
-		//$permission = new UserGroupPermission();
-		//$permission->getUserGroupPermissions($this->userdata['group_id']);
-		//$permission->setUserGroupPages($pages,$allowed_groups);
 
-		//Debugging user session variable
-		//print_r($this->session->userdata('user_session')); exit();
-		//$this->session->sess_destroy('user_session');
-		
-		//Debugging cart session variable
-		//print_r($this->cart->contents()); exit();
-		//$this->cart->destroy();
-		
-		//Set authentication message if exists
-		$this->auth_message = ($this->session->flashdata('auth_message')) ? $this->session->flashdata('auth_message') : '';
-		$data['auth_message'] = $this->auth_message;
-
-		// Load product configuration
-		//$this->config->load('products');
 	}
 	public function index() {
 		$data['title']	= "Dashboard Home";
 		$data['main']	= 'admin/dashboard';
 		$data['tusers']	= $this->Users->getCount(1);
 		
-		//$data['users']	= $this->MUsers->getCount;
-		
 		$this->load->vars($data);
+		
+		// Set admin title page with module menu
+		$data['page_title'] = $this->module_menu;
+		
 		//$this->load->view('template/dashboard');
-		$this->load->view('template/admin_template');
+		$this->load->view('template/admin/admin_template', $data);
 		
 	}
 }

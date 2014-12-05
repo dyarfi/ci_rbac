@@ -40,5 +40,6 @@
 
 $route['404_override'] = '';
 
+//$route['([a-zA-Z_-]+)'] = '$1';
 /* End of file routes.php */
 /* Location: ./application/modules/admin/config/routes.php */

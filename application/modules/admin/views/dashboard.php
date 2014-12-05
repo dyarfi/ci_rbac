@@ -19,7 +19,7 @@
 				<ul class="page-breadcrumb breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url()?>admin/dashboard">
+						<a href="<?=base_url(ADMIN.'admin/dashboard/index')?>">
 							Home
 						</a>
 						<i class="fa fa-angle-right"></i>
@@ -68,7 +68,7 @@
 							 Total User
 						</div>
 					</div>
-					<a class="more" href="<?=base_url();?>admin/user">
+					<a class="more" href="<?=base_url(ADMIN.'admin/user/index');?>">
 						 View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>

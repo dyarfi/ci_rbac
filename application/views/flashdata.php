@@ -14,11 +14,3 @@
 	</span>
 </div>	
 <?php endif; ?>
-<?php if($this->auth_message): ?>
-<div class="alert alert-danger">
-	<button class="close" data-close="alert"></button>
-	<span>		
-		<div class="authmessage"><?php echo $this->auth_message; ?></div>
-	</span>
-</div>		
-<?php endif; ?>

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Setting extends Admin_Controller {
+class Page extends Admin_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,7 +19,25 @@ class Setting extends Admin_Controller {
 	 */
 	public function index()
 	{
-		$data['main'] = 'setting_index';
+		//$this->load->vars($data);
+		
+		/*
+		switch(Acl::instance()->user->group_id){
+			case 1: // Administrator Access
+				$data['main'] = 'users/default_admin';
+				$this->load->view('template/admin_template', $data);
+			break;
+			default: // Public Access
+				$data['main'] = 'users/default_users';
+				$this->load->view('template/static_template', $data);
+			break;
+		}
+		 * 
+		 */
+		
+		$data['statuses'] = array(1=>'Active',0=>'Inactive');
+		
+		$data['main'] = 'page_index';
 		
 		$data['page_title'] = $this->module_menu;
 		
@@ -27,5 +45,5 @@ class Setting extends Admin_Controller {
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/setting/controllers/setting.php */
+/* End of file page.php */
+/* Location: ./application/modules/page/controllers/page.php */

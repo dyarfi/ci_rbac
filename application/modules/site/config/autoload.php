@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session','parser','user_agent','encrypt','pagination','database','form_validation','facebook','Twitteroauth');
+$autoload['libraries'] = array();
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array('session','parser','user_agent','encrypt','pagina
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','file','form','html','text','email','array','captcha','my_general_helper','my_fbhelper_helper');
+$autoload['helper'] = array();
 
 
 /*
@@ -80,7 +80,7 @@ $autoload['helper'] = array('url','file','form','html','text','email','array','c
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('site');
 
 
 /*

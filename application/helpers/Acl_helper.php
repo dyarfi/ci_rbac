@@ -30,7 +30,7 @@ Class ACL extends CI_Controller {
 		
 		if ($this->session->userdata('user_session') == '') {
 			// Redirect if not logged
-			//redirect(ADMIN);
+			redirect(ADMIN);
 		}
 		
 		// Set previous URL from previous url session		

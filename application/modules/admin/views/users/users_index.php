@@ -101,43 +101,11 @@
 			<div class="col-md-12">
 				<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 				<h3 class="page-title">Managed Users <small>managed data users</small></h3>
-				<ul class="page-breadcrumb breadcrumb">
-					<!--li class="btn-group">
-						<button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
-						<span>
-							Actions
-						</span>
-						<i class="fa fa-angle-down"></i>
-						</button>
-						<ul role="menu" class="dropdown-menu pull-right">
-							<li>
-								<a href="#">
-									Action
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									User Control 
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									List Users
-								</a>
-							</li>
-							<li class="divider">
-							</li>
-							<li>
-								<a href="#">
-									Separated link
-								</a>
-							</li>
-						</ul>
-					</li-->
+				<ul class="page-breadcrumb breadcrumb">					
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url()?>admin/dashboard">
-							Home
+						<a href="<?=base_url(ADMIN.'dashboard/index')?>">	
+							Dashboard
 						</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
@@ -148,7 +116,7 @@
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="<?=base_url();?>admin/user">
+						<a href="<?=base_url(ADMIN.'user/index');?>">
 							Users
 						</a>
 					</li>
@@ -180,10 +148,7 @@
 					<div class="portlet-body">
 						<div class="table-toolbar">
 							<div class="btn-group">
-								<!--button class="btn green" id="sample_editable_1_new">
-								Add New <i class="fa fa-plus"></i>
-								</button-->
-								<a class="btn green" id="sample_editable_1_new" href="<?=base_url();?>admin/user/add">
+								<a class="btn green" id="sample_editable_1_new" href="<?=base_url(ADMIN.'user/add');?>">
 								Add New <i class="fa fa-plus"></i>
 								</a>
 							</div>
@@ -241,21 +206,21 @@
 								</td>
 								<td class=" "><?php echo $row->password;?></td>
 								<td class="center "><?php echo $row->group_id;?></td>
-								<td class="center "><?php echo $statuses[$row->status]	;?></td>
+								<td class="center "><?php echo $statuses[$row->status];?></td>
 								<td class=" ">
-									<!--span class="label label-sm label-<?php if($row->status == 'active') { echo 'success'; } else { echo 'warning'; }?>"><?php echo $row->status;?>
+									<!--span class="label label-sm label-<?php if($row->status == 1) { echo 'success'; } else { echo 'warning'; }?>"><?php echo $row->status;?>
 									</span-->
 									<ul class="list-inline">
 										<li>
-											<a class="btn default btn-xs blue" href="<?=base_url();?>admin/user/view/<?=$row->id;?>" title="View"><i class="fa fa-check"></i>View
+											<a class="btn default btn-xs blue" href="<?=base_url(ADMIN.'user/view/'.$row->id);?>" title="View"><i class="fa fa-check"></i>View
 											</a>
 										</li>
 										<li>
-											<a class="btn default btn-xs purple" href="<?=base_url();?>admin/user/edit/<?=$row->id;?>" title="Edit"><i class="fa fa-edit"></i>Edit
+											<a class="btn default btn-xs purple" href="<?=base_url(ADMIN.'user/edit/'.$row->id);?>" title="Edit"><i class="fa fa-edit"></i>Edit
 											</a>
 										</li>
 										<li>
-											<a class="btn default btn-xs red" href="<?=base_url();?>admin/user/delete/<?=$row->id;?>" title="Delete"><i class="fa fa-trash-o"></i>Delete
+											<a class="btn default btn-xs red" href="<?=base_url(ADMIN.'user/delete/'.$row->id);?>" title="Delete"><i class="fa fa-trash-o"></i>Delete
 											</a>
 										</li>
 									</ul>

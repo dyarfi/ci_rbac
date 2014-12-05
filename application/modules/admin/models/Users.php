@@ -3,16 +3,28 @@
 // Model Class Object for Users
 class Users Extends CI_Model {
 	
-	protected $table = 'tbl_users';
+	public $table = 'tbl_users';
 	
-	function __construct(){
+	protected $_model_vars;
+	
+	public function __construct(){
 		// Call the Model constructor
 		parent::__construct();
 		
+		$this->_model_vars	= array('id'		 => 0,
+									'email'		 => '',
+									'username'	 => '',
+									'group_id'	 => 0,
+									'is_system'	 => 0,
+									'last_login' => 0,
+									'status'	 => '',
+									'added'		 => 0,
+									'modified'	 => 0);
+				
 		$this->db = $this->load->database('default', true);		
 				
 	}
-	function install() {
+	public function install() {
 		
 		$insert_data	= FALSE;
 
@@ -23,7 +35,7 @@ class Users Extends CI_Model {
                                     . '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,'
                                     . '`email` VARCHAR(255) NOT NULL, '
                                     . '`password` VARCHAR(100) NOT NULL, '
-                                    . '`name` VARCHAR(160) NOT NULL, '
+                                    . '`username` VARCHAR(160) NOT NULL, '
                                     . '`group_id` INT(11) UNSIGNED NOT NULL, '
                                     . '`is_system` TINYINT(3) NOT NULL DEFAULT 0, '
 						            . '`last_login` INT(11) UNSIGNED NOT NULL, '
@@ -42,7 +54,7 @@ class Users Extends CI_Model {
 		
 		if ($insert_data) {
 			$sql	= 'INSERT INTO `'.$this->table.'` '
-					. '(`id`, `email`, `password`, `name`, `group_id`, `is_system`, `last_login`, `status`, `added`, `modified`) '
+					. '(`id`, `email`, `password`, `username`, `group_id`, `is_system`, `last_login`, `status`, `added`, `modified`) '
 					. 'VALUES '
 					. '(NULL, \'superadmin\', \'356a192b7913b04c54574d18c28d46e6395428ab\', \'Super Administrator\', 1, 1, 1, '.time().', \'1\', '.time().', 0), '
 					. '(NULL, \'administrator\', \'12506e739378348ec662bb015bfd2288362dcc1c\', \'Administrator\', 2, 1, 1, '.time().', \'1\', '.time().', 0), '
@@ -54,7 +66,97 @@ class Users Extends CI_Model {
 		return $this->db->table_exists($this->table);
 		
 	}
-	function getCount($status = null){
+	
+	public function find ($where_cond = '', $order_by = '', $limit = '', $offset = '') {
+		/** Build where query **/
+
+		if ($where_cond != '') {
+			if (is_array($where_cond) && count($where_cond) != 0) {
+				$buffers	= array();
+
+				$operators	= array('LIKE',
+									'IN',
+									'!=',
+									'>=',
+									'<=',
+									'>',
+									'<',
+									'=');
+                                
+				foreach ($where_cond as $field => $value) {
+					$operator	= '=';
+
+					if (strpos($field, ' ') != 0)
+						list($field, $operator)	= explode(' ', $field);
+
+					if (in_array($operator, $operators)) {
+						$field		= '`'.$field.'`';
+
+						if ($operator == 'IN' && is_array($value))
+							$buffers[]	= $field.' '.$operator.' (\''.implode('\', \'', $value).'\')';
+						else
+							$buffers[]	= $field.' '.$operator.' \''.$value.'\'';
+					} else if (is_numeric($field)) {
+						$buffers[]	= $value;
+					} else {
+						$buffers[]	= $field.' '.$operator.' \''.$value.'\'';
+					}
+				}                
+				$where_cond	= implode(' AND ', $buffers);                   
+			}
+		}
+
+		$sql_order = ''; 
+		if ($order_by != '') {
+			$sql_order = ' ORDER BY '; 
+			$i 	   = 1;
+			foreach ($order_by as $order => $val) {
+				$split = ($i > 1) ? ', ' : ''; 
+				$sql_order .= ' '. $split .' `'. $order.'` '.$val.' ';
+				$i++;
+			}
+			$order_by  = $sql_order;
+		}
+		
+		$sql_limit = ''; 
+		if ($limit != '' && $offset != '') {
+			$offset    = $offset . ','; 
+			$sql_limit = 'LIMIT '. $offset . $limit; 
+		}
+		else if ($limit != '') {
+			$sql_limit = 'LIMIT '. $limit; 
+		}
+		$limit = $sql_limit;
+		
+		if ($where_cond != '') {
+			$rows = $this->db->query('SELECT * FROM `'.$this->table.'` WHERE '. $where_cond . $order_by . $limit, TRUE)->result();
+		}
+		else {
+			$rows = $this->db->query('SELECT * FROM `'.$this->table.'`' . $order_by . $limit, TRUE)->result();
+		}
+
+		$returns	= array();
+                
+		foreach ($rows as $row) {
+			$object			= new Users;
+
+			$object_vars	= get_object_vars($row);
+			
+			foreach ($object_vars as $var => $val) {
+				$object->$var	= $val;
+			}
+
+			unset($object->table,$object->_model_vars,$object->db);
+
+			$returns[]		= $object;
+
+			unset($object, $vars);
+		}
+				
+		return $returns;
+	}
+	
+	public function getCount($status = null){
 		$data = array();
 		$options = array('status' => $status);
 		$this->db->where($options,1);
@@ -62,7 +164,8 @@ class Users Extends CI_Model {
 		$data = $this->db->count_all_results();
 		return $data;
 	}
-	function getUser($id = null){
+	
+	public function getUser($id = null){
 		if(!empty($id)){
 			$data = array();
 			$options = array('id' => $id);
@@ -75,7 +178,8 @@ class Users Extends CI_Model {
 			return $data;
 		}
 	}
-	function getUserByEmail($email = null){
+	
+	public function getUserByEmail($email = null){
 		if(!empty($email)){
 			$data = array();
 			$options = array('email' => $email);
@@ -88,7 +192,8 @@ class Users Extends CI_Model {
 			return $data;
 		}
 	}
-	function getUserByUsername($username = null){
+	
+	public function getUserByUsername($username = null){
 		if(!empty($username)){
 			$data = array();
 			$options = array('username' => $username);
@@ -101,7 +206,8 @@ class Users Extends CI_Model {
 			return $data;
 		}
 	}
-	function getAllUser($admin=null){
+	
+	public function getAllUser($admin=null){
 		$data = array();
 		$this->db->order_by('added');
 		$Q = $this->db->get('users');
@@ -114,8 +220,9 @@ class Users Extends CI_Model {
 		$Q->free_result();
 		return $data;
 	}
+	
 	// Get user's Email from posts 
-	function getUserEmail($email=null){
+	public function getUserEmail($email=null){
 		if(!empty($email)){
 			$data = array();
 			
@@ -133,8 +240,9 @@ class Users Extends CI_Model {
 			}		 
 		}
 	}
+	
 	// Get user's Password from hashed password 
-	function getUserPassword($password=null){
+	public function getUserPassword($password=null){
 		if(!empty($password)){
 			$data = array();
 			
@@ -152,7 +260,8 @@ class Users Extends CI_Model {
 			}		 
 		}
 	}
-	function login($object=null){		
+	
+	public function login($object=null){		
 		if(!empty($object)){
 			$data = array();
 			$options = array(
@@ -178,19 +287,22 @@ class Users Extends CI_Model {
 			return $data;
 		}
 	}
-	function setLastLogin($id=null) {
+	
+	public function setLastLogin($id=null) {
 		//Get user id
 		$this->db->where('id', $id);
 		//Return result
 		return $this->db->update('users', array('last_login'=>time()));
 	}
-	function setLoggedIn($id=null) {
+	
+	public function setLoggedIn($id=null) {
 		//Get user id
 		$this->db->where('id', $id);
 		//Return result
 		return $this->db->update('users', array('logged_in'=>1));
 	}
-	function setPassword($user=null,$changed=''){
+	
+	public function setPassword($user=null,$changed=''){
 		
 		$password = ($changed) ? $changed : random_string('alnum', 8);
 				
@@ -202,7 +314,8 @@ class Users Extends CI_Model {
 		return $password;
 		
 	}	
-	function setUser($object=null){
+	
+	public function setUser($object=null){
 		
 		// Set User data
 		$data = array(
@@ -229,16 +342,16 @@ class Users Extends CI_Model {
 			// Set User Profile data
 			$data = array(
 					'user_id'		=> $insert_id,
-					'gender'		=> @$object['gender'],				
-					'first_name'	=> @$object['first_name'],
-					'last_name'		=> @$object['last_name'],				
-					'birthday'		=> @$object['birthday'],
-					'phone'			=> @$object['phone'],	
-					'mobile_phone'	=> @$object['mobile_phone'],				
-					'fax'			=> @$object['fax'],
-					'website'		=> @$object['website'],
-					'about'			=> @$object['about'],
-					'division'		=> @$object['division'],
+					'gender'		=> !empty($object['gender']) ? $object['gender'] : NULL,
+					'first_name'	=> !empty($object['first_name']) ? $object['first_name'] : NULL,
+					'last_name'		=> !empty($object['last_name']) ? $object['last_name'] : NULL,
+					'birthday'		=> !empty($object['birthday']) ? $object['birthday'] : NULL,
+					'phone'			=> !empty($object['phone']) ? $object['phone'] : NULL,	
+					'mobile_phone'	=> !empty($object['mobile_phone']) ? $object['mobile_phone'] : NULL,
+					'fax'			=> !empty($object['fax']) ? $object['fax'] : NULL,
+					'website'		=> !empty($object['website']) ? $object['website'] : NULL,
+					'about'			=> !empty($object['about']) ? $object['about'] : NULL,
+					'division'		=> !empty($object['division']) ? $object['division'] : NULL,
 					'added'		=> time(),	
 					'status'	=> 1);
 			
@@ -251,7 +364,8 @@ class Users Extends CI_Model {
 		return $insert_id;
 		
 	}	
-	function deleteUser($id) {
+	
+	public function deleteUser($id) {
 		
 		// Check user id
 		$this->db->where('id', $id);

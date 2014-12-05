@@ -6,6 +6,7 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 
+		
 /*
         // Load in the admin helper functions if the current user is an administrator
         if ($this->secure->group_types(array(ADMINISTRATOR))->is_auth())

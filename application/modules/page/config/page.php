@@ -1,12 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-// Model List
-$config['models']			= array('Setting');
-
 // Upload PATH and URL
-$config['upload_path']		= BASEPATH.'uploads/settings/';
-$config['upload_url']		= 'uploads/settings/';
+$config['upload_path']		= BASEPATH.'uploads/pages/';
+$config['upload_url']		= 'uploads/pages/';
+
 
 /* End of file admin.php */
 

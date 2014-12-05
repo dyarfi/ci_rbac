@@ -98,7 +98,7 @@
 			<div class="col-md-12">
 				<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 				<h3 class="page-title">
-					User Profile <small><?php Acl::instance()->user->name;?></small>
+					User Profile <small><?php Acl::user()->name;?></small>
 				</h3>
 				<ul class="page-breadcrumb breadcrumb">
 					<!--li class="btn-group">
@@ -168,24 +168,13 @@
 						<li>
 							<a data-toggle="tab" href="#tab_1_3">Account</a>
 						</li>
-						<!--li>
-							<a data-toggle="tab" href="#tab_1_4">
-								 Projects
-							</a>
-						</li>
-						<li>
-							<a data-toggle="tab" href="#tab_1_6">
-								 Help
-							</a>
-						</li-->
 					</ul>
 					<div class="tab-content">
 						<div id="tab_1_1" class="tab-pane active">
 							<div class="row">
 								<div class="col-md-3">
 									<ul class="list-unstyled profile-nav">
-										<li>
-											<!--img alt="" class="img-responsive" src="<?=base_url();?>assets/img/profile/profile-img.png"-->
+										<li>											
 											<?php if (empty($user_profile->file_name)) { ?>
 												<img alt="" class="img-responsive" src="<?=base_url();?>assets/img/profile/profile-img.png">
 											<?php } else {?>
@@ -193,120 +182,26 @@
 											<?php } ?>											
 											<a class="profile-edit" href="#">Edit</a>
 										</li>
-										<!--li>
-											<a href="#">
-												 Projects
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 Messages
-												<span>
-													 3
-												</span>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 Friends
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												 Settings
-											</a>
-										</li-->
 									</ul>
 								</div>
 								<div class="col-md-9">
 									<div class="row">
 										<div class="col-md-8 profile-info">
-											<h1><?=ACL::instance()->user->name;?></h1>
-											<p>
-												<?=$user_profile->about;?>
-											</p>
-											<p>
-												<a href="#"><?=$user_profile->website;?></a>
-											</p>
+											<h1><?=ACL::user()->name;?></h1>
+											<p><?=$user_profile->about;?></p>
+											<p><a href="#"><?=$user_profile->website;?></a></p>
 											<ul class="list-inline">
 												<?php if(!empty($user_profile->phone)) { ?>
-												<li>
-													<i class="fa fa-phone"></i> <?=$user_profile->phone;?>
-												</li>
+												<li><i class="fa fa-phone"></i> <?=$user_profile->phone;?></li>
 												<?php } ?>
-												<?php if(!empty($user_profile->mobile_phone)) { ?>												
-												<li>
-													<i class="fa fa-mobile-phone"></i> <?=$user_profile->mobile_phone;?>
-												</li>
+												<?php if(!empty($user_profile->mobile_phone)) { ?>												  <li><i class="fa fa-mobile-phone"></i> <?=$user_profile->mobile_phone;?></li>
 												<?php } ?>												
 												<?php if(!empty($user_profile->division)) { ?>												
-												<li>
-													<i class="fa fa-briefcase"></i> <?=$user_profile->division;?>
-												</li>
-												<?php } ?>
-												
-												<!--li>
-													<i class="fa fa-calendar"></i> <?=$user_profile->birthday;?>
-												</li-->												
-												<!--li>
-													<i class="fa fa-star"></i> <?=date('m-d-y',strtotime($user_profile->added));?>
-												</li>
-												<li>
-													<i class="fa fa-heart"></i> BASE Jumping
-												</li-->
+												<li><i class="fa fa-briefcase"></i> <?=$user_profile->division;?></li>
+												<?php } ?>												
 											</ul>
 										</div>
-										<!--end col-md-8-->
-										<!--div class="col-md-4">
-											<div class="portlet sale-summary">
-												<div class="portlet-title">
-													<div class="caption">
-														 Sales Summary
-													</div>
-													<div class="tools">
-														<a href="javascript:;" class="reload">
-														</a>
-													</div>
-												</div>
-												<div class="portlet-body">
-													<ul class="list-unstyled">
-														<li>
-															<span class="sale-info">
-																 TODAY SOLD <i class="fa fa-img-up"></i>
-															</span>
-															<span class="sale-num">
-																 23
-															</span>
-														</li>
-														<li>
-															<span class="sale-info">
-																 WEEKLY SALES <i class="fa fa-img-down"></i>
-															</span>
-															<span class="sale-num">
-																 87
-															</span>
-														</li>
-														<li>
-															<span class="sale-info">
-																 TOTAL SOLD
-															</span>
-															<span class="sale-num">
-																 2377
-															</span>
-														</li>
-														<li>
-															<span class="sale-info">
-																 EARNS
-															</span>
-															<span class="sale-num">
-																 $37.990
-															</span>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</div-->
-										<!--end col-md-4-->
+										<!--end col-md-8-->										
 									</div>
 									<!--end row-->
 									<div class="tabbable tabbable-custom tabbable-custom-profile hidden">

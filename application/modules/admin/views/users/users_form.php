@@ -9,8 +9,8 @@
 				<ul class="page-breadcrumb breadcrumb">					
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url();?>admin/dashboard">
-							Home
+						<a href="<?=base_url(ADMIN.'dashboard/index');?>">
+							Dashboard
 						</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
@@ -65,6 +65,7 @@
 					</div>
 				</div>
 				<div class="row">
+					<?php if (!$param) { ?>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label col-md-3">Password</label>
@@ -74,15 +75,16 @@
 							<span class="help-block"><?php echo $errors['password'];?></span>
 						</div>
 					</div>
+					<?php } ?>
 					<!--/span-->
 					<div class="col-md-6">							
 						<div class="form-group">
 							<label class="control-label col-md-3">Group</label>
 							<div class="col-md-9">
 								<select class="form-control" name="group_id">
-									<?php foreach($user_groups as $group) {;?>
-										<option value="<?php echo $group->id;?>"><?php echo $group->name;?></option>
-									<?php } ?>
+								<?php foreach($user_groups as $group) {;?>
+									<option value="<?php echo $group->id;?>"><?php echo $group->name;?></option>
+								<?php } ?>
 								</select>
 								<span class="help-block"><?php echo $errors['group_id'];?></span>
 							</div>
@@ -92,6 +94,7 @@
 				</div>
 				<!--/row-->
 				<div class="row">
+					<?php if (!$param) { ?>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label col-md-3">Retype Password</label>
@@ -101,15 +104,16 @@
 							<span class="help-block"><?php echo $errors['password1'];?></span>
 						</div>
 					</div>
+					<?php } ?>
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label col-md-3">Status</label>
 							<div class="col-md-9">
 								<select class="form-control" name="status">
-									<?php foreach ($statuses as $status => $val) {?>
-										<option value="<?php echo $val;?>" <?php echo ($val == $fields->status) ? 'selected' : '';?>><?php echo $status;?></option>
-									<?php } ?>
+								<?php foreach ($statuses as $status => $stat) {?>
+									<option value="<?php echo $status;?>" <?php echo ($status == $fields->status) ? 'selected' : '';?>><?php echo $stat;?></option>
+								<?php } ?>
 								</select>								
 								<span class="help-block"><?php echo $errors['status'];?></span>
 							</div>
@@ -147,10 +151,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Gender</label>
 							<div class="col-md-9">
-								<select class="form-control" name="gender">
-									<option value="male">Male</option>
-									<option value="female">Female</option>
-								</select>
+								<select class="form-control" name="status">
+									<?php foreach ($genders as $gender => $gen) {?>
+										<option value="<?php echo $gender;?>" <?php echo ($gender == $fields->status) ? 'selected' : '';?>><?php echo $gen;?></option>
+									<?php } ?>
+								</select>	
 								<span class="help-block"><?php echo $errors['gender'];?></span>
 							</div>
 						</div>
@@ -160,8 +165,8 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Date of Birth</label>
 							<div class="col-md-9">
-								<div class="input-group input-medium date date-picker" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-2012">
-									<input class="form-control" type="text" readonly="" name="birthday" value="<?=$fields->birthday;?>">
+								<div class="input-group input-medium date date-picker" data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="2012-02-12">
+									<input class="form-control" type="text" name="birthday" value="<?=$fields->birthday;?>">
 									<span class="input-group-btn">
 										<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 									</span>

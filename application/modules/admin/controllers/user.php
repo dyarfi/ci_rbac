@@ -3,7 +3,8 @@
 // Class for Users
 class User extends Admin_Controller {
 	// var $userdata = '';
-	var $auth_message = '';
+	// var $config = '';
+	// var $auth_message = '';
 	// var $User = '';
 	public function __construct() {
 		parent::__construct();
@@ -14,83 +15,20 @@ class User extends Admin_Controller {
 		$this->load->model('UserGroups');		
 		$this->load->model('Captcha');		
 		
-		//$this->load->helper('directory');
+		// Load Admin config
+		$this->configs = $this->load->config('admin',true);
 		
-		//$map = directory_map('./application/modules');
-		
-		//print_r($this->session->userdata);
-		//print_r($map);
-		
-		//print_r(Modules::lists('./application/modules'));
-		
-		// Load user config
-		$this->config->load('admin');
-				
-		//$this->load->class('acl');
-		//$asdf = Acl::instance();
-		//print_r(Acl::instance()->access_control());		
-		
-		/*
-		//Load user permission
-		$this->load->model('MUserPermissions');
-		//Put session check in constructor
-		$data['user'] = $this->session->userdata('user_session');
-		//Load user session in data
-		$this->load->vars($data);
-		//Load into class object 
-		$this->userdata = $data['user'];
-		//Set which controller pages that have the permission
-		//Always set as an array
-		$pages = array(
-						'index',
-						'user',
-						'edit',
-						'login',
-						'logout',
-						'search',
-						'23',
-					  );
-		//Set which groups that have the access permission
-		//Always set as an array
-		$allowed_groups = array(
-									"Admin"=>"1",
-									"Vendor"=>"2",
-									"Publisher"=>"4"
-								);
-		//Get user's group permission
-		$permission = new MUserPermissions();
-		$permission->getUserGroupPermissions($this->userdata['group_id']);
-		$permission->setUserGroupPages($pages,$allowed_groups);
-
-		//Debugging user session variable
-		//print_r($this->session->userdata('user_session')); exit();
-		//$this->session->sess_destroy('user_session');
-		
-		//Debugging cart session variable
-		//print_r($this->cart->contents()); exit();
-		//$this->cart->destroy();
-
-		//Set authentication message if exists
-		$this->auth_message = ($this->session->flashdata('auth_message')) ? $this->session->flashdata('auth_message') : '';
-		$data['auth_message'] = $this->auth_message;
-		*/
-			
-		//$this->User = $this->load->model('User');
-		//print_r($this->session->all_userdata());
-	}
+		// Set Pages that allowed in this class
+		$this->allow_page = array('forgot_password');
+						
+	}		
+	
 	public function index() {		
-		//$user_id = $this->userdata['user_id'];
-		//$user_group_id = $this->userdata['group_id'];
-			
-		//print_r($user_group_id); exit();
-		//print_r($this->auth_message); exit();
-
-		//print_r($this);
-		//exit;
 		
-		$data['title'] = "Welcome to your profile page in my first CI page";
 		$rows = $this->Users->getAllUser();
+		
 		$temp_rows = array();
+		
 		if($rows) {
 			$i = 0;
 			foreach($rows as $row ){		
@@ -103,126 +41,23 @@ class User extends Admin_Controller {
 				$i++;
 			}
 		}
+		
 		if (@$temp_rows) $data['rows'] = $temp_rows;
 				
-		$data['user_profiles'] = $this->UserProfiles->getUserProfile(Acl::instance()->user->id);
+		$data['user_profiles'] = $this->UserProfiles->getUserProfile(Acl::user()->id);
 				
-		$this->load->vars($data);
+		$this->load->vars($data);		
 		
-		/*
-		switch(Acl::instance()->user->group_id){
-			case 1: // Administrator Access
-				$data['main'] = 'users/default_admin';
-				$this->load->view('template/admin_template', $data);
-			break;
-			default: // Public Access
-				$data['main'] = 'users/default_users';
-				$this->load->view('template/static_template', $data);
-			break;
-		}
-		 * 
-		 */
-		
-		$data['statuses'] = array(1=>'Active',0=>'Inactive');
+		$data['statuses'] = $this->configs['status'];
 		
 		$data['main'] = 'users/users_index';
 		
-		$this->load->view('template/admin_template', $data);
-				
-	}
-	/*
-	public function login () {
-		// load helper if not auto loaded
-		//$this->load->helper(array('form','url'));
-		// load library if not auto loaded
-		$this->load->library('form_validation');
-
-		// load model if not auto loaded
-		// $user = new User();
+		// Set admin title page with module menu
+		$data['page_title'] = $this->module_menu;
 		
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[24]|xss_clean');
-		$this->form_validation->set_rules('password', 'Password','trim|required|min_length[5]|max_length[24]|xss_clean');
-
-		if ($this->form_validation->run() == FALSE)
-		{
-			//$this->load->view('login');
-			//return false;
-		}
-		else
-		{
-			//$this->load->view('formsuccess');
-			//return true;
-		}
-
-		if($_SERVER['REQUEST_METHOD'] === 'POST'){
-			$userObj = $_POST;
-			//Make sure login object was true
-			if($userObj['email'] == '' OR $userObj['password'] == '') {
-				//return false;
-			}
-			//Check if already logged in
-			if($this->session->userdata('username') == $userObj['email']) {
-				//User is already logged in.
-				//return false;
-			}
-            //Destroy old session
-            //$this->session->sess_destroy();
-
-            //Create a fresh, brand new session
-            //$this->session->sess_create();
-			
-			//Check User login info
-			$row = $this->User->login($userObj);
-			//print_r($row); exit();
-			
-			if(!empty($row)) {
-				//Remove the password field
-				//print_r($row); exit();
-
-				$user_id = $row['id'];
+		$this->load->view('template/admin/admin_template', $data);
 				
-				unset($row['id']);
-				unset($row['password']);
-				
-				$user['user_session'] = $row;
-				$user['user_session']['user_id'] = $user_id;
-				$user['user_session']['logged_in'] = true;
-				
-				//Set session data
-				$this->session->set_userdata($user);
-				//print_r($this->session->userdata); exit();
-
-				//Set logged_in to true
-				//$this->session->set_userdata(array('logged_in' => true));
-				
-				//Set logged_in to true
-				//$this->session->set_userdata(array('user_id' => true));
-				//print_r($this->session->userdata); exit();
-				
-				//Login was successful
-				//return true;
-				redirect('/', 'refresh');
-			} else {
-				$userObj = 'Error Submission';
-				$this->session->set_flashdata('message', $userObj);
-				//$this->form_validation->set_message('email', 'The %s field can not be the word "test"');
-				//print_r($this->session->set_flashdata('Error', $userObj)); //exit();
-				//return false;
-			}
-		}
-				
-		$data['user']	= $this->session->userdata;
-		
-		//$data['title']	= "Welcome to my first CI Login page";
-		//$data['main']	= 'user/login';
-		
-		
-		$this->load->vars($data);
-		$data['main']	= $this->load->view('users/default_user', $data, true);
-		$this->load->view('template/login_template');
-	}
-	 * 
-	 */
+	}	
 	
 	public function logout() {
         // Destroy only user session
@@ -312,20 +147,27 @@ class User extends Admin_Controller {
 		
 		// User Groups Data
 		$data['user_groups'] = $this->UserGroups->getAllUserGroup();
-		
+				
 		// User Status Data
-		$data['statuses']	= array('Active'=>1,'Inactive'=>0);	
+		$data['statuses']	= @$this->configs['status'];
+		
+		// User Gender Data
+		$data['genders']	= @$this->configs['gender'];
 		
 		// Post Fields
 		$data['fields']		= (object) $fields;
 
 		// Main template
 		$data['main']		= 'users/users_form';		
+	
+		// Set admin title page with module menu
+		$data['page_title'] = $this->module_menu;
 		
 		// Admin view template
-		$this->load->view('template/admin_template', $this->load->vars($data));
+		$this->load->view('template/admin/admin_template', $this->load->vars($data));
 				
 	}
+	
 	public function edit($id=0){
 				
 		// Check if param is given or not and check from database
@@ -339,8 +181,8 @@ class User extends Admin_Controller {
 		$fields	= array(
 				'username'		=> '',
 				'email'			=> '',
-				'password'		=> '',
-				'password1'		=> '',
+				//'password'		=> '',
+				//'password1'		=> '',
 				'gender'		=> '',				
 				'group_id'		=> '',
 				'first_name'	=> '',
@@ -401,7 +243,7 @@ class User extends Admin_Controller {
 			$fields['password1']	= '';
 			
 			$profile	= (array) $this->UserProfiles->getUserProfile($id);
-						
+												
 			$fields		= (object) array_merge($fields,$profile);
 
 		}
@@ -418,8 +260,11 @@ class User extends Admin_Controller {
 		// Set field data to view
 		$data['fields'] = $fields;		
 			
-		// Set user group status
-		$data['statuses'] = array('Active'=>1,'Inactive'=>0);		
+		// User Status Data
+		$data['statuses']	= $this->configs['status'];
+		
+		// User Gender Data
+		$data['genders']	= $this->configs['gender'];
 		
 		// User Groups Data
 		$data['user_groups'] = $this->UserGroups->getAllUserGroup();
@@ -427,8 +272,12 @@ class User extends Admin_Controller {
 		// Set form to view
 		$data['main'] = 'users/users_form';			
 		
+		// Set admin title page with module menu
+		$data['page_title'] = $this->module_menu;
+		
 		// Set admin template
-		$this->load->view('template/admin_template', $this->load->vars($data));
+		//$this->load->view('template/admin_template', $this->load->vars($data));
+		$this->load->view('template/admin/admin_template', $data);
 		
 	}
 	public function delete($id){
@@ -451,9 +300,9 @@ class User extends Admin_Controller {
 			redirect('home/index');
 		}
 				
-		$data['upload_path']	= $this->config->item('upload_path');
+		$data['upload_path']	= $this->configs->item('upload_path');
 		
-		$data['upload_url']		= $this->config->item('upload_url');
+		$data['upload_url']		= $this->configs->item('upload_url');
 		
 		$data['captcha']		= $this->Captcha->image();
 		
@@ -465,7 +314,10 @@ class User extends Admin_Controller {
 		
 		$data['main']	= 'users/users_view';
 		
-		$this->load->view('template/admin_template',$data);
+		// Set admin title page with module menu
+		$data['page_title'] = $this->module_menu;
+		
+		$this->load->view('template/admin/admin_template',$data);
 	}
 	
 	// Ajax Methods for this controller and module

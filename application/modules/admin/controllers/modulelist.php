@@ -1,103 +1,64 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-// Class for User Groups
-class UserGroup extends Admin_Controller {
-	// var $userdata = '';
-	var $auth_message = '';
-	//var $User = '';
+// Class for Module List
+class ModuleList extends Admin_Controller {
+	
 	public function __construct() {
 		parent::__construct();
 				
 		//Load user related model
-		$this->load->model('Users');
-		$this->load->model('UserProfiles');
+		$this->load->model('ModuleLists');
 		$this->load->model('UserGroups');		
+		$this->load->model('UserGroupPermissions');
+		$this->load->model('ModulePermissions');				
 		
-		//Load user config
-		$this->config->load('admin');
+		// Load Module List
+		$this->modules			= $this->db->where('parent_id',0)->get('module_lists')->result();
 		
-		//$this->load->class('acl');
-		//$asdf = Acl::instance();
-		//print_r(Acl::instance()->access_control());		
+		// Load User Group
+		$this->user_group		= $this->db->where('id !=',1)->where('id !=',99)->where('status',1)->get('user_groups')->result();
 		
-		/*
-		//Load user permission
-		$this->load->model('MUserPermissions');
-		//Put session check in constructor
-		$data['user'] = $this->session->userdata('user_session');
-		//Load user session in data
-		$this->load->vars($data);
-		//Load into class object 
-		$this->userdata = $data['user'];
-		//Set which controller pages that have the permission
-		//Always set as an array
-		$pages = array(
-						'index',
-						'user',
-						'edit',
-						'login',
-						'logout',
-						'search',
-						'23',
-					  );
-		//Set which groups that have the access permission
-		//Always set as an array
-		$allowed_groups = array(
-									"Admin"=>"1",
-									"Vendor"=>"2",
-									"Publisher"=>"4"
-								);
-		//Get user's group permission
-		$permission = new MUserPermissions();
-		$permission->getUserGroupPermissions($this->userdata['group_id']);
-		$permission->setUserGroupPages($pages,$allowed_groups);
-
-		//Debugging user session variable
-		//print_r($this->session->userdata('user_session')); exit();
-		//$this->session->sess_destroy('user_session');
-		
-		//Debugging cart session variable
-		//print_r($this->cart->contents()); exit();
-		//$this->cart->destroy();
-
-		//Set authentication message if exists
-		$this->auth_message = ($this->session->flashdata('auth_message')) ? $this->session->flashdata('auth_message') : '';
-		$data['auth_message'] = $this->auth_message;
-		*/
-			
-		//$this->User = $this->load->model('User');
-		//print_r($this->session->all_userdata());
-	}
-	public function index() {		
-		//$user_id = $this->userdata['user_id'];
-		//$user_group_id = $this->userdata['group_id'];
-			
-		//print_r($user_group_id); exit();
-		//print_r($this->auth_message); exit();
-
-		
-		$rows = $this->UserGroups->getAllUserGroup();
-		
-		if (@$rows) $data['rows'] = $rows;
-		
-		$data['user_profiles'] = $this->UserProfiles->getUserProfile(ACL::user()->id);
+		// Load User Group Permission
+		$_user_group_permission	= $this->db->where('group_id !=',1)->where('group_id !=', 99)->get('group_permissions')->result();
 				
-		$this->load->vars($data);
-		/*
-		switch(Acl::instance()->user->group_id){
-			case 1: // Administrator Access
-				$data['main'] = 'users/default_admin';
-				$this->load->view('template/admin/admin_template', $data);
-			break;
-			default: // Public Access
-				$data['main'] = 'users/default_users';
-				$this->load->view('template/static_template', $data);
-			break;
+		$buffers = array();
+		foreach ($_user_group_permission as $key) {
+			$buffers[$key->group_id][$key->permission_id] = $key;
 		}
-		 * 
-		 */
+		
+		$this->user_group_permission = $buffers;
+		unset($buffers);
+		
+		// Load Module Permission List
+		$this->db->select()->from('module_permissions')->order_by('module_link','ASC');
+		// Load into objects
+		$this->module_permission = $this->db->get()->result();
+				
+	}
+	
+	public function index() {		
+		
+		/** Table sorting **/
+		$table_headers	= array('class_name' => 'Module');
+		foreach($this->user_group as $row) {
+			$table_headers['group_id_'.$row->id]	= ucwords($row->name);
+		}
+		
+		/** Execute list query **/
+		$listings	= $this->db->where('parent_id',0)->order_by('id','ASC')->get('module_lists')->result();
+		
+		$total_rows	= count($listings);				
+		
+		/** Views **/
+		$data['user_group']				= $this->user_group;
+		$data['module_permission']		= $this->module_permission;
+		$data['user_group_permission']	= $this->user_group_permission;
+		$data['listings']				= $listings;
+		
+		$data['table_headers']			= $table_headers;
+		
 		$data['statuses']	= array('Active'=>'active','Inactive'=>'inactive');
-		$data['main'] = 'users/usergroups_index';
+		$data['main']		= 'users/module_list';
 		
 		// Set admin title page with module menu
 		$data['page_title'] = $this->module_menu;
@@ -105,11 +66,7 @@ class UserGroup extends Admin_Controller {
 		$this->load->view('template/admin/admin_template', $data);
 				
 	}
-	public function logout() {
-        //Destroy only user session
-        $this->session->unset_userdata('user_session');
-		redirect('/', 'refresh');
-    }
+	
 	public function add(){
 		
 		//Default data setup
@@ -175,13 +132,11 @@ class UserGroup extends Admin_Controller {
 		// Main template
 		$data['main']		= 'users/usergroups_form';		
 		
-		// Set admin title page with module menu
-		$data['page_title'] = $this->module_menu;
-		
 		// Admin view template
-		$this->load->view('template/admin/admin_template', $this->load->vars($data));
+		$this->load->view('template/admin_template', $this->load->vars($data));
 		
 	}
+	
 	public function edit($id=0){
 		
 		// Check if param is given or not and check from database
@@ -264,18 +219,17 @@ class UserGroup extends Admin_Controller {
 		// Set form to view
 		$data['main'] = 'users/usergroups_form';			
 		
-		// Set admin title page with module menu
-		$data['page_title'] = $this->module_menu;
-		
 		// Set admin template
-		$this->load->view('template/admin/admin_template', $this->load->vars($data));
+		$this->load->view('template/admin_template', $this->load->vars($data));
 
 	}
+	
 	public function delete($id){
 		$this->UserGroups->deleteUserGroup($id);
 		$this->session->set_flashdata('message','User Group deleted');
 		redirect('admin/usergroup');
-	}	
+	}
+	
 	public function view($id=null){
 		
 		//Load form validation library if not auto loaded
@@ -288,7 +242,7 @@ class UserGroup extends Admin_Controller {
 
 		$user = $this->Users->getUser($id);
 		if (!count($user)){
-			redirect(ADMIN.'dashboard/index');
+			redirect('home/index');
 		}
 		
 		$data['upload_path']	= $this->config->item('upload_path');
@@ -303,10 +257,7 @@ class UserGroup extends Admin_Controller {
 		
 		$data['main']	= 'users/users_view';
 		
-		// Set admin title page with module menu
-		$data['page_title'] = $this->module_menu;
-		
-		$this->load->view('template/admin/admin_template', $data);
+		$this->load->view('template/admin_template',$data);
 	}
 	
 	public function ajax($action='') {

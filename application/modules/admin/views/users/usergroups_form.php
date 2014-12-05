@@ -9,15 +9,13 @@
 				<ul class="page-breadcrumb breadcrumb">					
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url();?>admin/dashboard">
-							Home
+						<a href="<?=base_url(ADMIN.'dashboard/index');?>">
+							Dashboard
 						</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="#">
-							User Group Control
-						</a>
+						<a href="#">User Group Control</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>

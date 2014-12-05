@@ -104,42 +104,25 @@
 				Managed User Groups <!--small>managed data user groups</small-->
 				</h3>
 				<ul class="page-breadcrumb breadcrumb">
-					<!--li class="btn-group">
+					<li class="btn-group">
 						<button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
 						<span>
-							Actions
+							Modules
 						</span>
 						<i class="fa fa-angle-down"></i>
 						</button>
 						<ul role="menu" class="dropdown-menu pull-right">
 							<li>
-								<a href="#">
-									Action
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									User Control 
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									List Users
-								</a>
-							</li>
-							<li class="divider">
-							</li>
-							<li>
-								<a href="#">
-									Separated link
+								<a href="<?=base_url(ADMIN.'modulelist/index');?>">
+									User Group Modules
 								</a>
 							</li>
 						</ul>
-					</li-->
+					</li>
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?=base_url()?>admin/dashboard">
-							Home
+						<a href="<?=base_url(ADMIN.'dashboard/index')?>">
+							Dashboard
 						</a>
 						<i class="fa fa-angle-right"></i>
 					</li>
@@ -150,7 +133,7 @@
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="<?=base_url();?>admin/users">
+						<a href="<?=base_url(ADMIN.'usergroup/index');?>">
 							User Groups
 						</a>
 					</li>
@@ -182,7 +165,7 @@
 					<div class="portlet-body">
 						<div class="table-toolbar">
 							<div class="btn-group">
-								<a class="btn green" id="sample_editable_1_new" href="<?=base_url();?>admin/usergroup/add">
+								<a class="btn green" id="sample_editable_1_new" href="<?=base_url(ADMIN.'usergroup/add');?>">
 								Add New <i class="fa fa-plus"></i>
 								</a>
 							</div>	
@@ -242,15 +225,15 @@
 										<td class="col-md-4">
 											<ul class="list-inline">
 												<li>
-													<a title="View" href="<?=base_url();?>admin/usergroup/view/<?=$row->id;?>" class="btn default btn-xs blue"><i class="fa fa-check"></i>View
+													<a title="View" href="<?=base_url(ADMIN.'usergroup/view/'.$row->id);?>" class="btn default btn-xs blue"><i class="fa fa-check"></i>View
 													</a>
 												</li>
 												<li>
-													<a title="Edit" href="<?=base_url();?>admin/usergroup/edit/<?=$row->id;?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i>Edit
+													<a title="Edit" href="<?=base_url(ADMIN.'usergroup/edit/'.$row->id);?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i>Edit
 													</a>
 												</li>
 												<li>
-													<a title="Delete" href="<?=base_url();?>admin/usergroup/delete/<?=$row->id;?>" class="btn default btn-xs red"><i class="fa fa-trash-o"></i>Delete
+													<a title="Delete" href="<?=base_url(ADMIN.'usergroup/delete/'.$row->id);?>" class="btn default btn-xs red"><i class="fa fa-trash-o"></i>Delete
 													</a>
 												</li>
 											</ul>
