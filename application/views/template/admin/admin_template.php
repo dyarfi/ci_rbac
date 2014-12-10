@@ -27,41 +27,41 @@ License: You must have a valid license purchased only from themeforest(the above
 <meta content="" name="author"/>
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
-<link href="<?=admin_theme()?>assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
 
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/clockface/css/clockface.css"/>
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/bootstrap-datepicker/css/datepicker.css"/>
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/clockface/css/clockface.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/bootstrap-datepicker/css/datepicker.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/bootstrap-datetimepicker/css/datetimepicker.css"/>
 
-<link href="<?=admin_theme()?>assets/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css"/>
-<!--<link href="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>-->
-<link href="<?=admin_theme()?>assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css"/>
+<!--<link href="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css"/>-->
+<link href="<?=admin_theme()?>assets/admin/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css"/>
 
 <!-- END PAGE LEVEL PLUGIN STYLES -->
 
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/select2/select2.css"/>
-<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/plugins/select2/select2-metronic.css"/>
-<link rel="stylesheet" href="<?=admin_theme()?>assets/plugins/data-tables/DT_bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/select2/select2.css"/>
+<link rel="stylesheet" type="text/css" href="<?=admin_theme()?>assets/admin/plugins/select2/select2-metronic.css"/>
+<link rel="stylesheet" href="<?=admin_theme()?>assets/admin/plugins/data-tables/DT_bootstrap.css"/>
 <!-- END PAGE LEVEL STYLES -->
 
 <!-- BEGIN THEME STYLES -->
-<link href="<?=admin_theme()?>assets/css/style-metronic.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/css/style.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/css/pages/tasks.css" rel="stylesheet" type="text/css"/>
-<link href="<?=admin_theme()?>assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-<link href="<?=admin_theme()?>assets/css/print.css" rel="stylesheet" type="text/css" media="print"/>
-<link href="<?=admin_theme()?>assets/css/custom.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/style-metronic.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/style.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/pages/tasks.css" rel="stylesheet" type="text/css"/>
+<link href="<?=admin_theme()?>assets/admin/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="<?=admin_theme()?>assets/admin/css/print.css" rel="stylesheet" type="text/css" media="print"/>
+<link href="<?=admin_theme()?>assets/admin/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
 <script>base_URL = '<?=base_url()?>';</script>
@@ -75,12 +75,12 @@ License: You must have a valid license purchased only from themeforest(the above
 	<div class="header-inner">
 		<!-- BEGIN LOGO -->
 		<a class="navbar-brand" href="<?=base_url();?>" target="_blank">
-			<img src="<?=admin_theme()?>assets/img/logo_small.png" alt="logo" class="img-responsive col-md-7 col-lg-7"/>
+			<img src="<?=admin_theme()?>assets/admin/img/logo_small.png" alt="logo" class="img-responsive col-md-7 col-lg-7"/>
 		</a>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			<img src="<?=admin_theme()?>assets/img/menu-toggler.png" alt=""/>
+			<img src="<?=admin_theme()?>assets/admin/img/menu-toggler.png" alt=""/>
 		</a>
 		<!-- END RESPONSIVE MENU TOGGLER -->		
 		<!-- BEGIN TOP NAVIGATION MENU -->
@@ -91,20 +91,20 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 			<!-- BEGIN USER LOGIN DROPDOWN -->
 			<li class="dropdown user">
-				<a href="<?=base_url();?>admin/user/view/<?=ACL::user()->id;?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-					<img alt="" src="<?=base_url()?>assets/img/avatar1_small.jpg"/>&nbsp;
+				<a href="<?=base_url();?>admin/user/view/<?=Acl::user()->id;?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<img alt="" src="<?=base_url()?>assets/admin/img/avatar1_small.jpg"/>&nbsp;
 					<span class="username">
-						<?=ACL::user()->name;?>
+						<?=Acl::user()->name;?>
 					</span>
 					<i class="fa fa-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">				
 					<li>
-						<a href="<?=base_url();?>admin/user/view/<?=ACL::user()->id;?>"><i class="fa fa-user"></i> Profile</a>
+						<a href="<?=base_url();?>admin/user/view/<?=Acl::user()->id;?>"><i class="fa fa-user"></i> Profile</a>
 					</li>
 					<li>
 						<a href="javascript:;">
-							<i class="fa fa-lock"></i> Last Login <?php echo date('Y-m-d, H:i:s',ACL::user()->last_login);?>
+							<i class="fa fa-lock"></i> Last Login <?php echo date('Y-m-d, H:i:s',Acl::user()->last_login);?>
 						</a>
 					</li>
 					<li>
@@ -144,7 +144,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				</li>						
 				<?php				
 				$k = 0;
-				foreach (ACL::admin_system_modules() as $name => $functions) { 
+				foreach (Acl::admin_system_modules() as $name => $functions) { 
 					if (is_array($functions) && count($functions) != 0) { ?>
 					<li class="<?if(preg_match('/\b'.$this->uri->segment(2).'\b/i', strtolower($name))){ ?>activ e<?}?>">
 						<a class="" href="#collapse<?php echo $k;?>">
@@ -181,67 +181,67 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
 <!--[if lt IE 9]>
-<script src="assets/plugins/respond.min.js"></script>
-<script src="assets/plugins/excanvas.min.js"></script> 
+<script src="assets/admin/plugins/respond.min.js"></script>
+<script src="assets/admin/plugins/excanvas.min.js"></script> 
 <![endif]-->
-<script src="<?=admin_theme()?>assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="<?=admin_theme()?>assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
-<!--script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script-->
-<script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+<!--script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script-->
+<script src="<?=admin_theme()?>assets/admin/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
 <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
-<script src="<?=admin_theme()?>assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 
-<script src="<?=admin_theme()?>assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
 
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/select2/select2.min.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/data-tables/jquery.dataTables.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/data-tables/DT_bootstrap.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/data-tables/DT_bootstrap.js"></script>
 
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/clockface/js/clockface.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script type="text/javascript" src="<?=admin_theme()?>assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/clockface/js/clockface.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="<?=admin_theme()?>assets/admin/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
-<script src="<?=admin_theme()?>assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="<?=admin_theme()?>assets/scripts/core/app.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/scripts/custom/index.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/scripts/custom/tasks.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/scripts/custom/table-managed.js"></script>
-<script src="<?=admin_theme()?>assets/scripts/custom/components-pickers.js"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/core/app.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/index.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/tasks.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/table-managed.js"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/components-pickers.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN USER AJAX JAVASCRIPTS -->
-<script src="<?=admin_theme()?>assets/scripts/custom/form-user.js" type="text/javascript"></script>
-<script src="<?=admin_theme()?>assets/scripts/custom/form-module.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/form-user.js" type="text/javascript"></script>
+<script src="<?=admin_theme()?>assets/admin/scripts/custom/form-module.js" type="text/javascript"></script>
 <!-- END USER AJAX JAVASCRIPTS -->
 
 <script>

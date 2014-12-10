@@ -33,9 +33,9 @@ class Captcha extends CI_Model {
 		
 		$captcha = array(
 			'word'		=> random_string('alpha', 5),
-			'img_path'	=> 'assets/captcha/image/',
-			'img_url'	=> base_url().'assets/captcha/image/',
-			'font_path'	=> 'assets/captcha/fonts/DejaVuSerif.ttf',
+			'img_path'	=> 'assets/admin/captcha/image/',
+			'img_url'	=> base_url().'assets/admin/captcha/image/',
+			'font_path'	=> 'assets/admin/captcha/fonts/DejaVuSerif.ttf',
 			'img_width'	=> '120',
 			'img_height' => '30',
 			'expiration' => $this->expiration,
