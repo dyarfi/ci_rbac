@@ -302,10 +302,10 @@ var Login = function () {
             handleRegister();        
 			
 	       	$.backstretch([
-		        base_URL + "assets/img/bg/1.jpg",
-		        base_URL + "assets/img/bg/2.jpg",
-		        base_URL + "assets/img/bg/3.jpg",
-		        base_URL + "assets/img/bg/4.jpg"
+		        base_URL + "assets/admin/img/bg/1.jpg",
+		        base_URL + "assets/admin/img/bg/2.jpg",
+		        base_URL + "assets/admin/img/bg/3.jpg",
+		        base_URL + "assets/admin/img/bg/4.jpg"
 		        ], {
 		          fade: 1000,
 		          duration: 8000

@@ -13,7 +13,7 @@ var App = function () {
     var sidebarCollapsedWidth = 35;
 
     var responsiveHandlers = [];
-
+	
     // theme layout color set
     var layoutColorCodes = {
         'blue': '#4b8df8',
@@ -91,7 +91,15 @@ var App = function () {
             each.call();
         }
     }
-
+		
+	// Dashboard initialize
+	var handleInitDashboard = function(){
+		$('.dashboard-stat').hover(
+			function(){$(this).find('.visual').attr('style','opacity:0.6');},
+			function(){$(this).find('.visual').attr('style','opacity:1');}
+		);
+	}
+	
     // reinitialize the laypot on window resize
     var handleResponsive = function () {
         handleSidebarState();
@@ -1024,7 +1032,7 @@ var App = function () {
             handleTheme(); // handles style customer tool
 
             //ui component handlers
-            handleFancybox() // handle fancy box
+            handleFancybox(); // handle fancy box
             handleSelect2(); // handle custom Select2 dropdowns
             handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)
             handleAlerts(); //handle closabled alerts
@@ -1035,6 +1043,9 @@ var App = function () {
             handleAccordions(); //handles accordions 
             handleModals(); // handle modals
             handleFullScreenMode(); // handles full screen
+			
+			//custom handling
+			handleInitDashboard();
         },
 
         //main function to initiate core javascript after ajax complete
@@ -1047,7 +1058,7 @@ var App = function () {
             handleAccordions(); //handles accordions 
             handleUniform(); // hanfle custom radio & checkboxes     
             handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleDropdownHover() // handles dropdown hover       
+            handleDropdownHover(); // handles dropdown hover       
         },
 
         //public function to fix the sidebar and content height accordingly
