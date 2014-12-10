@@ -45,15 +45,17 @@ $route['404_override'] = '';
 // Route for Admin
 //$route['admin/authenticate/logout'] = "admin/authenticate/logout";
 
-$route['admin']	= "admin/authenticate/login";
-$route['admin/authenticate/(:any)']	= "admin/authenticate/$1";
+$admin = (ADMIN) ? str_replace('/', '', ADMIN) : '';
 
-$route['admin/dashboard/(:any)']	= 'admin/dashboard/$1';
-$route['admin/user/(:any)']			= 'admin/user/$1';
-$route['admin/usergroup/(:any)']	= 'admin/usergroup/$1';
-$route['admin/modulelist/(:any)']	= 'admin/modulelist/$1';
+$route[$admin]							= "admin/authenticate/login";
+$route[$admin.'/authenticate/(:any)']	= "admin/authenticate/$1";
 
-$route['admin/(:any)'] = '$1';
+$route[$admin.'/dashboard/(:any)']		= 'admin/dashboard/$1';
+$route[$admin.'/user/(:any)']			= 'admin/user/$1';
+$route[$admin.'/usergroup/(:any)']		= 'admin/usergroup/$1';
+$route[$admin.'/modulelist/(:any)']		= 'admin/modulelist/$1';
+
+$route[$admin.'/(:any)'] = '$1';
 
 
 //$route['admin/authenticate']	 = "admin/authenticate";
